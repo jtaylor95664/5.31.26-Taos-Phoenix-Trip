@@ -148,6 +148,18 @@
       <div class="card-content" id="poi-content"></div>
     </div>
 
+    <!-- Trivia Card -->
+    <div class="card hidden" id="trivia-card">
+      <div class="card-header">🧠 Did You Know?</div>
+      <div class="card-content" id="trivia-content"></div>
+    </div>
+
+    <!-- Scenic Moments Card -->
+    <div class="card hidden" id="scenic-card">
+      <div class="card-header">👁 Watch For This</div>
+      <div class="card-content" id="scenic-content"></div>
+    </div>
+
   </section>
 
   <!-- ══ GRUET FAB ════════════════════════════════════════════════════════════ -->
@@ -163,6 +175,56 @@
       <button class="modal-close-btn" id="gruet-close-btn" aria-label="Close">✕</button>
     </div>
     <div class="modal-content-area" id="gruet-modal-content"></div>
+  </div>
+
+  <!-- ══ POI DETAIL MODAL ═════════════════════════════════════════════════════ -->
+  <div id="poi-modal" class="bottom-sheet hidden">
+    <div class="bottom-sheet-handle"></div>
+    <div class="modal-header">
+      <h3 id="poi-modal-name">POI Name</h3>
+      <button class="modal-close-btn" id="poi-close-btn" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-content-area">
+      <div class="detail-hook" id="poi-modal-hook"></div>
+      <p class="detail-description" id="poi-modal-desc"></p>
+      <a class="detail-maps-btn" id="poi-modal-maps" href="#" target="_blank" rel="noopener">
+        Open in Maps →
+      </a>
+    </div>
+  </div>
+
+  <!-- ══ DINING DETAIL MODAL ══════════════════════════════════════════════════ -->
+  <div id="dining-modal" class="bottom-sheet hidden">
+    <div class="bottom-sheet-handle"></div>
+    <div class="modal-header">
+      <h3 id="dining-modal-name">Restaurant Name</h3>
+      <button class="modal-close-btn" id="dining-close-btn" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-content-area">
+      <span class="dining-type" id="dining-modal-type"></span>
+      <dl class="detail-dl">
+        <div class="detail-row">
+          <dt>Address</dt>
+          <dd id="dining-modal-address"></dd>
+        </div>
+        <div class="detail-row">
+          <dt>Walk</dt>
+          <dd id="dining-modal-walk"></dd>
+        </div>
+        <div class="detail-row">
+          <dt>Hours</dt>
+          <dd id="dining-modal-hours"></dd>
+        </div>
+        <div class="detail-row">
+          <dt>Service</dt>
+          <dd id="dining-modal-service"></dd>
+        </div>
+      </dl>
+      <p class="detail-note" id="dining-modal-note"></p>
+      <a class="detail-maps-btn" id="dining-modal-maps" href="#" target="_blank" rel="noopener">
+        Open in Maps →
+      </a>
+    </div>
   </div>
 
   <div id="gps-status" class="gps-status hidden"></div>

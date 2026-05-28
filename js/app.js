@@ -1,5 +1,7 @@
 /* ── STATE ────────────────────────────────────────────────────────────────── */
 const state = {
+  poiModalOpen: false,
+  diningModalOpen: false,
   currentStage: 0,   // GPS-determined stage
   viewingStage: 0,   // displayed stage (may differ when user browses)
   isManualView: false,
@@ -430,6 +432,8 @@ function renderStageNotes(stageIdx) {
   renderDiningCard(stage);
   renderHistoryCard(stage);
   renderPOICard(stage);
+  renderTriviaCard(stage);
+  renderScenicCard(stage);
 
   state.historyExpanded = false;
   el('history-full-text').classList.add('hidden');
@@ -459,12 +463,16 @@ function renderChargingCard(stage) {
 
 function renderDiningCard(stage) {
   const div = el('dining-content');
-  if (!stage.dining || stage.dining.length === 0) {
+  const allDining = [
+    ...(stage.dining || []),
+    ...(stage.dining_extra || []),
+  ];
+  if (allDining.length === 0) {
     div.innerHTML = `<p class="no-dining-note">Almost there — dining when you arrive in Taos!</p>`;
     return;
   }
-  div.innerHTML = stage.dining.map(d => `
-    <div class="dining-item">
+  div.innerHTML = allDining.map((d, i) => `
+    <button class="dining-item-btn" data-dining-idx="${i}" aria-label="Details for ${d.name}">
       <span class="dining-type">${d.type}</span>
       <div class="dining-name">${d.name}</div>
       <div class="dining-meta">
@@ -473,8 +481,17 @@ function renderDiningCard(stage) {
         <span>Service: ${d.service}</span>
       </div>
       ${d.note ? `<div class="dining-note">${d.note}</div>` : ''}
-    </div>
+      <div class="dining-tap-hint">Tap for details →</div>
+    </button>
   `).join('');
+
+  // Wire tap handlers — capture allDining in closure via data attribute lookup
+  div.querySelectorAll('.dining-item-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.dataset.diningIdx, 10);
+      openDiningModal(allDining[idx]);
+    });
+  });
 }
 
 function renderHistoryCard(stage) {
@@ -488,12 +505,236 @@ function renderPOICard(stage) {
     div.innerHTML = `<p class="no-dining-note">No major POIs on this segment.</p>`;
     return;
   }
-  div.innerHTML = stage.pois.map(p => `
-    <div class="poi-item">
+  div.innerHTML = stage.pois.map((p, i) => `
+    <button class="poi-item-btn" data-poi-idx="${i}" aria-label="Details for ${p.name}">
       <div class="poi-name">${p.name}</div>
       <div class="poi-desc">${p.description}</div>
-    </div>
+      ${p.hook ? `<div class="poi-tap-hint">Tap to learn more →</div>` : `<div class="poi-tap-hint">Tap for details →</div>`}
+    </button>
   `).join('');
+
+  div.querySelectorAll('.poi-item-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.dataset.poiIdx, 10);
+      openPOIModal(stage.pois[idx]);
+    });
+  });
+}
+
+/* ── TRIVIA CARD ──────────────────────────────────────────────────────────── */
+function renderTriviaCard(stage) {
+  const card = el('trivia-card');
+  const div  = el('trivia-content');
+
+  if (!stage.trivia || stage.trivia.length === 0) {
+    card.classList.add('hidden');
+    return;
+  }
+
+  card.classList.remove('hidden');
+  div.innerHTML = stage.trivia.map((item, i) => {
+    // item can be a plain string or { fact, detail }
+    const fact   = typeof item === 'string' ? item : item.fact;
+    const detail = typeof item === 'object' && item.detail ? item.detail : null;
+    return `
+      <div class="trivia-item" id="trivia-item-${i}">
+        <button class="trivia-item-btn"
+                aria-expanded="false"
+                aria-controls="trivia-exp-${i}"
+                data-trivia-idx="${i}">
+          <span class="trivia-number">${i + 1}</span>
+          <span class="trivia-text">${fact}</span>
+          ${detail ? `<span class="trivia-chevron">▾</span>` : ''}
+        </button>
+        ${detail ? `<div class="trivia-expanded" id="trivia-exp-${i}" role="region">${detail}</div>` : ''}
+      </div>
+    `;
+  }).join('');
+
+  div.querySelectorAll('.trivia-item-btn').forEach(btn => {
+    if (!btn.querySelector('.trivia-chevron')) return; // no detail — nothing to expand
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.trivia-item');
+      const isOpen = item.classList.toggle('open');
+      btn.setAttribute('aria-expanded', isOpen);
+    });
+  });
+}
+
+/* ── SCENIC MOMENTS CARD ─────────────────────────────────────────────────── */
+function renderScenicCard(stage) {
+  const card = el('scenic-card');
+  const div  = el('scenic-content');
+
+  if (!stage.scenic || stage.scenic.length === 0) {
+    card.classList.add('hidden');
+    return;
+  }
+
+  card.classList.remove('hidden');
+
+  // icon cycle: mountain, water, field, general eye icons
+  const icons = ['⛰', '🌊', '🌾', '🌵', '🏜', '🌄'];
+
+  div.innerHTML = `<ul class="scenic-list">${
+    stage.scenic.map((s, i) => {
+      // item can be a plain string or { label, detail }
+      const label  = typeof s === 'string' ? s : s.label;
+      const detail = typeof s === 'object' && s.detail ? s.detail : null;
+      const icon   = (typeof s === 'object' && s.icon) ? s.icon : icons[i % icons.length];
+      return `
+        <li class="scenic-item">
+          <span class="scenic-icon" aria-hidden="true">${icon}</span>
+          <div class="scenic-body">
+            <div class="scenic-label">${label}</div>
+            ${detail ? `<div class="scenic-detail">${detail}</div>` : ''}
+          </div>
+        </li>
+      `;
+    }).join('')
+  }</ul>`;
+}
+
+/* ── BOTTOM-SHEET MODAL HELPERS ───────────────────────────────────────────── */
+
+/**
+ * Generic open for a .bottom-sheet element.
+ * Shows the shared overlay and removes the .hidden class so the CSS
+ * transform slides the sheet up.
+ */
+function openBottomSheet(sheetId, stateKey) {
+  el('modal-overlay').classList.remove('hidden');
+  el(sheetId).classList.remove('hidden');
+  state[stateKey] = true;
+  attachSwipeDismiss(el(sheetId), () => closeBottomSheet(sheetId, stateKey));
+}
+
+function closeBottomSheet(sheetId, stateKey) {
+  el(sheetId).classList.add('hidden');
+  state[stateKey] = false;
+  // Only hide overlay if every modal is now closed
+  if (!state.gruetOpen && !state.poiModalOpen && !state.diningModalOpen) {
+    el('modal-overlay').classList.add('hidden');
+  }
+}
+
+/* ── POI DETAIL MODAL ──────────────────────────────────────────────────────── */
+
+/**
+ * openPOIModal(poi)
+ *
+ * poi shape:
+ *   { name, description, hook?, coords? }
+ *   coords: { lat, lng } — used to build the Maps URL
+ */
+function openPOIModal(poi) {
+  el('poi-modal-name').textContent = poi.name;
+  el('poi-modal-hook').textContent = poi.hook || '';
+  el('poi-modal-desc').textContent = poi.description;
+
+  const mapsUrl = poi.coords
+    ? `https://maps.google.com/?q=${poi.coords.lat},${poi.coords.lng}&z=16`
+    : `https://maps.google.com/?q=${encodeURIComponent(poi.name)}`;
+  el('poi-modal-maps').href = mapsUrl;
+
+  openBottomSheet('poi-modal', 'poiModalOpen');
+}
+
+function closePOIModal() {
+  closeBottomSheet('poi-modal', 'poiModalOpen');
+}
+
+/* ── DINING DETAIL MODAL ───────────────────────────────────────────────────── */
+
+/**
+ * openDiningModal(item)
+ *
+ * item shape:
+ *   { name, type, address?, walk, hours, service, note? }
+ */
+function openDiningModal(item) {
+  el('dining-modal-name').textContent = item.name;
+  el('dining-modal-type').textContent = item.type;
+  el('dining-modal-address').textContent = item.address || '—';
+  el('dining-modal-walk').textContent    = item.walk    || '—';
+  el('dining-modal-hours').textContent   = item.hours   || '—';
+  el('dining-modal-service').textContent = item.service || '—';
+  el('dining-modal-note').textContent    = item.note    || '';
+
+  const query = item.address
+    ? encodeURIComponent(item.address)
+    : encodeURIComponent(item.name);
+  el('dining-modal-maps').href = `https://maps.google.com/?q=${query}`;
+
+  openBottomSheet('dining-modal', 'diningModalOpen');
+}
+
+function closeDiningModal() {
+  closeBottomSheet('dining-modal', 'diningModalOpen');
+}
+
+/* ── SWIPE-DOWN TO DISMISS ─────────────────────────────────────────────────── */
+
+/**
+ * attachSwipeDismiss(sheetEl, onDismiss)
+ *
+ * Tracks a single touch gesture on the sheet.
+ * If the user drags down >= 72px and releases, calls onDismiss().
+ * If they release earlier the sheet snaps back.
+ * Re-attaches each time a sheet opens (so stale refs don't accumulate).
+ */
+function attachSwipeDismiss(sheetEl, onDismiss) {
+  // Remove any previous listeners by replacing the element's swipe handler
+  // via a single named function stored on the element.
+  if (sheetEl._swipeCleanup) sheetEl._swipeCleanup();
+
+  let startY = 0;
+  let currentY = 0;
+  let dragging = false;
+  const DISMISS_THRESHOLD = 72; // px
+
+  function onTouchStart(e) {
+    // Only start drag if touch begins on the handle or near the top 60px
+    const touchY = e.touches[0].clientY;
+    const rect = sheetEl.getBoundingClientRect();
+    if (touchY - rect.top > 60) return; // too far down — let content scroll
+    startY   = touchY;
+    currentY = touchY;
+    dragging = true;
+    sheetEl.style.transition = 'none';
+  }
+
+  function onTouchMove(e) {
+    if (!dragging) return;
+    currentY = e.touches[0].clientY;
+    const delta = Math.max(0, currentY - startY); // only downward
+    sheetEl.style.transform = `translateY(${delta}px)`;
+    if (delta > 8) e.preventDefault(); // prevent page scroll while swiping
+  }
+
+  function onTouchEnd() {
+    if (!dragging) return;
+    dragging = false;
+    sheetEl.style.transition = '';
+    sheetEl.style.transform  = '';
+    const delta = currentY - startY;
+    if (delta >= DISMISS_THRESHOLD) {
+      onDismiss();
+    }
+  }
+
+  sheetEl.addEventListener('touchstart',  onTouchStart, { passive: true });
+  sheetEl.addEventListener('touchmove',   onTouchMove,  { passive: false });
+  sheetEl.addEventListener('touchend',    onTouchEnd,   { passive: true });
+  sheetEl.addEventListener('touchcancel', onTouchEnd,   { passive: true });
+
+  // Store cleanup so we can detach on next open
+  sheetEl._swipeCleanup = () => {
+    sheetEl.removeEventListener('touchstart',  onTouchStart);
+    sheetEl.removeEventListener('touchmove',   onTouchMove);
+    sheetEl.removeEventListener('touchend',    onTouchEnd);
+    sheetEl.removeEventListener('touchcancel', onTouchEnd);
+  };
 }
 
 /* ── STAGE NAV ────────────────────────────────────────────────────────────── */
@@ -566,9 +807,11 @@ function openGruetModal() {
 }
 
 function closeGruetModal() {
-  el('modal-overlay').classList.add('hidden');
   el('gruet-modal').classList.add('hidden');
   state.gruetOpen = false;
+  if (!state.poiModalOpen && !state.diningModalOpen) {
+    el('modal-overlay').classList.add('hidden');
+  }
 }
 
 /* ── MAP CONTROLS ──────────────────────────────────────────────────────────── */
@@ -671,13 +914,25 @@ document.addEventListener('DOMContentLoaded', () => {
   // Gruet
   el('gruet-fab').addEventListener('click', openGruetModal);
   el('gruet-close-btn').addEventListener('click', closeGruetModal);
-  el('modal-overlay').addEventListener('click', closeGruetModal);
 
-  // Escape to exit fullscreen
+  // New modals — close buttons
+  el('poi-close-btn').addEventListener('click', closePOIModal);
+  el('dining-close-btn').addEventListener('click', closeDiningModal);
+
+  // Overlay — closes whichever modal is open
+  el('modal-overlay').addEventListener('click', () => {
+    if (state.gruetOpen)      closeGruetModal();
+    if (state.poiModalOpen)   closePOIModal();
+    if (state.diningModalOpen) closeDiningModal();
+  });
+
+  // Escape to exit fullscreen or close any modal
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
-      if (state.mapFullscreen) exitFullscreen();
-      if (state.gruetOpen) closeGruetModal();
+      if (state.mapFullscreen)   exitFullscreen();
+      if (state.gruetOpen)       closeGruetModal();
+      if (state.poiModalOpen)    closePOIModal();
+      if (state.diningModalOpen) closeDiningModal();
     }
   });
 

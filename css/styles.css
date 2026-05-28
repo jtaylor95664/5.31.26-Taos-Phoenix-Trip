@@ -576,6 +576,300 @@ a { color: inherit; }
   font-size: .82rem; color: var(--text-sec); margin-bottom: 14px; line-height: 1.5;
 }
 
+/* ── BOTTOM-SHEET MODALS (POI + DINING) ──────────────────────────────────── */
+.bottom-sheet {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--white);
+  border-radius: var(--radius) var(--radius) 0 0;
+  z-index: 450;
+  max-height: 78vh;
+  overflow-y: auto;
+  box-shadow: 0 -6px 28px rgba(74,144,217,.22);
+  /* slide-up entrance */
+  transform: translateY(0);
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+  /* touch-action: none applied via JS during drag */
+  overscroll-behavior: contain;
+}
+
+.bottom-sheet.hidden {
+  /* override .hidden so we can animate out instead of snap-hiding */
+  display: block !important;
+  transform: translateY(110%);
+  pointer-events: none;
+}
+
+.bottom-sheet-handle {
+  width: 40px; height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  margin: 10px auto 2px;
+  flex-shrink: 0;
+}
+
+/* detail body pieces */
+.detail-hook {
+  font-size: .82rem;
+  font-weight: 800;
+  color: var(--blue-dark);
+  background: var(--blue-pale);
+  border-left: 3px solid var(--blue);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  line-height: 1.45;
+}
+
+.detail-hook:empty { display: none; }
+
+.detail-description {
+  font-size: .88rem;
+  line-height: 1.68;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+.detail-dl {
+  list-style: none;
+  margin-bottom: 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.detail-row {
+  display: flex;
+  gap: 10px;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  min-height: 44px;
+  align-items: center;
+}
+
+.detail-row:last-child { border-bottom: none; }
+
+.detail-row dt {
+  font-size: .68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  color: var(--text-muted);
+  min-width: 56px;
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+
+.detail-row dd {
+  font-size: .84rem;
+  color: var(--text);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.detail-note {
+  font-size: .82rem;
+  color: var(--text-sec);
+  font-style: italic;
+  line-height: 1.55;
+  margin-bottom: 18px;
+}
+
+.detail-note:empty { display: none; }
+
+.detail-maps-btn {
+  display: block;
+  background: var(--blue-dark);
+  color: var(--white);
+  text-align: center;
+  border-radius: var(--radius-sm);
+  padding: 13px;
+  font-size: .88rem;
+  font-weight: 800;
+  text-decoration: none;
+  letter-spacing: .2px;
+  transition: background .2s;
+  min-height: 44px;
+  line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+}
+.detail-maps-btn:hover { background: var(--blue); }
+
+/* dining modal type badge spacing */
+#dining-modal-type { margin-bottom: 12px; display: inline-block; }
+
+/* ── POI CARD — tappable items ───────────────────────────────────────────── */
+.poi-item-btn {
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 9px 0;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  display: block;
+  -webkit-tap-highlight-color: transparent;
+  transition: background .15s;
+  margin: 0 -13px;
+  padding-left: 13px; padding-right: 13px;
+  border-radius: 0;
+}
+.poi-item-btn:last-child { border-bottom: none; }
+.poi-item-btn:first-child { padding-top: 0; }
+.poi-item-btn:active { background: var(--blue-pale); }
+
+.poi-item-btn .poi-tap-hint {
+  font-size: .65rem;
+  color: var(--blue);
+  font-weight: 700;
+  margin-top: 3px;
+  letter-spacing: .2px;
+}
+
+/* ── DINING CARD — tappable items ────────────────────────────────────────── */
+.dining-item-btn {
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  display: block;
+  padding: 10px 13px;
+  margin: 0 -13px;
+  border-bottom: 1px solid var(--border);
+  -webkit-tap-highlight-color: transparent;
+  transition: background .15s;
+}
+.dining-item-btn:last-child { border-bottom: none; }
+.dining-item-btn:first-child { padding-top: 0; }
+.dining-item-btn:active { background: var(--blue-pale); }
+
+.dining-item-btn .dining-tap-hint {
+  font-size: .65rem;
+  color: var(--blue);
+  font-weight: 700;
+  margin-top: 4px;
+  letter-spacing: .2px;
+}
+
+/* ── TRIVIA CARD ──────────────────────────────────────────────────────────── */
+.trivia-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+  overflow: hidden;
+  transition: border-color .2s;
+}
+.trivia-item:last-child { margin-bottom: 0; }
+
+.trivia-item-btn {
+  width: 100%;
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  cursor: pointer;
+  text-align: left;
+  min-height: 52px;
+  -webkit-tap-highlight-color: transparent;
+  transition: background .15s;
+}
+.trivia-item-btn:active { background: var(--blue-pale); }
+
+.trivia-number {
+  flex-shrink: 0;
+  width: 26px; height: 26px;
+  background: var(--blue);
+  color: var(--white);
+  border-radius: 50%;
+  font-size: .72rem;
+  font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  line-height: 1;
+}
+
+.trivia-text {
+  font-size: .86rem;
+  color: var(--text);
+  line-height: 1.45;
+  flex: 1;
+}
+
+.trivia-chevron {
+  flex-shrink: 0;
+  font-size: .75rem;
+  color: var(--text-muted);
+  transition: transform .2s;
+}
+
+.trivia-item.open .trivia-chevron { transform: rotate(180deg); }
+.trivia-item.open { border-color: var(--blue); }
+
+.trivia-expanded {
+  display: none;
+  padding: 0 12px 12px 48px;
+  font-size: .8rem;
+  color: var(--text-sec);
+  line-height: 1.6;
+  border-top: 1px dashed var(--border);
+  padding-top: 10px;
+}
+.trivia-item.open .trivia-expanded { display: block; }
+
+/* ── SCENIC MOMENTS CARD ─────────────────────────────────────────────────── */
+.scenic-list {
+  list-style: none;
+}
+
+.scenic-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.scenic-item:last-child { border-bottom: none; padding-bottom: 0; }
+.scenic-item:first-child { padding-top: 0; }
+
+.scenic-icon {
+  flex-shrink: 0;
+  font-size: 1.15rem;
+  line-height: 1.3;
+  margin-top: 1px;
+}
+
+.scenic-body { flex: 1; min-width: 0; }
+
+.scenic-label {
+  font-size: .8rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.3;
+  margin-bottom: 2px;
+}
+
+.scenic-detail {
+  font-size: .75rem;
+  color: var(--text-sec);
+  line-height: 1.5;
+}
+
+/* ── RESPONSIVE: center bottom-sheets on desktop ─────────────────────────── */
+@media (min-width: 520px) {
+  .bottom-sheet {
+    max-width: 480px;
+    left: 50%; right: auto;
+    transform: translateX(-50%);
+    border-radius: var(--radius);
+    bottom: 20px;
+  }
+  .bottom-sheet.hidden {
+    transform: translateX(-50%) translateY(110%);
+  }
+}
+
 /* ── GPS STATUS ──────────────────────────────────────────────────────────── */
 .gps-status {
   font-size: .7rem; color: var(--text-muted);
