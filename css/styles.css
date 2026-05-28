@@ -870,6 +870,131 @@ a { color: inherit; }
   }
 }
 
+/* ── MILESTONE TOASTS ────────────────────────────────────────────────────── */
+.toast-container {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 650;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 14px 0;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.toast {
+  background: var(--blue-xdark);
+  color: var(--white);
+  border-radius: var(--radius);
+  padding: 13px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 6px 24px rgba(26,74,122,.45);
+  animation: toast-in .32s cubic-bezier(.2,0,.2,1) both;
+  pointer-events: auto;
+  border: 1px solid rgba(255,255,255,.12);
+}
+
+.toast.toast-exit {
+  animation: toast-out .28s ease forwards;
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(-18px) scale(.94); }
+  to   { opacity: 1; transform: translateY(0)     scale(1); }
+}
+
+@keyframes toast-out {
+  from { opacity: 1; transform: scale(1);    max-height: 100px; }
+  to   { opacity: 0; transform: scale(.9);   max-height: 0; padding: 0; margin: 0; }
+}
+
+.toast-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  line-height: 1.15;
+  margin-top: 1px;
+}
+
+.toast-body { flex: 1; min-width: 0; }
+
+.toast-title {
+  font-size: .94rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.toast-detail {
+  font-size: .76rem;
+  opacity: .82;
+  margin-top: 3px;
+  line-height: 1.45;
+}
+
+/* ── ARRIVAL CARD ─────────────────────────────────────────────────────────── */
+.arrival-header {
+  background: linear-gradient(120deg, var(--blue-xdark), var(--blue));
+  color: var(--white) !important;
+  font-size: .82rem !important;
+  letter-spacing: .5px;
+  border-bottom-color: var(--blue-dark) !important;
+}
+
+.arrival-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  padding: 14px 13px;
+  background: var(--blue-pale);
+  border-bottom: 1px solid var(--border);
+}
+
+.arrival-stat {
+  text-align: center;
+}
+
+.arrival-stat-value {
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: var(--blue-dark);
+  line-height: 1;
+}
+
+.arrival-stat-label {
+  font-size: .6rem;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+.arrival-section-head {
+  background: var(--blue-pale);
+  color: var(--blue-dark);
+  font-size: .73rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  padding: 7px 13px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.arrival-pueblo-text {
+  font-size: .84rem;
+  color: var(--text-sec);
+  line-height: 1.6;
+}
+
+.arrival-pueblo-text a {
+  color: var(--blue);
+  text-decoration: underline;
+}
+
 /* ── GPS STATUS ──────────────────────────────────────────────────────────── */
 .gps-status {
   font-size: .7rem; color: var(--text-muted);

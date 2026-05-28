@@ -734,5 +734,127 @@ const TRIP_DATA = {
       note: 'In the gorgeous Hotel St. Francis downtown. Thu–Sat open until 9 PM — ideal if your trip falls on a weekend.',
       stageAvailable: [4, 5] // visible from ABQ→Santa Fe stage onward
     }
+  ],
+
+  // ── TAOS DESTINATION ─────────────────────────────────────────────────────
+  taos: {
+    coords: { lat: 36.4072, lng: -105.5731 },
+    pueblo: {
+      hours: '9:00 AM – 4:00 PM daily (check taospueblo.com — closes for ceremonies)',
+      admission: '~$25/adult · guided tours led by tribal members',
+      url: 'https://taospueblo.com',
+      tip: 'Arrive early — the morning light on the north house adobe is extraordinary, and crowds thin toward midday.'
+    },
+    dining: [
+      {
+        type: 'Sit-down · Historic',
+        name: "Doc Martin's",
+        address: '125 Paseo del Pueblo Norte (Historic Taos Inn)',
+        walk: 'On the Plaza',
+        hours: 'Dinner from 5:30 PM',
+        service: 'Full service',
+        note: "Inside the legendary 1936 Historic Taos Inn. New Mexican fine dining — the green chile stew and posole are benchmarks. Order the Taos margarita. Reservations strongly recommended."
+      },
+      {
+        type: 'Casual · New Mexican',
+        name: "Orlando's New Mexican Café",
+        address: '1114 Don Juan Valdez Ln',
+        walk: '5 min drive north of Plaza',
+        hours: 'Lunch & dinner, closed Mon',
+        service: '~20 min',
+        note: "Local favorite for decades. Best red chile in Taos — unpretentious, cash-friendly, always packed. The Christmas plate (red and green) is the move."
+      },
+      {
+        type: 'Craft beer · Casual',
+        name: 'Taos Mesa Brewing',
+        address: '20 ABC Mesa Rd (West Mesa location)',
+        walk: '10 min drive',
+        hours: 'Daily 11 AM – 9 PM',
+        service: 'Bar & kitchen',
+        note: "Award-winning New Mexico craft brewery with a massive outdoor mesa patio and live music most nights. Perfect for a relaxed end to a long day — flights of local beer, good burgers, big sky views."
+      },
+      {
+        type: 'Upscale · Patio',
+        name: "Lambert's of Taos",
+        address: '123 Bent St',
+        walk: '2 min from Plaza',
+        hours: 'Dinner from 5:30 PM',
+        service: 'Full service',
+        note: "Taos's most celebrated restaurant for 30+ years. Contemporary American with strong NM influences. The duck confit and green chile mac & cheese are standouts. Excellent wine list."
+      }
+    ]
+  },
+
+  // ── MILESTONES ─────────────────────────────────────────────────────────────
+  // Fired once each via GPS proximity or stage change. id must be unique.
+  milestones: [
+    {
+      id: 'white-mountains',
+      type: 'stage',
+      stage: 1,
+      icon: '🌲',
+      title: 'White Mountains',
+      detail: 'Salt River Canyon coming up — Arizona\'s most dramatic 5 miles of road.'
+    },
+    {
+      id: 'new-mexico',
+      type: 'proximity',
+      coords: { lat: 34.00, lng: -109.05 },
+      radiusMiles: 4,
+      icon: '🌵',
+      title: 'Welcome to New Mexico!',
+      detail: 'Land of Enchantment. The whole vibe just changed.'
+    },
+    {
+      id: 'halfway',
+      type: 'miles',
+      miles: 287,
+      icon: '🎉',
+      title: 'Halfway to Taos!',
+      detail: 'You\'ve crossed 287 miles. The hard climbs are behind you.'
+    },
+    {
+      id: 'continental-divide',
+      type: 'proximity',
+      coords: { lat: 34.2997, lng: -108.1330 },
+      radiusMiles: 4,
+      icon: '⛰',
+      title: 'Continental Divide!',
+      detail: 'Rain east of here flows to the Gulf of Mexico.'
+    },
+    {
+      id: 'rio-grande',
+      type: 'stage',
+      stage: 3,
+      icon: '🌊',
+      title: 'Rio Grande Valley',
+      detail: 'Following the river north — Albuquerque in ~75 miles.'
+    },
+    {
+      id: 'julia-incoming',
+      type: 'proximity',
+      coords: { lat: 35.1340, lng: -106.5760 },
+      radiusMiles: 8,
+      icon: '✈️',
+      title: 'ABQ ahead!',
+      detail: 'Julia lands at 5:00 PM · ABQ Sunport is ~10 miles from the charger.'
+    },
+    {
+      id: 'final-leg',
+      type: 'stage',
+      stage: 5,
+      icon: '🏁',
+      title: 'Final leg!',
+      detail: 'Santa Fe → Taos on the Low Road. Rio Grande Gorge in ~40 miles.'
+    },
+    {
+      id: 'taos-arrival',
+      type: 'proximity',
+      coords: { lat: 36.4072, lng: -105.5731 },
+      radiusMiles: 4,
+      icon: '🎊',
+      title: 'Welcome to Taos!',
+      detail: 'You drove 575 miles through the American Southwest. Well done.'
+    }
   ]
 };

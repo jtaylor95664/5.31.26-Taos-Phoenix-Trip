@@ -21,6 +21,7 @@ const state = {
   gruetOpen: false,
   gpsStarted: false,
   departureTime: null,
+  firedMilestones: new Set(), // milestone ids already shown
 };
 
 /* ── HELPERS ──────────────────────────────────────────────────────────────── */
@@ -299,6 +300,7 @@ function onGPSUpdate(pos) {
   updateSocorroWarning(state.currentStage);
   updateJuliaWidget(state.currentStage);
   updateBackBar();
+  checkMilestones(lat, lng);
 }
 
 function onGPSError(err) {
@@ -443,6 +445,7 @@ function renderStageNotes(stageIdx) {
   renderPOICard(stage);
   renderTriviaCard(stage);
   renderScenicCard(stage);
+  renderArrivalCard(stageIdx);
 
   state.historyExpanded = false;
   el('history-full-text').classList.add('hidden');
@@ -744,6 +747,139 @@ function attachSwipeDismiss(sheetEl, onDismiss) {
     sheetEl.removeEventListener('touchend',    onTouchEnd);
     sheetEl.removeEventListener('touchcancel', onTouchEnd);
   };
+}
+
+/* ── MILESTONE TOASTS ─────────────────────────────────────────────────────── */
+
+/**
+ * checkMilestones(lat, lng)
+ * Called on every GPS update. Fires each milestone at most once per session.
+ */
+function checkMilestones(lat, lng) {
+  if (!TRIP_DATA.milestones) return;
+
+  TRIP_DATA.milestones.forEach(m => {
+    if (state.firedMilestones.has(m.id)) return; // already shown
+
+    let shouldFire = false;
+
+    if (m.type === 'stage') {
+      shouldFire = state.currentStage >= m.stage;
+    } else if (m.type === 'miles') {
+      shouldFire = state.milesDriven >= m.miles;
+    } else if (m.type === 'proximity') {
+      const d = haversine(lat, lng, m.coords.lat, m.coords.lng);
+      shouldFire = d <= m.radiusMiles;
+    }
+
+    if (shouldFire) {
+      state.firedMilestones.add(m.id);
+      showToast(m.icon, m.title, m.detail);
+    }
+  });
+}
+
+/**
+ * showToast(icon, title, detail, duration)
+ * Creates a slide-in notification that auto-dismisses.
+ */
+function showToast(icon, title, detail, duration = 5500) {
+  const container = el('toast-container');
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.innerHTML = `
+    <span class="toast-icon" aria-hidden="true">${icon}</span>
+    <div class="toast-body">
+      <div class="toast-title">${title}</div>
+      ${detail ? `<div class="toast-detail">${detail}</div>` : ''}
+    </div>
+  `;
+  container.appendChild(toast);
+
+  // Auto-dismiss
+  setTimeout(() => {
+    toast.classList.add('toast-exit');
+    toast.addEventListener('animationend', () => toast.remove(), { once: true });
+    // Fallback remove in case animationend doesn't fire
+    setTimeout(() => { if (toast.parentNode) toast.remove(); }, 500);
+  }, duration);
+}
+
+/* ── ARRIVAL CARD ─────────────────────────────────────────────────────────── */
+
+/**
+ * renderArrivalCard(stageIdx)
+ * Shows only on the final stage (5 = Santa Fe → Taos).
+ * Displays live trip stats + Taos dining + Pueblo info.
+ */
+function renderArrivalCard(stageIdx) {
+  const card = el('arrival-card');
+  if (stageIdx !== TRIP_DATA.stages.length - 1) {
+    card.classList.add('hidden');
+    return;
+  }
+  card.classList.remove('hidden');
+
+  // ── Trip stats ──
+  const driven   = Math.round(state.milesDriven);
+  const totalMi  = Math.round(state.actualTotalMiles);
+  const chargesDone = TRIP_DATA.stages
+    .filter((s, i) => i < stageIdx && s.charging).length;
+
+  let elapsed = '—';
+  if (state.departureTime) {
+    const mins = Math.round((Date.now() - state.departureTime.getTime()) / 60000);
+    elapsed = formatDuration(mins);
+  }
+
+  el('arrival-stats').innerHTML = `
+    <div class="arrival-stat">
+      <div class="arrival-stat-value">${driven}</div>
+      <div class="arrival-stat-label">miles driven</div>
+    </div>
+    <div class="arrival-stat">
+      <div class="arrival-stat-value">${elapsed}</div>
+      <div class="arrival-stat-label">time elapsed</div>
+    </div>
+    <div class="arrival-stat">
+      <div class="arrival-stat-value">${chargesDone}</div>
+      <div class="arrival-stat-label">charge stops</div>
+    </div>
+  `;
+
+  // ── Taos dining ──
+  const diningDiv = el('arrival-dining');
+  if (TRIP_DATA.taos && TRIP_DATA.taos.dining) {
+    diningDiv.innerHTML = TRIP_DATA.taos.dining.map((d, i) => `
+      <button class="dining-item-btn" data-arrival-idx="${i}" aria-label="Details for ${d.name}">
+        <span class="dining-type">${d.type}</span>
+        <div class="dining-name">${d.name}</div>
+        <div class="dining-meta">
+          <span>${d.walk}</span>
+          <span>${d.hours}</span>
+        </div>
+        ${d.note ? `<div class="dining-note">${d.note}</div>` : ''}
+        <div class="dining-tap-hint">Tap for details →</div>
+      </button>
+    `).join('');
+
+    diningDiv.querySelectorAll('.dining-item-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.dataset.arrivalIdx, 10);
+        openDiningModal(TRIP_DATA.taos.dining[idx]);
+      });
+    });
+  }
+
+  // ── Taos Pueblo info ──
+  const pueblo = TRIP_DATA.taos && TRIP_DATA.taos.pueblo;
+  if (pueblo) {
+    el('arrival-pueblo').innerHTML =
+      `<strong>Hours:</strong> ${pueblo.hours}<br>` +
+      `<strong>Admission:</strong> ${pueblo.admission}<br>` +
+      `<em>${pueblo.tip}</em><br>` +
+      `<a href="${pueblo.url}" target="_blank" rel="noopener" style="color:var(--blue);text-decoration:underline;font-size:.78rem;">taospueblo.com →</a>`;
+  }
 }
 
 /* ── STAGE NAV ────────────────────────────────────────────────────────────── */

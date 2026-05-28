@@ -160,6 +160,18 @@
       <div class="card-content" id="scenic-content"></div>
     </div>
 
+    <!-- Arrival Card (stage 5 only) -->
+    <div class="card hidden" id="arrival-card">
+      <div class="card-header arrival-header">🎊 You Made It to Taos!</div>
+      <div id="arrival-stats" class="arrival-stats"></div>
+      <div class="arrival-section-head">🍽 Tonight in Taos</div>
+      <div class="card-content" id="arrival-dining"></div>
+      <div class="arrival-section-head">🏛 Taos Pueblo</div>
+      <div class="card-content">
+        <p class="arrival-pueblo-text" id="arrival-pueblo"></p>
+      </div>
+    </div>
+
   </section>
 
   <!-- ══ GRUET FAB ════════════════════════════════════════════════════════════ -->
@@ -226,6 +238,9 @@
       </a>
     </div>
   </div>
+
+  <!-- ══ TOAST CONTAINER ═════════════════════════════════════════════════════ -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
 
   <div id="gps-status" class="gps-status hidden"></div>
 
