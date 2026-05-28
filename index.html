@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#2C6FAC">
+  <title>Peoria → Taos 🚗</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ══ SECTION 1: METRICS HEADER ══════════════════════════════════════════ -->
+  <header id="metrics-header">
+
+    <div class="metrics-primary">
+      <div class="metric-pill">
+        <div class="metric-value" id="miles-to-next">— mi</div>
+        <div class="metric-label">to next stop</div>
+      </div>
+
+      <div class="stage-badge" id="stage-badge">Stage 1 of 6</div>
+
+      <div class="metric-pill">
+        <div class="metric-value" id="eta-taos">—:—</div>
+        <div class="metric-label">est. Taos arrival</div>
+      </div>
+
+      <button class="chevron-btn" id="metrics-toggle" aria-label="Expand metrics">▾</button>
+    </div>
+
+    <div class="metrics-expanded hidden" id="metrics-expanded">
+      <div class="progress-container">
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="progress-labels">
+          <span>Peoria</span>
+          <span id="progress-pct">0%</span>
+          <span>Taos</span>
+        </div>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-cell">
+          <span class="metric-cell-label">Departed</span>
+          <span class="metric-cell-value">7:00 AM</span>
+        </div>
+        <div class="metric-cell">
+          <span class="metric-cell-label">Elapsed</span>
+          <span class="metric-cell-value" id="elapsed-time">—</span>
+        </div>
+        <div class="metric-cell">
+          <span class="metric-cell-label">Miles driven</span>
+          <span class="metric-cell-value" id="miles-driven">0</span>
+        </div>
+        <div class="metric-cell">
+          <span class="metric-cell-label">Miles remain</span>
+          <span class="metric-cell-value" id="miles-remaining">575</span>
+        </div>
+        <div class="metric-cell" id="julia-cell">
+          <span class="metric-cell-label">Julia buffer</span>
+          <span class="metric-cell-value" id="julia-buffer">—</span>
+        </div>
+        <div class="metric-cell">
+          <span class="metric-cell-label">SOC at next</span>
+          <span class="metric-cell-value" id="soc-next">—</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="socorro-banner hidden" id="socorro-banner">
+      ⚠️ Socorro charger unconfirmed — verify EA app before leaving Show Low
+    </div>
+
+  </header>
+
+  <!-- ══ SECTION 2: MAP ══════════════════════════════════════════════════════ -->
+  <section id="map-section">
+
+    <div class="map-preview-bar">
+      <div class="route-mini">
+        <span class="route-dot"></span>
+        <span class="route-text">Peoria · Globe · Show Low · Socorro · ABQ · Santa Fe · Taos</span>
+      </div>
+      <button class="map-toggle-btn" id="map-toggle-btn">Show Map ▾</button>
+    </div>
+
+    <div class="map-container" id="map-container">
+      <div id="map"></div>
+      <div class="map-toolbar">
+        <button class="map-tool-btn" id="map-collapse-btn">▴ Collapse</button>
+        <button class="map-tool-btn" id="map-center-btn">⊙ Center</button>
+        <button class="map-tool-btn" id="map-fullscreen-btn">⛶ Full</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ══ SECTION 3: STAGE NOTES ══════════════════════════════════════════════ -->
+  <section id="stage-notes">
+
+    <div class="stage-nav-header">
+      <button class="stage-nav-btn" id="prev-stage-btn" aria-label="Previous stage" disabled>‹</button>
+      <div class="stage-title-area">
+        <h2 id="stage-name-display">Loading…</h2>
+        <div class="stage-meta" id="stage-meta"></div>
+      </div>
+      <button class="stage-nav-btn" id="next-stage-btn" aria-label="Next stage">›</button>
+    </div>
+
+    <div class="back-bar hidden" id="back-to-current-bar">
+      <button class="back-btn" id="back-to-current-btn">↩ Back to current stage</button>
+    </div>
+
+    <!-- Julia Flight Widget -->
+    <div class="card julia-card hidden" id="julia-widget">
+      <div class="julia-icon">✈️</div>
+      <div>
+        <div class="julia-flight-num">United <strong>UA2341</strong></div>
+        <div class="julia-detail">Landing 5:00 PM · ABQ Sunport</div>
+        <a class="julia-link" href="https://flightaware.com/live/flight/UAL2341" target="_blank" rel="noopener">Live flight status →</a>
+      </div>
+    </div>
+
+    <!-- Charging Card -->
+    <div class="card" id="charging-card">
+      <div class="card-header">⚡ Charging Stop</div>
+      <div class="card-content" id="charging-content"></div>
+    </div>
+
+    <!-- Dining Card -->
+    <div class="card" id="dining-card">
+      <div class="card-header">🍽 Dining at This Stop</div>
+      <div class="card-content" id="dining-content"></div>
+    </div>
+
+    <!-- History Card -->
+    <div class="card" id="history-card">
+      <div class="card-header">📖 Where You Are</div>
+      <div class="history-quick" id="history-quick-text"></div>
+      <button class="text-link-btn" id="history-expand-btn">Full story ▾</button>
+      <div class="history-full hidden" id="history-full-text"></div>
+    </div>
+
+    <!-- POI Card -->
+    <div class="card" id="poi-card">
+      <div class="card-header">📍 Points of Interest</div>
+      <div class="card-content" id="poi-content"></div>
+    </div>
+
+  </section>
+
+  <!-- ══ GRUET FAB ════════════════════════════════════════════════════════════ -->
+  <button class="gruet-fab" id="gruet-fab" aria-label="Gruet Winery options">
+    🍾 <span class="gruet-fab-label">Gruet</span>
+  </button>
+
+  <!-- ══ GRUET MODAL ══════════════════════════════════════════════════════════ -->
+  <div class="modal-overlay hidden" id="modal-overlay"></div>
+  <div id="gruet-modal" class="hidden">
+    <div class="modal-header">
+      <h3>🍾 Gruet Winery</h3>
+      <button class="modal-close-btn" id="gruet-close-btn" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-content-area" id="gruet-modal-content"></div>
+  </div>
+
+  <div id="gps-status" class="gps-status hidden"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script
+    async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmirGbm8_7Sctow1mXq-qcUa-VYlTgrXA&callback=initMap&libraries=geometry">
+  </script>
+
+</body>
+</html>
