@@ -108,9 +108,11 @@ function initMap() {
     zoomControl: true,
     gestureHandling: 'greedy',
     styles: [
-      { featureType: 'water', stylers: [{ color: '#B8D4F5' }] },
-      { featureType: 'landscape', stylers: [{ color: '#F0F7FF' }] },
-      { featureType: 'road.highway', stylers: [{ color: '#4A90D9' }, { weight: 1.5 }] },
+      { featureType: 'water',         stylers: [{ color: '#B8D4F5' }] },
+      { featureType: 'landscape',     stylers: [{ color: '#F0F7FF' }] },
+      // Tone highways down so they don't compete with the route overlay
+      { featureType: 'road.highway',  stylers: [{ color: '#C5D9EF' }, { weight: 0.8 }] },
+      { featureType: 'road.arterial', stylers: [{ color: '#DAE9F5' }] },
     ]
   });
 
@@ -130,11 +132,18 @@ function drawRoute() {
   }, (result, status) => {
     if (status !== 'OK') { console.warn('Directions API:', status); return; }
 
-    // Draw the route
+    // Draw route — white halo behind, bright orange on top for maximum contrast
+    const halo = new google.maps.DirectionsRenderer({
+      map: state.map,
+      suppressMarkers: true,
+      polylineOptions: { strokeColor: '#FFFFFF', strokeWeight: 10, strokeOpacity: 0.9, zIndex: 1 }
+    });
+    halo.setDirections(result);
+
     const renderer = new google.maps.DirectionsRenderer({
       map: state.map,
       suppressMarkers: true,
-      polylineOptions: { strokeColor: '#2C6FAC', strokeWeight: 4, strokeOpacity: 0.85 }
+      polylineOptions: { strokeColor: '#E8571A', strokeWeight: 6, strokeOpacity: 1.0, zIndex: 2 }
     });
     renderer.setDirections(result);
 
