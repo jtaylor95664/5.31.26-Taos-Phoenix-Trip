@@ -518,42 +518,12 @@ a { color: inherit; }
 /* ── STAGE NOTES WRAPPER ──────────────────────────────────────────────────── */
 #stage-notes { padding-bottom: 100px; }
 
-/* ── GRUET FAB ───────────────────────────────────────────────────────────── */
-.gruet-fab {
-  position: fixed;
-  bottom: 22px; right: 18px;
-  background: var(--blue-dark);
-  color: var(--white);
-  border: none;
-  border-radius: 28px;
-  padding: 11px 17px;
-  font-size: 1.05rem;
-  cursor: pointer;
-  box-shadow: 0 4px 18px rgba(44,111,172,.45);
-  display: flex; align-items: center; gap: 6px;
-  z-index: 200;
-  transition: all .2s;
-}
-.gruet-fab:hover { background: var(--blue); transform: translateY(-2px); }
-.gruet-fab-label { font-size: .78rem; font-weight: 800; letter-spacing: .3px; }
-
-/* ── GRUET MODAL ─────────────────────────────────────────────────────────── */
+/* ── MODAL OVERLAY ───────────────────────────────────────────────────────── */
 .modal-overlay {
   position: fixed; inset: 0;
   background: rgba(26,46,74,.52);
   z-index: 400;
   backdrop-filter: blur(3px);
-}
-
-#gruet-modal {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  background: var(--white);
-  border-radius: var(--radius) var(--radius) 0 0;
-  z-index: 450;
-  max-height: 82vh;
-  overflow-y: auto;
-  box-shadow: 0 -6px 28px rgba(74,144,217,.22);
 }
 
 .modal-header {
@@ -574,62 +544,6 @@ a { color: inherit; }
 }
 
 .modal-content-area { padding: 14px 18px 32px; }
-
-/* Gruet location cards */
-.gruet-location {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 14px; margin-bottom: 12px;
-}
-.gruet-location.available { border-color: var(--blue); background: var(--blue-pale); }
-.gruet-location.tight     { border-color: var(--warn-border); background: var(--warn-bg); }
-.gruet-location.closed    { opacity: .48; }
-.gruet-location.behind    { opacity: .48; }
-
-.gruet-city { font-weight: 800; font-size: 1rem; color: var(--text); margin-bottom: 4px; }
-
-.status-badge {
-  display: inline-block; border-radius: 12px;
-  padding: 3px 10px; font-size: .68rem; font-weight: 800;
-  text-transform: uppercase; letter-spacing: .3px; margin-bottom: 8px;
-}
-.badge-open    { background: #D4EFDF; color: #1D6A39; }
-.badge-tight   { background: #FCE8D5; color: #7D3C00; }
-.badge-coming  { background: var(--blue-pale); color: var(--blue-dark); }
-.badge-closed  { background: #F0F0F0; color: #888; }
-.badge-behind  { background: #F0F0F0; color: #888; }
-
-.gruet-address, .gruet-distance { font-size: .78rem; color: var(--text-sec); margin-bottom: 4px; }
-
-.gruet-hours-line { font-size: .8rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-
-.gruet-arrival { font-size: .78rem; color: var(--text-sec); margin-bottom: 6px; }
-
-.gruet-note {
-  font-size: .76rem; color: var(--text-sec); font-style: italic;
-  margin-bottom: 10px; line-height: 1.5;
-}
-
-.gruet-wines { font-size: .74rem; color: var(--text-sec); margin-bottom: 10px; }
-.gruet-wines strong { color: var(--text); }
-
-.gruet-reserve-btn {
-  display: block;
-  background: var(--blue-dark); color: var(--white);
-  text-align: center; border-radius: var(--radius-sm);
-  padding: 10px; font-size: .84rem; font-weight: 800;
-  text-decoration: none;
-  transition: background .2s;
-}
-.gruet-reserve-btn:hover { background: var(--blue); }
-.gruet-location.closed .gruet-reserve-btn,
-.gruet-location.behind .gruet-reserve-btn {
-  background: #CCC; pointer-events: none;
-}
-
-.gruet-intro {
-  font-size: .82rem; color: var(--text-sec); margin-bottom: 14px; line-height: 1.5;
-}
 
 /* ── BOTTOM-SHEET MODALS (POI + DINING) ──────────────────────────────────── */
 .bottom-sheet {
@@ -1061,12 +975,4 @@ a { color: inherit; }
   #metrics-header,
   #map-section,
   #stage-notes { max-width: 480px; margin-left: auto; margin-right: auto; }
-  .gruet-fab { right: calc(50% - 222px); }
-  #gruet-modal {
-    max-width: 480px;
-    left: 50%; right: auto;
-    transform: translateX(-50%);
-    border-radius: var(--radius);
-    bottom: 20px;
-  }
 }

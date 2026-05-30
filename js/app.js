@@ -258,6 +258,8 @@ function updateUserMarker(lat, lng) {
 
 /* ── GPS ──────────────────────────────────────────────────────────────────── */
 function startGPS() {
+  if (state.gpsStarted) return; // guard against double-init
+  state.gpsStarted = true;
   if (!navigator.geolocation) {
     const s = el('gps-status');
     if (s) { s.textContent = 'GPS not available on this device.'; s.classList.remove('hidden'); }
@@ -330,7 +332,7 @@ function updateMetrics() {
   el('stage-badge').textContent = `Stage ${state.currentStage + 1} of ${TRIP_DATA.stages.length}`;
 
   // Primary: ETA
-  el('eta-taos').textContent = computeETA(remaining, state.currentStage);
+  el('eta-phoenix').textContent = computeETA(remaining, state.currentStage);
 
   // Expanded
   el('progress-fill').style.width = pct.toFixed(1) + '%';
@@ -442,7 +444,16 @@ function renderChargingCard(stage) {
 }
 
 function renderDiningCard(stage) {
+  const card = el('dining-card');
   const div = el('dining-content');
+
+  // On the final (arrival) stage the arrival card handles dining — hide duplicate
+  if (stage.id === TRIP_DATA.stages.length - 1) {
+    card.classList.add('hidden');
+    return;
+  }
+  card.classList.remove('hidden');
+
   const allDining = [
     ...(stage.dining || []),
     ...(stage.dining_extra || []),
