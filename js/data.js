@@ -1,705 +1,597 @@
 // ── TRIP DATA ──────────────────────────────────────────────────────────────
 const TRIP_DATA = {
-  title: 'Peoria → Taos',
-  tripDate: '2026-05-28', // YYYY-MM-DD trip date — used for Julia landing time calc
-  totalMiles: 575,
-  departure: { hour: 7, minute: 0 },
+  title: 'Taos → Phoenix',
+  tripDate: '2026-05-31',
+  totalMiles: 620,
+  departure: { hour: 8, minute: 0 },
   avgSpeedMph: 55,
-  avgChargeMinutes: 37.5,
+  avgChargeMinutes: 35,
 
-  julia: {
-    flight: 'UA2341',
-    landingHour: 17,
-    landingMinute: 0,
-    airport: 'ABQ Sunport',
-    trackerUrl: 'https://flightaware.com/live/flight/UAL2341'
-  },
+  // No Julia on return trip
+  julia: null,
 
-  // Ordered waypoints for route drawing (Origin, 5 waypoints, Destination)
+  // Ordered waypoints for route drawing
   routeWaypoints: [
-    { lat: 33.7179, lng: -112.3284 }, // Peoria
-    { lat: 33.3961, lng: -110.7816 }, // Globe
-    { lat: 34.2538, lng: -110.0286 }, // Show Low
-    { lat: 34.0584, lng: -106.8914 }, // Socorro
-    { lat: 35.1340, lng: -106.5760 }, // Albuquerque
+    { lat: 36.4072, lng: -105.5731 }, // Taos
     { lat: 35.6272, lng: -105.9910 }, // Santa Fe
-    { lat: 36.4072, lng: -105.5731 }  // Taos
+    { lat: 35.1340, lng: -106.5760 }, // Albuquerque
+    { lat: 35.5281, lng: -108.7426 }, // Gallup
+    { lat: 35.1983, lng: -111.6513 }, // Flagstaff
+    { lat: 33.7179, lng: -112.3284 }  // Peoria / Trilogy
   ],
 
   stages: [
 
-    /* ── STAGE 0: Peoria → Globe ───────────────────────────────────────────── */
+    /* ── STAGE 0: Taos → Santa Fe (NM-68 Low Road) ──────────────────────────── */
     {
       id: 0,
-      name: 'Peoria → Globe',
-      shortName: 'To Globe',
+      name: 'Taos → Santa Fe',
+      shortName: 'To Santa Fe',
       distance: 90,
       cumulativeStart: 0,
-      startCoords: { lat: 33.7179, lng: -112.3284 },
-      endCoords:   { lat: 33.3961, lng: -110.7816 },
-      socAtStart: 100,
-      socAtEnd: 60,
+      startCoords: { lat: 36.4072, lng: -105.5731 },
+      endCoords:   { lat: 35.6272, lng: -105.9910 },
+      socAtStart: 80,
+      socAtEnd: 55,
       socorroWarning: false,
-      juliaVisible: true,
+      juliaVisible: false,
 
       charging: {
-        name: 'Electrify America – Globe',
-        address: '902 E Ash St, Globe, AZ 85501',
-        network: 'Electrify Commercial / APS (EA app)',
-        stalls: 3,
+        name: 'Electrify America – Santa Fe Railyard',
+        address: '5701 Herrera Dr, Santa Fe, NM 87507',
+        network: 'Electrify America',
+        stalls: 8,
         maxKw: 350,
-        note: 'Optional Mesa stop at 554 W Baseline Rd (~25 mi) if you need a top-off before the climb. Leaving fully charged from Peoria you should reach Globe comfortably.'
+        note: 'In the Railyard/Guadalupe district — Cowgirl BBQ and Second Street Brewery are a short walk. Downtown Santa Fe is 10 min away. Check Gruet Santa Fe hours before you arrive!'
       },
 
       dining: [
         {
-          type: 'Sit-down · Historic',
-          name: "Chalo's Casa Reynoso",
-          address: '902 E Ash St, Globe, AZ',
-          walk: 'At the charger',
-          hours: 'Check locally',
-          service: '~20 min',
-          note: "Long-running local institution at the exact charger address. Famous adobada and green chile. A Globe institution for generations."
+          type: 'Casual Southwest · BBQ',
+          name: 'Cowgirl BBQ',
+          address: '319 S Guadalupe St, Santa Fe, NM 87501',
+          walk: '~6 min walk from EA charger',
+          hours: 'Mon–Fri 11:30 AM – 9/10 PM; Sat–Sun 11:30 AM – 10 PM',
+          service: 'Full table service, lively patio',
+          note: "A Railyard/Guadalupe district institution. Big patio, Southwestern BBQ and comfort food, strong margaritas, and a billiard parlor. Good bet if you want to sit outside and feel the Santa Fe vibe without the Plaza price tag."
         },
         {
-          type: 'Quick grab',
-          name: 'La Luz del Día',
-          address: 'Historic downtown Globe (~5 min drive)',
-          walk: '~5 min drive',
-          hours: 'Check locally',
-          service: '~3 min',
-          note: 'Burritos, quesadillas, Mexican bread — food on the table almost instantly.'
+          type: 'Brewpub',
+          name: 'Second Street Brewery at the Railyard',
+          address: '1607 Paseo de Peralta #10, Santa Fe, NM 87501',
+          walk: '~8 min walk from EA charger',
+          hours: 'Mon–Sat 11 AM – 10 PM; Sun 12 PM – 9 PM',
+          service: 'Counter order / table service',
+          note: "Opens onto Railyard Plaza in the same building as the Farmer's Market Hall. New Mexican craft beer, green-chile cheeseburgers (won the Smackdown critics' choice), and a covered patio. Fast service makes it a solid charge-stop lunch."
         },
         {
-          type: 'Coffee',
-          name: 'Copper Cities Coffee',
-          address: '1100 N Broad St, Globe, AZ',
-          walk: '~5 min drive',
-          hours: 'Check locally',
-          service: 'Café pace',
-          note: "Rustic interior inspired by Globe's mining heritage. Good espresso and a relaxed vibe."
-        }
-      ],
-
-      dining_extra: [
-        {
-          type: 'Sit-down',
-          name: "Guayo's on the Trail",
-          address: '2251 AZ-188, Globe, AZ 85501',
-          walk: '~1 mile south of downtown off US-60',
-          hours: 'Wed–Sun 10:30 AM – 8:00 PM; closed Mon–Tue',
+          type: 'Pan-Asian · Bar',
+          name: 'Jinja Bar & Bistro',
+          address: '510 N Guadalupe St, Santa Fe, NM 87501',
+          walk: '~10 min walk from EA charger',
+          hours: 'Daily 11 AM – 9 PM',
           service: 'Full table service',
-          note: "A Globe institution open since the 1930s. Order the butterflied ribeye topped with roasted chiles and cheese, or the green chili burro. Portions are generous and prices are excellent. Slightly out-of-town on AZ-188 toward Roosevelt Lake — punch the address into nav before leaving US-60."
+          note: "Pacific Rim fusion in the Guadalupe corridor — inventive Asian menu alongside a cocktail bar with vintage 1930s–40s drinks. A different flavor profile if you're Santa Fe'd-out on green chile."
         }
       ],
 
       history: {
-        quick: 'Globe sits at the edge of the San Carlos Apache Reservation, and its 1870s copper boom made it one of the richest mining districts in the American West.',
-        full: "Globe sits at the edge of the San Carlos Apache Reservation, homeland of the Western Apache people who fiercely resisted U.S. expansion into Arizona. The town boomed in the 1870s on silver, then copper — the Globe-Miami district became one of the richest mining regions in the world. Back along US-60, the Superstition Mountains hid one of the West's great legends: the Lost Dutchman's Gold Mine, which has drawn treasure hunters — and claimed a few lives — since the 1800s. The Hohokam people irrigated this entire valley 1,000 years ago with 500+ miles of canals; Phoenix rebuilt those same canals in the 1860s and named itself after the bird reborn from ashes."
+        quick: "The NM-68 Low Road traces the Rio Grande through a basalt gorge carved over the last 1–2 million years by snowmelt cutting through 29-million-year-old Taos Plateau lava flows. The corridor was the spine of colonial New Mexico: Ohkay Owingeh Pueblo near Española was the first Spanish capital of New Mexico, established by Juan de Oñate in 1598.",
+        full: "The Rio Grande Gorge that NM-68 follows south from Taos was born of two overlapping forces: continental rifting that began pulling the earth's crust apart roughly 29 million years ago, and a series of volcanic eruptions — the Servilleta basalt flows of the Taos Plateau volcanic field — that poured lava across the landscape. When the Rio Grande established itself as a major river 1–2 million years ago, it sawed straight down through those layered lavas, eventually cutting a trench up to 800 feet deep. The human story is equally deep: the Tewa-speaking people of Ohkay Owingeh (formerly San Juan Pueblo) have lived near the confluence of the Rio Grande and Rio Chama since the 1200s. In July 1598, conquistador Juan de Oñate arrived here, renamed the pueblo San Juan de los Caballeros, and declared it the first capital of the Province of New Mexico — making this stretch of river the original European beachhead in what is now the American Southwest. The Embudo Valley downstream was later threaded by the Denver and Rio Grande's narrow-gauge 'Chili Line' (1881–1941), which carried chile, wool, and passengers through the gorge and gave the roadside community of Embudo its name — 'funnel' in Spanish, for the narrows where the Rio Embudo joins the Rio Grande."
       },
 
       trivia: [
-        "The Superstition Mountains are named for the Apache belief that the mountain held the entrance to the underworld — 'Thunder God's Home.' Jacob Waltz allegedly took the location of his fabulously rich 'Lost Dutchman' gold mine to his grave in 1891, and searchers have died looking for it ever since.",
-        "Bloody Tanks Wash, which US-60 follows into Miami, is named for a skirmish in 1864 where Arizona Volunteers ambushed an Apache war party at a water source. The wash drains quietly alongside the highway today — the name is the only evidence anything happened here.",
-        "The Pinto Wash steel arch bridge (just east of Superior, completed 1949) was voted Most Beautiful Steel Bridge of the Year by the American Institute of Steel Construction — beating out far larger spans. Look for it as the highway crosses a side canyon before the Queen Creek Tunnel."
+        "NASA geologically trained Apollo astronauts at the Rio Grande Gorge in 1971 — the basalt canyon was considered the closest Earth analogue to the Apollo 15 lunar landing site. David Scott, James Irwin, John Young, Charlie Duke, and Jack Schmitt all practiced geology here before walking on the Moon.",
+        "The Denver and Rio Grande's narrow-gauge 'Chili Line' ran through this gorge from 1881 to 1941, carrying northern New Mexico's famous red chile to markets in Colorado. At Embudo station, northbound and southbound trains met mid-day so passengers could eat lunch — the schedule was built around the meal, not the other way around.",
+        "The Rio Grande Gorge is not carved into the Rocky Mountains — it's cut through a flat basalt plateau. The river saws downward through lava flows faster than the surrounding land rises, meaning the gorge gets slightly deeper every year."
       ],
 
       scenic: [
-        { label: 'Picketpost Mountain', detail: 'Around mile marker 223, west of Superior. The craggy 4,375-ft volcanic plug shoots straight up from the desert floor on the left (north). It looks photoshopped against the sky. Best in morning light when the east face is fully lit.', icon: '⛰' },
-        { label: 'Queen Creek Canyon descent', detail: 'Just east of Superior, after the tunnel, the road drops steeply into a narrow red-rock gorge. The canyon walls close in on both sides — passengers get a genuine slot-canyon moment from the car.', icon: '🏔' },
-        { label: 'Miami smelter panorama', detail: 'The enormous red-and-white-banded Freeport-McMoRan smokestack and terracotta waste-rock mountains create an almost cinematic industrial panorama against the Pinal Mountains — one of the stranger beautiful views on the whole route.', icon: '🏭' }
+        {
+          label: 'Gorge First Reveal',
+          detail: "About 8 miles south of Ranchos de Taos, NM-68 crests a low rise and the eastern rim of the Rio Grande Gorge suddenly appears on the right. The basalt walls plunge out of sight — there's no warning, the flat lava plateau just ends. Pull into the east-side picnic area for the full view down to the river 600 feet below.",
+          icon: '🏜'
+        },
+        {
+          label: 'Pilar River Beach',
+          detail: "As NM-68 drops into the Pilar area, the gorge walls step back and the Rio Grande widens into a series of green river-beach campsites. On late-May mornings the cottonwoods are fully leafed in brilliant green against the dark basalt — a jarring color shift after miles of volcanic rock and juniper.",
+          icon: '🌿'
+        },
+        {
+          label: 'Embudo Vineyard Valley',
+          detail: "Between Embudo and Dixon the gorge mellows into a wide agricultural valley. Look for hand-watered acequia fields, apple orchards, and high-altitude vineyards terraced into the hillside — a genuinely unexpected pastoral scene inside what was a sheer canyon 10 miles north.",
+          icon: '🍇'
+        }
       ],
 
       pois: [
         {
-          name: 'Superstition Mountains',
-          coords: { lat: 33.4700, lng: -111.3700 },
-          description: "Home of the legendary Lost Dutchman's Gold Mine. Jagged volcanic peaks visible from US-60 for miles before Apache Junction.",
-          hook: "Searchers have died in these mountains chasing gold that may not exist — the legend has outlasted every attempt to disprove it."
+          name: 'Rio Grande Gorge Overlook (NM-68 Pullout)',
+          coords: { lat: 36.33, lng: -105.733 },
+          description: "A roadside pullout on NM-68 about 8 miles south of Ranchos de Taos offers a dramatic view down into the Rio Grande Gorge. The gash in the Servilleta basalt can be seen clearly from the east-side picnic area, the river 600 feet below.",
+          hook: "You're standing on a lava flow that erupted roughly 3 million years ago; the river below has since sawed 600 feet straight down through solid basalt — a process still ongoing today."
         },
         {
-          name: 'Goldfield Ghost Town',
-          coords: { lat: 33.4565, lng: -111.4920 },
-          description: "A resurrected 1890s gold-mining camp on the flanks of the Superstition Mountains. Features a working narrow-gauge train, gold-mine tours, gunfight reenactments, and gold panning. The original camp boomed after an 1892 strike and was abandoned by 1897 when the ore ran out.",
-          hook: "One of the few Arizona ghost towns that never fully died — locals rebuilt it into a living attraction rather than let the desert swallow it."
+          name: 'Pilar Whitewater Area / Orilla Verde Recreation Area',
+          coords: { lat: 36.269, lng: -105.782 },
+          description: "At Pilar the gorge opens slightly and the Rio Grande's famous Racecourse rapid run — New Mexico's most popular whitewater stretch — ends just downstream. On a May morning you'll often see a fleet of rafts beaching right below the highway.",
+          hook: "The Racecourse is 5 miles of Class III–IV whitewater — pull over and watch the take-out chaos as rafters haul boats up the bank right below the road."
         },
         {
-          name: 'Boyce Thompson Arboretum',
-          coords: { lat: 33.2800, lng: -111.1589 },
-          description: "Arizona's oldest and largest botanical garden, founded 1924 as a desert-plant research station. Sits on 392 acres beneath volcanic Picketpost Mountain along Queen Creek, with over 2,600 arid-land plant species from deserts on five continents.",
-          hook: "Even from the highway you can spot the saguaro forests and dramatic volcanic cliffs — but 20 minutes on the loop trail reveals a riparian canyon where bobcats, Gila monsters, and 270 bird species have been recorded."
+          name: 'Vivác Winery Tasting Room',
+          coords: { lat: 36.21, lng: -105.794 },
+          description: "Perched at 6,200 feet at the NM-68/NM-75 junction in the village of Dixon, Vivác Winery is among the highest-altitude wineries in the world. Brothers Jesse and Chris Padberg planted French varietals here in 1998; the tasting room at 2075 NM-68 sits right on the Low Road southbound.",
+          hook: "One of the world's highest-altitude commercial wineries — and it's right on the highway. Zero detour required for a quick tasting stop."
         },
         {
-          name: 'Queen Creek Tunnel',
-          coords: { lat: 33.2950, lng: -111.1050 },
-          description: "A 1,217-foot tunnel blasted through solid volcanic rock east of Superior, opened in 1953 at a then-staggering cost of $550,000. It replaced a much-narrower 1926 tunnel and became Arizona's first road tunnel to receive an LED lighting system.",
-          hook: "The abandoned original tunnel and the old alignment of US-60 are hikeable via the Legends of Superior Trail just south of the highway — an eerie parallel world frozen in 1926."
-        },
-        {
-          name: 'Besh-Ba-Gowah Ruins',
-          coords: { lat: 33.4192, lng: -110.7853 },
-          description: "700-year-old Salado people dwellings just north of Globe. One of Arizona's hidden archaeological gems with a small museum on site.",
-          hook: "The Salado culture built here between 1225 and 1400 AD, then vanished — leaving behind a remarkably intact pueblo that most tourists drive right past."
-        },
-        {
-          name: 'Miami Open-Pit Mine',
-          coords: { lat: 33.3983, lng: -110.8678 },
-          description: "One of the largest open-pit copper operations visible from a US highway. The Freeport-McMoRan Miami Mine and its towering smelter stack dominate the hillside. The Inspiration Mine here began in 1911 and once supplied nearly 4% of America's entire copper output.",
-          hook: "US-60 literally threads between the waste dumps and the smelter — the mine pit has been scooped out of an entire mountain range and the scale is genuinely shocking."
+          name: 'Ohkay Owingeh Pueblo',
+          coords: { lat: 36.052, lng: -106.071 },
+          description: "Located 4 miles northeast of Española off NM-68, Ohkay Owingeh is where Oñate established the first Spanish capital of New Mexico in 1598 — before Santa Fe even existed. The pueblo's Tewa name means 'Place of the Strong People'; it was known as San Juan Pueblo for four centuries before the community reclaimed its original name in 2005.",
+          hook: "Santa Fe gets all the colonial tourism, but this is actually where New Mexico's European history began — 12 years before the Palace of the Governors was built."
         }
       ]
     },
 
-    /* ── STAGE 1: Globe → Show Low ─────────────────────────────────────────── */
+    /* ── STAGE 1: Santa Fe → Albuquerque (I-25 south) ────────────────────────── */
     {
       id: 1,
-      name: 'Globe → Show Low',
-      shortName: 'To Show Low',
-      distance: 85,
-      cumulativeStart: 90,
-      startCoords: { lat: 33.3961, lng: -110.7816 },
-      endCoords:   { lat: 34.2538, lng: -110.0286 },
-      socAtStart: 90,
-      socAtEnd: 48,
-      socorroWarning: false,
-      juliaVisible: true,
-
-      charging: {
-        name: 'Electrify America – Show Low',
-        address: '180 N 9th St, Show Low, AZ 85901',
-        network: 'Electrify Commercial / APS (EA app)',
-        stalls: 4,
-        maxKw: 350,
-        note: 'Most demanding segment — Salt River Canyon causes heavy energy use. Charge as full as practical here. ⚠️ Verify Socorro charger status in the EA app before leaving.'
-      },
-
-      dining: [
-        {
-          type: 'Sit-down · Historic',
-          name: 'Show Low Cafe',
-          address: '480 W Deuce of Clubs, Show Low, AZ',
-          walk: '~5 min drive',
-          hours: 'Check locally',
-          service: '~15–20 min',
-          note: "Classic small-town diner. The street name tells the whole story — see the history card."
-        },
-        {
-          type: 'Quick grab',
-          name: 'Mudslingers Drive Thru',
-          address: 'Show Low, AZ',
-          walk: '~5 min drive',
-          hours: 'Check locally',
-          service: '~5 min drive-through',
-          note: 'Local family-run drive-through. Fastest option if the clock is ticking.'
-        },
-        {
-          type: 'Coffee',
-          name: 'Arizona Mountain Coffee Co.',
-          address: '151 N White Mountain Rd, Show Low, AZ',
-          walk: '~5 min drive',
-          hours: 'Opens 6 AM',
-          service: 'Café pace',
-          note: 'Good high-country fuel stop. Sandwiches, pastries, bagels.'
-        }
-      ],
-
-      dining_extra: [
-        {
-          type: 'Sit-down · Steakhouse',
-          name: "Cattlemen's Steakhouse & Lounge",
-          address: '1231 E Deuce of Clubs, Show Low, AZ 85901',
-          walk: 'On the main drag, easy highway access',
-          hours: 'Mon–Sat 4:00 PM – 9:00 PM; closed Sunday',
-          service: 'Full table service; reservations recommended weekends',
-          note: "The local go-to for a proper dinner after canyon driving. Known for slow-roasted prime rib and hand-cut steaks. The attached CL Lounge serves craft cocktails. Dinner-only hours make it a great end-of-day option if you arrive in Show Low by late afternoon."
-        }
-      ],
-
-      history: {
-        quick: "Show Low got its name from an 1875 poker game — two pioneers played cards for the homestead, and the winner \"showed low.\" You're now atop the Mogollon Rim, the dramatic edge of the Colorado Plateau.",
-        full: "Show Low's name comes from an 1875 poker game: two pioneers couldn't agree on who should buy out the other's homestead, so they played cards for it. The winner showed low — the two of clubs — and the town was named on the spot. You climbed through the Salt River Canyon to get here, one of Arizona's most dramatic stretches of road: a 2,000-ft descent into the canyon followed immediately by a 3,000-ft climb back out through White Mountain Apache territory. Fort Apache, just east of here, was a U.S. Army post from 1870 — now a National Historic Landmark operated by the White Mountain Apache Tribe. The ponderosa pine forests up here look nothing like the desert you left this morning."
-      },
-
-      trivia: [
-        "US-60 drops approximately 2,000 feet as it descends into Salt River Canyon — nearly the same vertical relief as the South Rim of the Grand Canyon — then climbs all of it back out within about 5 miles. The switchbacks were carved into canyon walls beginning in January 1933 as a Depression-era public works project.",
-        "Show Low's main street is literally named 'Deuce of Clubs' after the card that won the town its name. In 1876, two ranchers played a marathon hand of Seven-Up to decide who'd keep their shared 100,000-acre ranch. The winner turned up the deuce of clubs — and kept everything.",
-        "The White Mountain Apache Reservation contains Sunrise Park Resort, Arizona's largest ski area, at over 11,000 feet elevation. You drive through Arizona's most visited ski destination on this very corridor — in the same state where Phoenix bakes at 110°F just 150 miles away."
-      ],
-
-      scenic: [
-        { label: 'Canyon rim approach', detail: 'About 5 miles before the descent, the high plateau suddenly ends and the entire Salt River Canyon opens 2,000 feet below with zero warning. One moment you\'re on flat ponderosa-pine mesa, the next there\'s a void. Passengers should have cameras ready around mile marker 295.', icon: '⛰' },
-        { label: 'Looking back at the 1934 bridge', detail: 'After crossing the river and climbing the north wall, look back south — the full depth of the canyon and both bridges (1934 and 1996) are visible side by side in a single frame. The best rearward view on the entire drive.', icon: '🌉' },
-        { label: 'Vegetation flip up the canyon wall', detail: 'Halfway up the north wall, the vegetation swaps almost instantly from Sonoran desert (saguaro, palo verde) to Transition Zone (pinyon, juniper). You can watch the plant communities change through the windshield — a 1,500-foot ecological telescope in about 3 miles of road.', icon: '🌲' }
-      ],
-
-      pois: [
-        {
-          name: 'Salt River Canyon Overlook',
-          coords: { lat: 33.8300, lng: -110.6900 },
-          description: "Arizona's 'Little Grand Canyon' — 2,000 ft of dramatic drop on US-60. White Mountain Apache ancestral territory. Pull-off on both sides of the highway at the rim.",
-          hook: "Most drivers stop at the top — almost no one walks down to the 1934 historic bridge at river level, which puts you at the bottom looking straight up 2,000 feet of layered canyon wall."
-        },
-        {
-          name: 'Salt River Canyon 1934 Historic Bridge',
-          coords: { lat: 33.8231, lng: -110.7089 },
-          description: "At the canyon bottom, a rest area leads down to the original 1934 PWA-funded steel arch bridge (now pedestrian-only), standing alongside the 1996 replacement. Features decorative towers and hand-crafted stone railings designed by architect Lee Moor.",
-          hook: "Walk down from the rest area and you're suddenly at river level, looking straight up at 2,000 feet of canyon. On hot days the microclimate at the bottom is noticeably cooler than the mesa above."
-        },
-        {
-          name: 'Salt River Canyon Petroglyphs',
-          coords: { lat: 33.8240, lng: -110.7095 },
-          description: "Boulders at the canyon-bottom rest area bear pre-Columbian petroglyphs dating back roughly 3,000 years, predating the Apache by centuries. This point also marks the tribal boundary between San Carlos Apache (south) and White Mountain Apache (north).",
-          hook: "Easy to miss if you only stop at the upper overlook — the petroglyphs are right next to the picnic tables at the canyon floor, and most drivers pass without knowing they're there."
-        },
-        {
-          name: 'Seneca Lake Recreation Area',
-          coords: { lat: 33.7623, lng: -110.5118 },
-          description: "A 27-acre high-desert lake at 4,787 feet on the San Carlos Apache Reservation, stocked with trout, catfish, and largemouth bass. The ruins of an ambitious 1970s Apache-built resort — trading post, restaurant, cabins — stand in photogenic decay beside the working lake.",
-          hook: "The abandoned resort gives this fishing lake an eerie, evocative quality. The juxtaposition of a pretty trout lake and crumbling 1970s concrete in the middle of nowhere makes it a great photo stop."
-        },
-        {
-          name: 'Mogollon Rim',
-          coords: { lat: 34.1500, lng: -110.4000 },
-          description: "200-mile volcanic escarpment marking the southern edge of the Colorado Plateau. Elevation jumps sharply as you climb out of the canyon. Ponderosa pine forests replace desert cactus almost instantly.",
-          hook: "You're crossing one of the great geological boundaries of North America — the abrupt edge where the high Colorado Plateau drops away to the Basin and Range desert below."
-        },
-        {
-          name: 'Fort Apache Historic Park',
-          coords: { lat: 33.7948, lng: -109.9839 },
-          description: "A National Historic Landmark preserving nearly 30 original Army buildings from the 1870s–1930s on the White Mountain Apache Reservation. Includes the Apache Cultural Center (Nohwike' Bágowa / House of Our Footprints). Admission also covers 14th-century Kinishba Pueblo ruins 4 miles away.",
-          hook: "Unlike reconstructed frontier forts, these buildings are the real thing — same adobe walls, same parade ground where Geronimo's scouts once mustered. A 25-minute detour off US-60 via AZ-73 through Whiteriver."
-        }
-      ]
-    },
-
-    /* ── STAGE 2: Show Low → Socorro ───────────────────────────────────────── */
-    {
-      id: 2,
-      name: 'Show Low → Socorro',
-      shortName: 'To Socorro',
-      distance: 145,
-      cumulativeStart: 175,
-      startCoords: { lat: 34.2538, lng: -110.0286 },
-      endCoords:   { lat: 34.0584, lng: -106.8914 },
-      socAtStart: 90,
-      socAtEnd: 44,
-      socorroWarning: true,
-      juliaVisible: true,
-
-      charging: {
-        name: 'Electrify America – Socorro ⚠️',
-        address: '~116 Plaza St, Socorro, NM 87801',
-        network: 'Electrify America (status unconfirmed)',
-        stalls: null,
-        maxKw: null,
-        note: '⚠️ Verify this station in the EA app before leaving Show Low. If down, the gap to Albuquerque is ~220 miles — tight after the White Mountain climbs. Top off fully at Show Low and drive conservatively if uncertain.'
-      },
-
-      dining: [
-        {
-          type: 'Sit-down · Coffee · Historic',
-          name: 'El Camino Restaurant & Lounge',
-          address: '606 California St, Socorro, NM',
-          walk: '~5 min drive',
-          hours: 'Open 24 hours',
-          service: 'Fast diner',
-          note: "Open since 1963. Voted Socorro's best coffee and best breakfast every year. The platonic ideal of a US-60 highway diner."
-        },
-        {
-          type: 'Quick grab',
-          name: "Los Mario's Mexican Food",
-          address: 'Socorro, NM',
-          walk: 'Check locally',
-          hours: 'Check locally',
-          service: '~10 min',
-          note: 'Highly rated local spot. Shredded beef tacos are the standout.'
-        }
-      ],
-
-      dining_extra: [
-        {
-          type: 'Casual American / New Mexican',
-          name: "Yo Mama's Grill",
-          address: '913 N California St, Socorro, NM 87801',
-          walk: '~5 min drive from I-25 interchange',
-          hours: 'Mon 11am–8:30pm, Tue closed, Wed–Fri 11am–8:30pm, Sat 3–8:30pm, Sun 11am–8pm',
-          service: 'Dine-in',
-          note: "A beloved local spot with an eclectic menu spanning burgers, steaks, and Southwest platters (tamale + chile relleno + cheese enchilada combo). Solid green chile and good value — a step up from chains without the wait of Socorro's more famous spots."
-        }
-      ],
-
-      history: {
-        quick: "Socorro is one of New Mexico's oldest settlements, founded in 1598 as a stop on El Camino Real — the Royal Road from Mexico City to Santa Fe that predates the Oregon Trail by 200 years.",
-        full: "Socorro is one of New Mexico's oldest European settlements, founded by Spanish colonists in 1598 as a supply stop on El Camino Real — the 1,600-mile Royal Road connecting Mexico City to Santa Fe, predating the Oregon Trail by two centuries. You crossed into New Mexico through high-desert grassland, with the Datil and Magdalena Mountains on the horizon. About 50 miles west on US-60 sits the Very Large Array: 27 radio telescope dishes on the Plains of San Agustin, one of the world's premier astronomical observatories and the filming location for the movie Contact. The Bosque del Apache refuge just south hosts tens of thousands of sandhill cranes and snow geese each winter — one of North America's great wildlife spectacles."
-      },
-
-      trivia: [
-        "US-60 crosses the Continental Divide east of Pie Town at 7,796 feet — higher than any point in the Appalachian Mountains. Rain falling on the west side of the road is Pacific-bound; on the east side, it heads for the Gulf of Mexico.",
-        "The Magdalena Livestock Driveway — nicknamed the 'Hoof Highway' — was the last working long cattle drive trail in the United States, stretching 125 miles from Springerville to the Magdalena railroad spur. At its 1919 peak, 150,000 sheep passed through in a single season. Cowboys kept it alive until trucking finally killed it in 1971.",
-        "Datil gets its name from the Spanish word for 'date' — early settlers thought the seedpods of local yucca plants looked like dates. And Casa Malpais, back in Springerville, translates to 'House of the Badlands' — so this stretch of US-60 is literally the road between the House of the Badlands and the Town of Dates."
-      ],
-
-      scenic: [
-        { label: 'Plains of San Agustín', detail: 'The vast, flat ancient lake bed east of Datil where the Very Large Array sits. On a clear day you can see the white dish antennas from the highway 15–20 miles before you reach them — the scale only becomes apparent when you get close and realize each dish is 82 feet across.', icon: '📡' },
-        { label: 'Datil Mountains descent into Socorro', detail: 'As US-60 drops off the high plateau, the Magdalena Mountains (rising to 10,500 ft) dominate the eastern skyline and the Rio Grande valley opens up ahead — a dramatic reveal after 100+ miles of high desert grassland.', icon: '⛰' },
-        { label: 'Pie Town Continental Divide marker', detail: 'A weathered roadside sign and informal pull-off. In late May the surrounding meadows are green from spring rains, and the Continental Divide Trail crosses the highway right here. Watch for long-distance hikers with enormous packs.', icon: '🥾' }
-      ],
-
-      pois: [
-        {
-          name: 'Casa Malpais Archaeological Park',
-          coords: { lat: 34.1324, lng: -109.2817 },
-          description: "A National Historic Landmark pueblo built by the Mogollon culture between 1260 and 1350 AD on the rim of an ancient shield volcano near Springerville. Features a great kiva, a solar calendar, and a catacomb network of lava-tube rooms beneath the 50–60-room pueblo — unique in Arizona.",
-          hook: "This 700-year-old pueblo is riddled with lava-tube catacombs used as burial chambers. Tours depart from the Heritage Museum at 418 E Main St in Springerville."
-        },
-        {
-          name: 'Pie Town & Continental Divide',
-          coords: { lat: 34.2997, lng: -108.1330 },
-          description: "A tiny community (pop. ~166) perched right at the Continental Divide at 7,796 feet on US-60. WWI vet Clyde Norman opened a gas-stop general store in the 1920s, started baking dried-apple pies, and the name stuck. The Pie-O-Neer café still serves pie to road-trippers and Continental Divide Trail hikers.",
-          hook: "You cross the Continental Divide right here — water west of this point flows to the Pacific; east of it flows to the Gulf of Mexico."
-        },
-        {
-          name: 'Very Large Array (VLA)',
-          coords: { lat: 34.0789, lng: -107.6183 },
-          description: "27-dish radio telescope array on the Plains of San Agustin. Each dish is 82 feet across. Featured in the film Contact. One of the world's premier astronomical observatories, visible from US-60 miles before you reach it.",
-          hook: "The VLA was used to discover that the Milky Way's central region contains a massive black hole — and you can tour it for free on weekends."
-        },
-        {
-          name: 'Datil Well Recreation Area',
-          coords: { lat: 34.1536, lng: -107.8579 },
-          description: "A BLM site preserving one of 15 hand-dug water wells along the old Magdalena Livestock Driveway. At peak, more than 150,000 sheep and 21,600 cattle passed this very well in a single year (1919) on the way from Springerville to the Magdalena railhead.",
-          hook: "This is the Hoof Highway — the last working cattle drive trail in the American West, still in active use until 1971."
-        },
-        {
-          name: 'Kelly Ghost Town',
-          coords: { lat: 34.0792, lng: -107.2200 },
-          description: "Two and a half miles south of Magdalena, the ruins of Kelly once housed nearly 3,000 souls during the silver, lead, and zinc mining boom of the late 1800s. The Kelly Mine opened in 1883; the last residents left in 1947. Crumbling stone buildings and mine shaft headframes remain on open BLM land.",
-          hook: "At its peak, tiny Kelly had more people than Magdalena does today — then the ore ran out and everyone just walked away."
-        },
-        {
-          name: 'Bosque del Apache NWR',
-          coords: { lat: 33.7700, lng: -106.9000 },
-          description: "World-class bird sanctuary south of Socorro. Tens of thousands of sandhill cranes and snow geese winter here in one of North America's great wildlife spectacles.",
-          hook: "In late May the cranes are gone, but the bosque cottonwood forest along the Rio Grande is in full leaf — a vivid green ribbon through the brown desert."
-        },
-        {
-          name: 'San Miguel Mission',
-          coords: { lat: 34.0584, lng: -106.8925 },
-          description: "Historic Spanish colonial mission in Socorro's plaza, dating to 1598. One of the oldest churches in the United States, built when Shakespeare was still alive.",
-          hook: "The current church was rebuilt in 1819 on the foundations of the original 1598 structure — the walls contain materials laid by the first Spanish colonists."
-        }
-      ]
-    },
-
-    /* ── STAGE 3: Socorro → Albuquerque ────────────────────────────────────── */
-    {
-      id: 3,
-      name: 'Socorro → Albuquerque',
+      name: 'Santa Fe → Albuquerque',
       shortName: 'To Albuquerque',
-      distance: 75,
-      cumulativeStart: 320,
-      startCoords: { lat: 34.0584, lng: -106.8914 },
+      distance: 65,
+      cumulativeStart: 90,
+      startCoords: { lat: 35.6272, lng: -105.9910 },
       endCoords:   { lat: 35.1340, lng: -106.5760 },
-      socAtStart: 90,
-      socAtEnd: 64,
-      socorroWarning: false,
-      juliaVisible: true,
-
-      charging: {
-        name: 'Electrify America – Albuquerque',
-        address: '2701 Claremont Ave NE, Albuquerque, NM 87107',
-        network: 'Electrify America',
-        stalls: 11,
-        maxKw: 350,
-        note: 'Longer stop — charge while you explore Old Town (~15 min drive) before picking up Julia at 5 PM. ABQ airport is ~10 miles from the charger.'
-      },
-
-      dining: [
-        {
-          type: 'Sit-down · Historic',
-          name: 'Church Street Cafe',
-          address: 'Old Town Albuquerque, NM',
-          walk: '~15 min drive',
-          hours: 'Check locally',
-          service: '~25 min',
-          note: "One of ABQ's oldest restaurants in a 300-year-old adobe building. Traditional NM green chile dishes in a gorgeous historic courtyard."
-        },
-        {
-          type: 'Quick grab',
-          name: 'Old Town Cafe',
-          address: '206 San Felipe St NW, Albuquerque, NM',
-          walk: '~15 min drive',
-          hours: 'Check locally',
-          service: '~10 min',
-          note: "Casual and fast. Local art on the walls. Frito pie if you're feeling New Mexican."
-        },
-        {
-          type: 'Coffee',
-          name: 'Black Bird Coffee House',
-          address: 'Old Town, Albuquerque, NM',
-          walk: '~15 min drive',
-          hours: 'Check locally',
-          service: 'Café pace',
-          note: 'Shady hacienda patio. Good espresso and a calm spot to collect yourself before the airport run.'
-        }
-      ],
-
-      dining_extra: [
-        {
-          type: 'Food Hall · Eclectic',
-          name: 'Sawmill Market',
-          address: '1909 Bellamah Ave NW, Albuquerque, NM 87104',
-          walk: '~10 min drive from charger; 0.7 mi from Old Town Plaza',
-          hours: 'Sun–Thu 8am–9pm, Fri–Sat 8am–10pm',
-          service: 'Counter service, communal seating, outdoor patio',
-          note: "New Mexico's first food hall, in a remodeled 1920s lumber warehouse just north of Old Town. A dozen vendors under one roof — great when your group wants different things. Local craft beer, NM green chile, diverse cuisines."
-        }
-      ],
-
-      history: {
-        quick: 'Albuquerque sits in the Rio Grande valley at 5,300 feet, founded by Spanish colonists in 1706 — but Tiwa-speaking Pueblo people have lived here for over a thousand years before that.',
-        full: "Albuquerque sits in the Rio Grande valley at 5,300 feet, flanked by the 10,678-ft Sandia Mountains to the east. The area has been home to Tiwa-speaking Pueblo people for over a thousand years; Spanish colonists founded the city in 1706. Historic Route 66 runs straight through Central Avenue downtown — the same road that carried Dust Bowl migrants west in the 1930s. The Sandia Mountains catch the last light of the day in a phenomenon locals call 'the watermelon' — the pink-orange glow that gives the range its name (sandia means watermelon in Spanish)."
-      },
-
-      trivia: [
-        "The stretch of I-25 between Socorro and Albuquerque follows the Camino Real de Tierra Adentro — the 'Royal Road of the Interior Land' — a 1,600-mile trade route from Mexico City to Santa Fe active from 1598 until the mid-1800s. It is the oldest continuously used European road in North America.",
-        "The Rio Grande you're paralleling has been running dry in summer more frequently in recent decades — but in late May, snowmelt from the Colorado Rockies has it running full and muddy brown. The cottonwood bosque on both banks glows bright green: the largest cottonwood forest in the American Southwest.",
-        "Albuquerque is the world capital of hot air ballooning because of the 'Albuquerque Box' — a meteorological quirk where low-altitude winds blow south while higher winds blow north, letting pilots return almost exactly to their launch point. No other major city has this natural flight pattern. The Balloon Fiesta (October) draws 500–900 balloons — the world's largest."
-      ],
-
-      scenic: [
-        { label: 'Rio Grande bosque corridor', detail: 'Between Belen and Albuquerque, the cottonwood canopy is fully leafed out in bright green in late May — a striking color contrast against the buff-colored desert. Keep an eye left (west) as you pass through Los Lunas and Belen.', icon: '🌳' },
-        { label: 'Sandia Mountains growing as you approach ABQ', detail: 'Northbound on I-25, the Sandias appear gradually as you clear the Socorro basin, growing from a distant pink stripe to a dramatic 10,000-foot wall. At sunset the east face turns the deep watermelon-red that gave the mountains their Spanish name.', icon: '🌄' },
-        { label: 'Albuquerque basin reveal', detail: 'As I-25 crests the south mesa, the city spreads below in the Rio Grande rift valley at 5,312 feet, framed by the Sandias to the east and West Mesa volcanoes to the west — a classic high-desert basin view that appears suddenly as you top the grade.', icon: '🏙' }
-      ],
-
-      pois: [
-        {
-          name: 'Albuquerque Old Town',
-          coords: { lat: 35.0958, lng: -106.6692 },
-          description: "Founded 1706. Spanish colonial plaza, San Felipe de Neri Church, adobe architecture. 15 min drive from charger. Some of the best green chile in New Mexico within a few blocks.",
-          hook: "The plaza has been continuously occupied since 1706 — the adobe church in the corner has been in continuous use longer than the United States has existed."
-        },
-        {
-          name: 'Petroglyph National Monument',
-          coords: { lat: 35.1281, lng: -106.7507 },
-          description: "On Albuquerque's west mesa, more than 24,000 images — animals, geometric designs, human figures, Spanish colonial crosses — are pecked into dark volcanic basalt. Most were made by ancestral Puebloans between 1300 and 1650 AD.",
-          hook: "The black color is 'desert varnish' — a manganese-iron crust built up over millennia — and the petroglyph makers scraped through it to the lighter rock beneath, like carving into a chalkboard."
-        },
-        {
-          name: 'Belen Harvey House Museum',
-          coords: { lat: 34.6617, lng: -106.7765 },
-          description: "A beautifully restored 1910 Fred Harvey railroad restaurant in Belen, 34 miles south of ABQ. Harvey Houses were the first national restaurant chain, staffed by the famously professional 'Harvey Girls.' This one operated 1910–1939 and now houses a museum on Route 66 and the Santa Fe Railway.",
-          hook: "Fred Harvey's chain was so successful it reportedly 'civilized the West.' John Ford's 1946 film 'The Harvey Girls,' starring Judy Garland, was partly a tribute."
-        },
-        {
-          name: 'Los Lunas Decalogue Stone',
-          coords: { lat: 34.7862, lng: -106.7330 },
-          description: "On the slopes of Hidden Mountain near Los Lunas, a large boulder bears a nine-line inscription of the Ten Commandments in ancient Hebrew script — with a few Greek letters mixed in. First recorded in 1933. Fierce debate: pre-Columbian Semitic contact, or a clever 19th-century forgery?",
-          hook: "The Ten Commandments, in ancient Hebrew, are carved into a rock just off the interstate. Nobody can fully agree whether it's 2,000 years old or 150."
-        },
-        {
-          name: 'Sandia Mountains',
-          coords: { lat: 35.2100, lng: -106.4500 },
-          description: "10,678-ft peak flanking Albuquerque to the east. Famous watermelon-pink glow at sunset. Aerial tram (the longest in North America) rises 2.7 miles to the summit — visible from the highway.",
-          hook: "The granite core of the Sandias is 1.45 billion years old — some of the oldest exposed rock in New Mexico, worn smooth by a billion years of erosion."
-        }
-      ]
-    },
-
-    /* ── STAGE 4: Albuquerque → Santa Fe ───────────────────────────────────── */
-    {
-      id: 4,
-      name: 'Albuquerque → Santa Fe',
-      shortName: 'To Santa Fe',
-      distance: 60,
-      cumulativeStart: 395,
-      startCoords: { lat: 35.1340, lng: -106.5760 },
-      endCoords:   { lat: 35.6272, lng: -105.9910 },
       socAtStart: 90,
       socAtEnd: 68,
       socorroWarning: false,
       juliaVisible: false,
 
       charging: {
-        name: 'Electrify America – Santa Fe',
-        address: '5701 Herrera Dr, Santa Fe, NM 87507',
+        name: 'Electrify America – Albuquerque Uptown',
+        address: 'Uptown Loop Rd NE, Albuquerque, NM 87110',
         network: 'Electrify America',
-        stalls: 8,
+        stalls: 6,
         maxKw: 350,
-        note: 'Tribes Coffee House and Plaza Cafe are literally around the corner. Downtown Santa Fe is a 10-min drive — check Gruet Winery hours!'
+        note: "Fork & Fig (5 min drive) is the closest quality option near the Uptown charger. Frontier Restaurant near UNM is the ABQ institution if you want the full local experience. Alt charger: EA @ Coal/Yale Blvd SE if Uptown is busy."
       },
 
       dining: [
         {
-          type: 'Coffee · Quick grab',
-          name: 'Tribes Coffee House',
-          address: '3470 Zafarano Dr, Santa Fe, NM',
-          walk: '~2 min walk',
-          hours: 'Opens 7 AM',
-          service: '~5 min',
-          note: 'Around the corner from the charger. All-day breakfast burritos and benedicts.'
+          type: 'New Mexican Diner · Iconic',
+          name: 'Frontier Restaurant',
+          address: '2400 Central Ave SE, Albuquerque, NM 87106',
+          walk: '~10 min drive from EA Uptown; 5 min from Coal/Yale EA',
+          hours: 'Daily 5 AM – 12 AM',
+          service: 'Counter order, very fast',
+          note: "Open since 1971, across from UNM — an ABQ institution. Famous for green-chile breakfast burritos, house-made cinnamon rolls, and generous plates. The John Wayne memorabilia and circa-1971 murals are half the experience."
         },
         {
-          type: 'Quick grab',
-          name: 'Plaza Cafe Southside',
-          address: '3466 Zafarano Dr, Santa Fe, NM',
-          walk: '~2 min walk',
-          hours: 'Check locally',
-          service: '~10 min',
-          note: 'Also right next to the charger. Santa Fe neighborhood staple, traditional NM dishes.'
+          type: 'New American · Lunch/Dinner',
+          name: 'Fork & Fig',
+          address: '6904 Menaul Blvd NE, Albuquerque, NM 87110',
+          walk: '~5 min drive from EA Uptown',
+          hours: 'Mon–Thu 11 AM – 8 PM; Fri–Sat 11 AM – 9 PM; closed Sun',
+          service: 'Fast-casual counter, no freezers or fryers',
+          note: "Fresh creative sandwiches and plates made entirely without freezers or fryers — everything prepped daily. Closest quality option to the Uptown EA charger. Light enough to eat before the long I-40 push to Gallup."
         },
         {
-          type: 'Sit-down · Historic',
-          name: 'The Shed',
-          address: 'Downtown Santa Fe, NM',
-          walk: '~10 min drive',
-          hours: 'Check locally',
-          service: '~25 min',
-          note: 'Santa Fe institution since 1953. Legendary red chile enchiladas. Worth the short drive if you have time.'
-        }
-      ],
-
-      dining_extra: [
-        {
-          type: 'BBQ / New Mexican',
-          name: 'Cowgirl BBQ',
-          address: '319 S Guadalupe St, Santa Fe, NM 87501',
-          walk: '~0.4 miles / 8-min walk from the EA charger (both in the Guadalupe/Railyard district)',
-          hours: 'Mon–Fri 11:30am–9pm; Sat–Sun 11:30am–10pm',
-          service: 'Full service, bar, live music most nights',
-          note: "A Santa Fe institution voted 'Best of Santa Fe' for 20+ years. Famous for 'The Mother of All Green Chile Cheeseburgers' (buffalo-beef blend, brie, truffled green chile, chipotle). 24 regional craft beers on tap. Outdoor patio with kiva fireplaces."
+          type: 'French-inspired · Upscale Casual',
+          name: 'frenchish',
+          address: '3509 Central Ave NE, Albuquerque, NM 87106',
+          walk: '~12 min drive from EA Uptown',
+          hours: 'Wed–Sat 4:30 PM – 8:30 PM',
+          service: 'Full table service; reservations recommended',
+          note: "Chef Jennifer James's acclaimed bistro in Nob Hill. French-influenced New American with locally sourced seasonal ingredients — one of ABQ's best fine-dining options. Dinner-only, Wed–Sat."
         }
       ],
 
       history: {
-        quick: "Santa Fe is the oldest state capital in the U.S., founded in 1610 — a decade before the Mayflower landed. The Palace of the Governors is the oldest continuously occupied public building in America.",
-        full: "Santa Fe is the oldest state capital in the U.S., founded in 1610 — a full decade before the Mayflower landed. The Palace of the Governors on the plaza is the oldest continuously occupied public building in America. Georgia O'Keeffe lived and worked in the New Mexico high desert for decades; her museum is downtown. The city sits at 7,000 feet — you'll notice the air. Julia's along for the final leg, and you're approaching one of the most beautiful descents in the Southwest: the Low Road to Taos. O'Keeffe once wrote: 'When I got to New Mexico, that was mine. As soon as I saw it, that was my country.'"
+        quick: "The 65-mile I-25 corridor from Santa Fe to Albuquerque crosses El Camino Real de Tierra Adentro — Spain's 1,800-mile royal road from Mexico City — and bisects the ancient turquoise trade network anchored by Kewa (Santo Domingo) Pueblo, whose people mined the Cerrillos Hills for 6,000 years. La Bajada escarpment, a 600-foot basalt cliff 17 miles south of Santa Fe, was the most feared obstacle on the entire Camino Real for three centuries.",
+        full: "This stretch of I-25 runs through one of North America's most consequential trade corridors. The Cerrillos Hills just east of the freeway contain turquoise mines worked continuously for roughly 6,000 years — first by Ancestral Puebloans, then by the Kewa people of Santo Domingo Pueblo, whose heishi shell-and-turquoise beadwork traded as far west as the California coast and as far south as central Mexico. When Spanish settlers arrived in 1598 they named their supply route El Camino Real de Tierra Adentro ('Royal Road of the Interior'), and for 300 years every soldier, colonist, and merchant traveling between Mexico City and Santa Fe crossed La Bajada — the volcanic basalt escarpment that drops 600 feet from the Caja del Río plateau to the Santo Domingo Basin. The old road descended via 23 switchbacks with grades up to 28%; it was abandoned in 1932 when a modern alignment was cut. Today I-25 climbs the escarpment on a gentle grade that would have been unimaginable to the muleteers who pushed carts up the old bajada by hand. As the freeway descends toward Albuquerque the Sandia Mountains rise on the left — a billion-year-old granite and limestone fault block uplifted in the last 10 million years as the Rio Grande Rift pulled the Colorado Plateau apart. The pink color that gives the Sandias their name (sandia = watermelon) comes from potassium-feldspar crystals in the 1.45-billion-year-old Sandia granite."
       },
 
       trivia: [
-        "I-25 from Albuquerque to Santa Fe traces almost exactly the route of El Camino Real de Tierra Adentro — the royal road blazed by Spanish colonists in 1598. Supply caravans once took a year and a half to make the round trip from Mexico City to Santa Fe, making this corridor the lifeline of a colony for over 200 years.",
-        "The ghost town of Waldo, NM — whose name still appears on an I-25 exit sign near Cerrillos — was a railroad siding named after NM territorial judge Henry L. Waldo. It briefly had a school, hotel, and post office after 1883, then died entirely when the Madrid coal mines closed in 1954.",
-        "Georgia O'Keeffe first visited New Mexico in 1917 and said: 'When I got to New Mexico, that was mine. As soon as I saw it, that was my country.' She purchased Ghost Ranch near Abiquiú in 1940 and lived in the New Mexico high desert for the rest of her life, signing letters 'from the faraway nearby.'"
+        "La Bajada means 'The Descent' in Spanish — and the old road lived up to the name. The Camino Real switchbacks here had a 28% grade; fully loaded wagons had to be partially unloaded, lowered by rope, and reloaded at the bottom. The modern I-25 bypass grade is under 5%.",
+        "The Cerrillos turquoise mines just east of I-25 have been worked for roughly 6,000 years — making them among the oldest known mines in North America. Aztec artisans in Tenochtitlán used turquoise from these exact hills in their ceremonial mosaics.",
+        "The Sandia Mountains are uplifting along the Sandia fault at roughly one millimeter per year — measurably taller today than when the first Spanish colonists saw them in 1540. The fossils at the summit once sat on the floor of a 300-million-year-old tropical sea."
       ],
 
       scenic: [
-        { label: "Sangre de Cristo first glimpse", detail: "Cresting La Bajada mesa on I-25, the Sangre de Cristo Mountains appear suddenly to the northeast — a long, snow-streaked ridgeline at 13,000 feet framing the final approach to Santa Fe. The name means 'Blood of Christ,' for the crimson alpenglow at dusk.", icon: '🏔' },
-        { label: 'La Bajada escarpment', detail: 'As I-25 climbs toward Santa Fe, the black volcanic cliffs of La Bajada rise ahead — the geologic boundary between the lower Rio Grande basin and the high Santa Fe plateau. Every trader, conquistador, and Route 66 driver has faced this climb for 400 years.', icon: '⛰' },
-        { label: 'Sandia sunset wall', detail: "Northbound on I-25 as you leave ABQ, the entire east face of the Sandia range hangs to your right — granite cliffs shifting from dusty pink to deep crimson to purple as the sun drops, with a thin green conifer line along the crest completing the 'watermelon' effect.", icon: '🌄' }
+        {
+          label: 'La Bajada Black Wall',
+          detail: "About 17 miles south of Santa Fe, watch the right (west) side of I-25 for the sudden appearance of a jagged black basalt cliff cutting across the horizon. The Caja del Río plateau ends here in a clean volcanic scarp — the old switchback road scar is faintly visible on the face. The view opens southward all the way to the Sandias 50 miles away.",
+          icon: '🌋'
+        },
+        {
+          label: 'Sandia Mountain First Full View',
+          detail: "Approximately 30 miles south of Santa Fe, as I-25 crosses the Santo Domingo Basin, the full 25-mile face of the Sandia Mountains appears on the left (east). The near-vertical west escarpment rises from the Rio Grande valley floor to 10,678 feet — one of the most dramatic mountain faces visible from any interstate in the Southwest.",
+          icon: '⛰'
+        },
+        {
+          label: 'Bosque Green Ribbon',
+          detail: "As the freeway drops toward Albuquerque near Bernalillo, look west for the sudden band of brilliant green cottonwood forest lining the Rio Grande. In late May the bosque is at peak leaf — a glowing emerald stripe sandwiched between tan desert on both sides.",
+          icon: '🌿'
+        }
       ],
 
       pois: [
         {
-          name: 'Palace of the Governors',
-          coords: { lat: 35.6870, lng: -105.9378 },
-          description: "Oldest continuously occupied public building in America, on the Santa Fe Plaza. Native vendors sell handmade jewelry under the portal daily — a tradition that's been ongoing for over a century.",
-          hook: "This building was under construction when the Pilgrims were still in Holland. The portal out front has been a trading spot continuously since the Spanish colonial era."
+          name: 'La Bajada Escarpment Viewpoint',
+          coords: { lat: 35.27, lng: -106.195 },
+          description: "Roughly 17 miles south of Santa Fe, I-25 crests the Caja del Río plateau and begins its descent over the La Bajada escarpment — a jagged black wall of columnar basalt visible for 20 miles to the south. The old Camino Real switchbacks are still faintly visible on the cliff face just east of the freeway.",
+          hook: "For 300 years every wheeled vehicle, mule train, and marching column between Mexico City and Santa Fe had to wrestle their way up 600 feet of 28%-grade switchbacks here — the modern freeway grade makes it almost laughably easy."
         },
         {
-          name: "Georgia O'Keeffe Museum",
-          coords: { lat: 35.6893, lng: -105.9395 },
-          description: "Dedicated to the artist who defined the visual language of the American Southwest. Features over 3,000 O'Keeffe works plus the archives of her extraordinary New Mexico life.",
-          hook: "O'Keeffe painted the same New Mexico landscapes for decades — not from repetition but from obsession. Ghost Ranch and her Abiquiú home (55 miles northwest) are still visitable by reservation."
+          name: 'Kewa (Santo Domingo) Pueblo',
+          coords: { lat: 35.512, lng: -106.373 },
+          description: "Visible from I-25 at the Santo Domingo exit, Kewa Pueblo has been a center of turquoise jewelry and heishi bead-making for millennia. The nearby Cerrillos Hills contain the oldest continuously mined turquoise deposits in North America — 6,000 years of extraction that supplied trade networks stretching to the Gulf of California.",
+          hook: "The turquoise in pre-Columbian artifacts found as far away as Chaco Canyon and Aztec temples almost certainly came from mines within 30 miles of where you're driving right now."
         },
         {
-          name: 'Coronado Historic Site (Kuaua Pueblo)',
-          coords: { lat: 35.3294, lng: -106.5575 },
-          description: "On the west bank of the Rio Grande in Bernalillo (Exit 242 off I-25), Kuaua Pueblo was occupied from around 1300 AD until the late 1500s. Coronado and 500 soldiers camped near here in 1540. A reconstructed kiva preserves extraordinary Pre-Columbian murals — among the finest indigenous North American art ever found.",
-          hook: "The kiva murals were buried under 17 successive layers of painted plaster — each layer a new ceremonial repaint, like an ancient art palimpsest."
+          name: 'Sandia Mountains East Face',
+          coords: { lat: 35.21, lng: -106.447 },
+          description: "The 10,678-foot Sandia Crest looms over Albuquerque's eastern edge — a nearly vertical 5,000-foot west face of billion-year-old pink granite topped by Pennsylvanian limestone full of marine fossils. The mountains turn a vivid watermelon-pink in the hour after sunset.",
+          hook: "The limestone cap on top of the Sandias formed on the floor of a shallow sea 300 million years ago — you can find intact crinoids and brachiopods embedded in the rock at Sandia Crest, thousands of feet above sea level."
         },
         {
-          name: 'Kasha-Katuwe Tent Rocks',
-          coords: { lat: 35.6584, lng: -106.4230 },
-          description: "Cone-shaped pumice-and-tuff rock formations — some over 90 feet tall — created by volcanic eruptions 6–7 million years ago, about 40 miles southwest of Santa Fe. 'Kasha-Katuwe' means 'white cliffs' in Keresan. The slot canyon trail is a standout hike.",
-          hook: "These eerily perfect cones look computer-generated — they form when a hard capstone protects softer pumice underneath from erosion. Nature's version of a hat rack."
-        },
-        {
-          name: 'La Bajada Mesa Escarpment',
-          coords: { lat: 35.5100, lng: -106.1700 },
-          description: "A dramatic 600-foot volcanic escarpment visible from I-25 about 10 miles southwest of Santa Fe. For 400 years, every traveler between ABQ and Santa Fe had to climb this cliff. The original Route 66 had 23 switchbacks over it between 1926 and 1932.",
-          hook: "The 23-hairpin Route 66 climb up La Bajada was notorious for boiling radiators and overturned wagons — the engineering challenge that prompted building the modern I-25 bypass."
-        },
-        {
-          name: 'Cerrillos Hills State Park',
-          coords: { lat: 35.4450, lng: -106.1270 },
-          description: "1,116 acres atop a collapsed ancient volcano with 1,100+ years of continuous turquoise and lead mining history. The same mines supplied Native Puebloans, Spanish colonists, and 19th-century prospectors. Panoramic views of the Sandia, Ortiz, Jemez, and Sangre de Cristo ranges.",
-          hook: "Cerrillos turquoise was traded as far as Chaco Canyon and the Gulf of Mexico long before Spanish contact — it was New Mexico's first 'export economy.'"
+          name: 'Old Town Albuquerque',
+          coords: { lat: 35.0958, lng: -106.6692 },
+          description: "Founded 1706. Spanish colonial plaza, San Felipe de Neri Church, adobe architecture. ~10 min drive from the EA charger. Some of the best green chile in New Mexico within a few blocks.",
+          hook: "The plaza has been continuously occupied since 1706 — the adobe church in the corner has been in continuous use longer than the United States has existed."
         }
       ]
     },
 
-    /* ── STAGE 5: Santa Fe → Taos ──────────────────────────────────────────── */
+    /* ── STAGE 2: Albuquerque → Gallup (I-40 west) ───────────────────────────── */
     {
-      id: 5,
-      name: 'Santa Fe → Taos',
-      shortName: 'To Taos',
-      distance: 80,
-      cumulativeStart: 455,
-      startCoords: { lat: 35.6272, lng: -105.9910 },
-      endCoords:   { lat: 36.4072, lng: -105.5731 },
+      id: 2,
+      name: 'Albuquerque → Gallup',
+      shortName: 'To Gallup',
+      distance: 140,
+      cumulativeStart: 155,
+      startCoords: { lat: 35.1340, lng: -106.5760 },
+      endCoords:   { lat: 35.5281, lng: -108.7426 },
       socAtStart: 90,
-      socAtEnd: 58,
+      socAtEnd: 44,
       socorroWarning: false,
       juliaVisible: false,
 
-      charging: null,
+      charging: {
+        name: 'Electrify America – Gallup',
+        address: '1650 W Maloney Ave, Gallup, NM 87301',
+        network: 'Electrify America',
+        stalls: 4,
+        maxKw: 350,
+        note: "Earl's Family Restaurant is a few minutes from the charger and has been an I-40 institution for generations. Top off fully here — the Gallup→Flagstaff leg is 175 miles and the longest single stretch on the trip."
+      },
 
-      dining: [],
+      dining: [
+        {
+          type: 'New Mexican Diner · Historic',
+          name: "Earl's Family Restaurant",
+          address: '1400 E Historic Hwy 66, Gallup, NM 87301',
+          walk: '~5 min drive from EA charger',
+          hours: 'Daily 7 AM – 9 PM',
+          service: 'Full table service',
+          note: "A Gallup institution since 1947, directly on Historic Route 66. Known for New Mexican plates, green chile, generous portions, and Navajo fry bread. Beloved by generations of I-40 road-trippers."
+        },
+        {
+          type: 'Mediterranean · Casual',
+          name: 'Oasis Restaurant',
+          address: '1280 W Maloney Ave, Gallup, NM 87301',
+          walk: '~2 min drive from EA charger',
+          hours: 'Mon–Sat 11 AM – 9 PM',
+          service: 'Dine-in, takeout',
+          note: "Closest sit-down option to the charger. Mediterranean and American menu — good shawarma and gyros alongside New Mexican fare. Something different after days of green chile."
+        },
+        {
+          type: 'American Grill',
+          name: "Applebee's Grill + Bar",
+          address: '1560 W Maloney Ave, Gallup, NM 87301',
+          walk: '~2 min drive from EA charger',
+          hours: 'Daily 11 AM – 12 AM',
+          service: 'Full table service',
+          note: "Reliable chain option adjacent to the charger area. Fast and predictable if you want a quick meal before the long run to Flagstaff."
+        }
+      ],
 
       history: {
-        quick: "NM-68, the Low Road, follows the Rio Grande through a gorge carved by volcanic eruptions 5 million years ago — your final run into Taos, one of the oldest continuously inhabited communities on Earth.",
-        full: "NM-68, the 'Low Road,' follows the Rio Grande through a dramatic gorge carved by volcanic activity 5 million years ago. The Taos Pueblo, your destination, has been continuously inhabited for over 1,000 years — a UNESCO World Heritage Site and one of the oldest living communities in North America. D.H. Lawrence lived near Taos in the 1920s and called it 'the most beautiful place I have ever seen.' He's buried at his Kiowa Ranch about 18 miles north of town — his ashes are mixed into the concrete of a small memorial chapel that still stands. The Española valley you pass through was the site of the first Spanish capital of New Mexico in 1598, predating both Santa Fe and Jamestown."
+        quick: "The 140-mile stretch of I-40 west from ABQ to Gallup traces Route 66 through ancient pueblo lands, volcanic badlands, and the trading crossroads of the American Southwest.",
+        full: "When U.S. Route 66 was commissioned in 1926, it was largely stitched together from existing dirt roads that had themselves followed older wagon trails — which had followed even older Native American trading paths. This corridor west of Albuquerque was no exception: the Laguna and Acoma Pueblos along the route were established trade centers centuries before the Spanish arrived. The Laguna people have lived continuously at their pueblo since at least 1699; Acoma, perched on its 367-foot mesa, has been occupied since at least 1150 AD and is considered the oldest continuously inhabited community in the United States. The volcanic badlands of El Malpais — 'the badlands' in Spanish — mark where massive lava flows erupted as recently as 3,000 years ago, creating a landscape of jagged basalt and lava tubes that Ancestral Puebloans used for winter shelter. Gallup itself grew as a railroad town in 1881 when the Atlantic & Pacific Railroad reached the area, and the coal mining and trading industries that followed made it a commercial hub for the surrounding Navajo and Zuni nations. Richardson's Trading Post, open since 1913, is still one of the Southwest's preeminent dealers of Navajo rugs and jewelry."
       },
 
       trivia: [
-        "NM-68 follows the Rio Grande Gorge, carved by the Rio Grande Rift — a crack in the Earth's crust that's still actively widening at about 1–2mm per year. Taos and Albuquerque are, geologically speaking, slowly drifting further apart.",
-        "Española, the small city you pass through, sits near where Don Juan de Oñate established the first permanent Spanish capital of New Mexico in 1598 — at Ohkay Owingeh Pueblo. New Mexico's colonial capital predates Santa Fe by a decade and Jamestown, Virginia (1607) by nine years.",
-        "D.H. Lawrence was given his Kiowa Ranch near Taos in 1924 in exchange for the manuscript of 'Sons and Lovers.' He died in France in 1930, and his wife Frieda had his ashes mixed into concrete in a chapel on the property. She later bequeathed the ranch to the University of New Mexico, where it still stands."
+        "In 1950, a Navajo prospector named Paddy Martinez noticed a yellow stain on a rock near Haystack Mountain, just north of Grants — it turned out to be uranium, the largest deposit in the country at the time. New Mexico became America's top uranium producer, and Grants briefly marketed itself as the 'Uranium Capital of the World.'",
+        "El Malpais contains the longest known ice cave in the contiguous United States — Candelaria Ice Cave stays below freezing year-round because cold air sinks into the lava tube in winter and is trapped there by the rock's insulating mass. The ice is estimated to be at least 3,400 years old.",
+        "The original 1937 realignment of Route 66 through this stretch largely coincides with the current I-40 corridor — meaning much of what is now I-40 between Albuquerque and Gallup IS the old Route 66 pavement, just widened. The ghost of the 'Mother Road' is literally under your tires."
       ],
 
       scenic: [
-        { label: 'Rio Grande Gorge canyon entrance', detail: 'About 8 miles south of Taos, NM-68 drops off the mesa and the canyon walls close in — the river appears below on the left, basalt walls rise on both sides, and the road hugs the cliff face. Pull-offs on the east side offer sheer drop views into the gorge.', icon: '🏔' },
-        { label: 'Velarde valley orchards', detail: 'Between Rinconada and Velarde, the highway is lined with apple and peach orchards. In late May the trees are green and flowering. The gorge walls close around the orchards, creating a lush microclimate completely at odds with the surrounding high desert.', icon: '🍎' },
-        { label: 'San Francisco de Asís Church buttresses', detail: 'Right on NM-68 in Ranchos de Taos, about 4 miles south of the Plaza. The massive rear adobe buttresses have been painted by O\'Keeffe and photographed by Ansel Adams. O\'Keeffe said the back of this church was "one of the most beautiful buildings left in the United States by the early Spaniards."', icon: '⛪' }
+        {
+          label: 'Laguna Mission on the Mesa',
+          detail: "About 45 miles west of Albuquerque at Exit 114, look north — the white San José Mission church of Laguna Pueblo sits on a low sandstone mesa above the freeway, visible for miles. Built in 1699, it's one of the oldest Spanish mission churches in the U.S. still in continuous use.",
+          icon: '⛪'
+        },
+        {
+          label: 'The Black Sea of El Malpais',
+          detail: "Around Exit 89, I-40 skirts the northern edge of El Malpais — a massive field of jet-black basalt lava that erupted as recently as 3,000 years ago. The contrast of the dark, churned-up lava against the red-rock mesas beyond is visually striking and completely unlike anything else on this corridor.",
+          icon: '🌋'
+        },
+        {
+          label: 'Red Rock Country Into Gallup',
+          detail: "The last 20 miles into Gallup the landscape shifts dramatically — tan sandstone gives way to vivid red and orange mesa walls that crowd the highway. This is the edge of Navajo Nation country, and the iron-oxide-rich rock formations signal you're entering a completely different geological and cultural zone.",
+          icon: '🏜️'
+        }
       ],
 
       pois: [
         {
-          name: 'Rio Grande Gorge Bridge',
-          coords: { lat: 36.4358, lng: -105.7225 },
-          description: "800-ft volcanic gorge with one of the highest bridges in the U.S. highway system on US-64 — unmissable. The bridge deck sits 650 feet above the river. Short walk to the center and back.",
-          hook: "The gorge was formed by the same Rio Grande Rift that's slowly pulling New Mexico apart — and the bridge, when it opened in 1965, was the highest in the U.S. highway system."
+          name: 'Rio Puerco Historic Route 66 Bridge',
+          coords: { lat: 35.0337, lng: -106.9421 },
+          description: "A 1933 Pratt through-truss bridge on Historic Route 66, now preserved as a pedestrian span over the Rio Puerco. One of the few surviving examples of New Deal-era highway bridge design in New Mexico, accessible via a short detour from Exit 140 off I-40.",
+          hook: "Built the same year FDR took office — this bridge carried Route 66 traffic for over 50 years before I-40 bypassed it, and it's now a quiet piece of living history on the old alignment."
         },
         {
-          name: 'Taos Pueblo',
-          coords: { lat: 36.4425, lng: -105.5464 },
-          description: "UNESCO World Heritage Site. Continuously inhabited for 1,000+ years. Multi-story adobe dwellings built between 1000–1450 AD still in active use. About 150 people live full-time inside the Pueblo without running water or electricity, by choice. Tours led by tribal members daily.",
-          hook: "The only UNESCO World Heritage Site in the U.S. cited primarily for living Native American culture — these aren't ruins, they're homes. The same families have been here for a thousand years."
+          name: 'Laguna Pueblo — San José Mission',
+          coords: { lat: 35.0391, lng: -107.2543 },
+          description: "The white-washed San José de Laguna Mission, built in 1699 on a sandstone mesa above Laguna Pueblo, is one of the oldest continuously active Spanish mission churches in the United States. Visible from I-40 at Exit 114; tribal visitor protocols apply.",
+          hook: "The interior murals are among the finest surviving examples of colonial mission art in the American Southwest — and the building has been in continuous liturgical use for over 325 years."
         },
         {
-          name: 'San Francisco de Asís Church',
-          coords: { lat: 36.3614, lng: -105.6180 },
-          description: "An 18th-century adobe mission church (completed ~1815) whose massive rear buttresses have been painted by Georgia O'Keeffe and photographed by Ansel Adams — arguably the most-photographed church in the United States. Still an active parish. Community re-plasters the adobe by hand each year.",
-          hook: "O'Keeffe painted this church's back wall multiple times, saying it was 'one of the most beautiful buildings left in the United States by the early Spaniards.' It's right on NM-68 — don't drive past it."
+          name: 'Acoma Pueblo — Sky City',
+          coords: { lat: 34.8963, lng: -107.5829 },
+          description: "Perched 367 feet above the Acoma Plains on a mesa occupied since at least 1150 AD, Acoma is widely considered the oldest continuously inhabited community in the United States. The Sky City tour (from the Acoma Cultural Center at Exit 96 off I-40) is a 30-min detour into one of the most extraordinary places in North America.",
+          hook: "People have lived on top of this mesa — hauling water, food, and building materials up by hand — for at least 900 years. The current residents chose to stay."
         },
         {
-          name: 'Nambé Falls Recreation Area',
-          coords: { lat: 35.8433, lng: -105.9045 },
-          description: "A 175-ft multi-tiered waterfall set in the foothills of the Sangre de Cristo Mountains on the Nambé Pueblo Reservation, about 18 miles north of Santa Fe off US-84/285 and NM-503. Open Thu–Sun; $20/vehicle. Short quarter-mile trails to the falls.",
-          hook: "The Pueblo of Nambé has been continuously inhabited since around 1300 CE — the falls have been a sacred site for over 700 years, and the tribe only opened them to outside visitors relatively recently."
+          name: 'El Malpais National Monument',
+          coords: { lat: 34.8842, lng: -107.9951 },
+          description: "Vast lava flows, ice caves, and natural arches created by volcanic eruptions spanning 3 million to 3,000 years ago. Contains one of the longest known lava tube systems in North America. The visitor center is at Exit 89 off I-40.",
+          hook: "The ice inside Candelaria Ice Cave is at least 3,400 years old, maintained year-round by cold air trapped in the lava tube — you can walk down to it in t-shirt weather outside."
         },
         {
-          name: 'Velarde Orchards & Rio Grande Fruit Stands',
-          coords: { lat: 36.1750, lng: -105.9700 },
-          description: "Fourth-generation family fruit stands strung along NM-68 between Rinconada and Velarde, selling apples, peaches, pears, ristras, and cider from orchards planted in the late 1920s. The Velarde valley is where NM-68 first enters the Rio Grande Gorge.",
-          hook: "Before paved roads, Velarde farmers loaded mules and walked produce to the narrow-gauge railroad at Embudo Station — the same gorge route NM-68 now follows."
+          name: "Richardson's Trading Post — Gallup",
+          coords: { lat: 35.5281, lng: -108.7476 },
+          description: "One of the oldest and largest trading posts in the Southwest, open since 1913 at 222 W Historic Hwy 66. Still operating as a genuine trader in Navajo rugs, Zuni jewelry, and Pueblo pottery — the inventory of pawn jewelry and handmade goods is staggering.",
+          hook: "Unlike tourist gift shops, Richardson's still operates as an active trading post — local Navajo and Zuni artisans bring work here directly, and the back rooms contain museum-quality pieces on working consignment."
+        }
+      ]
+    },
+
+    /* ── STAGE 3: Gallup → Flagstaff (I-40 west) ─────────────────────────────── */
+    {
+      id: 3,
+      name: 'Gallup → Flagstaff',
+      shortName: 'To Flagstaff',
+      distance: 175,
+      cumulativeStart: 295,
+      startCoords: { lat: 35.5281, lng: -108.7426 },
+      endCoords:   { lat: 35.1983, lng: -111.6513 },
+      socAtStart: 90,
+      socAtEnd: 22,
+      socorroWarning: false,
+      juliaVisible: false,
+
+      charging: {
+        name: 'Electrify America – Flagstaff',
+        address: '2601 E Huntington Dr, Flagstaff, AZ 86004',
+        network: 'Electrify America',
+        stalls: 6,
+        maxKw: 350,
+        note: "Black Bart's Steakhouse is 0.6 mi from this charger at the same I-40 interchange — closest full dinner option. Beaver Street Brewery and Macy's Coffee are both ~2.5 miles west in downtown. Charge well here — I-17 to Peoria is still 150 miles, though mostly downhill."
+      },
+
+      dining: [
+        {
+          type: 'Steakhouse · Entertainment',
+          name: "Black Bart's Steakhouse & Musical Revue",
+          address: '2760 E Butler Ave, Flagstaff, AZ 86004',
+          walk: '~0.6 miles from the EA charger (2 min drive or 12 min walk)',
+          hours: 'Mon–Sun 5:00 PM – 9:00 PM',
+          service: 'Full table service; musical revue begins 5:30 PM',
+          note: "The closest full-service restaurant to the EA charger. Server/singers perform Broadway and country numbers tableside while you eat steaks, prime rib, and burgers. Cheesy? Absolutely. Fun? Also yes. Right off I-40 Exit 198."
         },
         {
-          name: "D.H. Lawrence Ranch (Kiowa Ranch)",
-          coords: { lat: 36.6200, lng: -105.5800 },
-          description: "The 160-acre ranch given to Lawrence in 1924 (in exchange for the manuscript of 'Sons and Lovers') where he wrote 'St. Mawr' and parts of 'The Plumed Serpent.' His ashes are embedded in a small memorial chapel on the property. The University of New Mexico owns and operates it. About 18 miles north of Taos off NM-522.",
-          hook: "Lawrence called Taos 'the most beautiful place I have ever seen.' He died in France in 1930, but his wife Frieda made sure he ended up here — mixed into concrete, looking out at the mountains forever."
+          type: 'Brewpub · Casual',
+          name: 'Beaver Street Brewery',
+          address: '11 S Beaver St, Flagstaff, AZ 86001',
+          walk: '~2.5 miles west (5 min drive into downtown)',
+          hours: 'Mon–Thu 11:30 AM – 9:00 PM; Fri–Sat 11:00 AM – 10:00 PM; Sun 11:00 AM – 9:00 PM',
+          service: 'Full table service',
+          note: "Flagstaff's anchor brewpub — wood-fired pizzas, hearty sandwiches, and house-brewed ales in a relaxed warehouse space one block from the historic train depot. Good for a longer charging stop."
+        },
+        {
+          type: 'Café · Vegetarian',
+          name: "Macy's European Coffeehouse & Bakery",
+          address: '14 S Beaver St, Flagstaff, AZ 86001',
+          walk: '~2.5 miles west (5 min drive into downtown)',
+          hours: 'Mon–Thu 6:00 AM – 2:00 PM; Fri–Sun 6:00 AM – 4:00 PM',
+          service: 'Counter order; café pace',
+          note: "A Flagstaff institution for 30+ years. Entirely vegetarian menu with excellent espresso, house-baked pastries, and filling grain bowls. If you're rolling through in the morning, this is the move."
+        }
+      ],
+
+      history: {
+        quick: "This 175-mile corridor traces the original spine of Route 66 through the Navajo and Hopi heartland — a stretch geologists call a 'living textbook,' where 225-million-year-old petrified logs, meteorite craters, painted badlands, and sky-high ponderosa pine forests stack up in a single afternoon's drive.",
+        full: "The Gallup-to-Flagstaff corridor follows what is arguably the most geologically and culturally dense segment of the old Mother Road. Route 66 was designated here in 1926, threading a trading-post economy that had sustained the Navajo and Puebloan peoples for centuries before the railroad arrived in the 1880s. Window Rock became the administrative seat of the Navajo Nation in 1936 under Commissioner John Collier, giving the largest Native American nation in the U.S. its modern governmental home. Petrified Forest and the Painted Desert had been protected since 1906, when Theodore Roosevelt made them a National Monument; Congress doubled the park's size in 2004. The highway towns of Holbrook and Winslow thrived as Route 66 pit-stops — Holbrook's iconic Wigwam Motel opened in 1950 and is now a National Register landmark — while Two Guns, a murder-riddled tourist trap near Canyon Diablo, peaked in the 1940s and burned out by 1971. Jackson Browne's broken-down car in Winslow inspired 'Take It Easy,' the Eagles' debut single (1972), and put the town on a map it has never left. Flagstaff, perched at 7,000 feet in the world's largest ponderosa pine forest, was Route 66's highest-elevation city and became a science outpost — Clyde Tombaugh discovered Pluto at Lowell Observatory in 1930. I-40 fully replaced Route 66 through Arizona in 1984, but the old highway's ghost is visible at nearly every exit."
+      },
+
+      trivia: [
+        "Petrified Forest is the only national park that preserves a driveable section of Historic Route 66 — and it's also the only park where theft directly threatens the resource: roughly 12 tons of petrified wood are stolen each year, prompting the park to run a 'Conscience Wood' program where repentant thieves mail stolen pieces back from around the world, often with notes saying the 'bad luck wood' cursed them.",
+        "Flagstaff became the world's first International Dark Sky City in 2001, thanks largely to Lowell Observatory's century-old lobbying. In 1930, astronomer Clyde Tombaugh discovered Pluto from Flagstaff using a 13-inch telescope — and when the New Horizons probe flew past Pluto in 2015, a portion of Tombaugh's ashes were aboard.",
+        "Meteor Crater is so geometrically perfect that for 50 years after its discovery scientists assumed it was a collapsed volcanic dome — mining entrepreneur Daniel Barringer spent 26 years and his personal fortune trying to drill down to the iron meteorite, not realizing that 90 percent of the impactor vaporized on impact. NASA later used the crater to teach Apollo crews what impact geology looks like from ground level."
+      ],
+
+      scenic: [
+        {
+          label: 'Painted Desert Sunrise Colors',
+          detail: "At I-40 Exit 311, the northbound pull-off at the Painted Desert Visitor Center faces a 50-mile sweep of Chinle Formation badlands. In morning light the purples and crimsons are almost unreal — the iron oxide in the mudstones literally glows. Give it five minutes out of the car.",
+          icon: '🌅'
+        },
+        {
+          label: 'Petrified Logs in the Desert',
+          detail: "Stop at the Crystal Forest pull-off inside Petrified Forest National Park (no fee required to drive through). Gemstone-quality petrified logs — some 100 feet long — lie scattered across open desert exactly where they fell 225 million years ago. The cross-sections of quartz crystal glint in any direction.",
+          icon: '💎'
+        },
+        {
+          label: 'San Francisco Peaks Above Flagstaff',
+          detail: "As you descend into Flagstaff on I-40 west, the San Francisco Peaks — a collapsed stratovolcano holding Arizona's highest point (Humphreys Peak, 12,633 ft) — appear dead ahead, often snow-capped well into June. The contrast of the high-desert city against genuine alpine peaks is one of the more visually surprising moments on the drive.",
+          icon: '🏔️'
+        }
+      ],
+
+      pois: [
+        {
+          name: 'Window Rock — Navajo Nation Capital',
+          coords: { lat: 35.6703, lng: -109.0573 },
+          description: "The seat of the Navajo Nation government, named for a massive 200-foot sandstone arch sacred in Navajo Water Way ceremonies for centuries. The Navajo Nation Museum and the outdoor Veterans Memorial honoring Navajo Code Talkers are both here. 23 miles north of I-40 on AZ-264.",
+          hook: "A 23-mile detour north of Gallup lands you at the capital of the largest Native American nation in the U.S. — governed from beneath a stone window that Navajo medicine men have visited for rain ceremonies for generations."
+        },
+        {
+          name: 'Painted Desert — North Entrance Overlook',
+          coords: { lat: 35.0835, lng: -109.7886 },
+          description: "A sweeping badlands panorama of red, purple, and orange Chinle Formation mudstones, visible from the Painted Desert Visitor Center right off I-40 Exit 311. The colors shift dramatically with the angle of the sun.",
+          hook: "The badlands here aren't painted — those hues are real iron oxides, manganese, and carbon baked into 225-million-year-old sediment from a tropical floodplain that once covered Arizona."
+        },
+        {
+          name: 'Petrified Forest National Park',
+          coords: { lat: 34.9099, lng: -109.8069 },
+          description: "The only national park in the U.S. that contains a preserved section of Historic Route 66, and home to the world's largest concentration of petrified wood. Ancient Triassic-era logs — silica-replaced cell by cell over 225 million years — lie scattered across the desert in rainbow-crystal cross-sections.",
+          hook: "These aren't wood anymore — they're quartz. Each 'log' is essentially a giant gemstone, cut open by erosion to reveal rings of amethyst, jasper, and agate."
+        },
+        {
+          name: "Winslow — Standin' on the Corner Park",
+          coords: { lat: 35.0242, lng: -110.6973 },
+          description: "A compact public park at the corner of Kinsley Ave and 2nd Street commemorating the Eagles' 1972 smash 'Take It Easy,' co-written by Jackson Browne after his car broke down here. Features a bronze troubadour statue, a trompe-l'œil mural, and a 2016-added statue of Glenn Frey.",
+          hook: "Winslow installs musical rumble strips on the approach roads that play 'Take It Easy' as you drive over them — the town has fully committed to the bit."
+        },
+        {
+          name: 'Meteor Crater (Barringer Crater)',
+          coords: { lat: 35.0281, lng: -111.0232 },
+          description: "The best-preserved meteorite impact crater on Earth — 3,900 feet wide and 560 feet deep — formed about 50,000 years ago when a 150-foot iron meteorite traveling 26,000 mph struck the Colorado Plateau. Privately owned, with a rim-top observation deck and interactive museum. Exit 233 off I-40.",
+          hook: "NASA trained Apollo astronauts here in the 1960s because this is the closest thing on Earth to a lunar surface — and the crater is so perfectly preserved you can see the uplifted rim layers like a geologic sandwich."
+        },
+        {
+          name: 'Two Guns Ghost Town',
+          coords: { lat: 35.3905, lng: -111.4069 },
+          description: "A Route 66 roadside ruin perched on the rim of Canyon Diablo. What remains are the burned stone walls of a 1920s zoo, trading post, and fake 'Apache Death Cave' tourist attraction cobbled together by a con man who called himself Chief Two Gun White Calf.",
+          hook: "The original owner staged at least one murder on the property, ran a zoo of rattlesnakes and mountain lions, and was eventually run off by a land dispute — the most lawless stretch of 66."
+        }
+      ]
+    },
+
+    /* ── STAGE 4: Flagstaff → Peoria (I-17 south) ────────────────────────────── */
+    {
+      id: 4,
+      name: 'Flagstaff → Peoria',
+      shortName: 'To Peoria',
+      distance: 150,
+      cumulativeStart: 470,
+      startCoords: { lat: 35.1983, lng: -111.6513 },
+      endCoords:   { lat: 33.7179, lng: -112.3284 },
+      socAtStart: 90,
+      socAtEnd: 50,
+      socorroWarning: false,
+      juliaVisible: false,
+
+      charging: {
+        name: 'Electrify America – Phoenix Bell Rd (optional top-off)',
+        address: '3246 E Bell Rd, Phoenix, AZ 85032',
+        network: 'Electrify America',
+        stalls: 8,
+        maxKw: 350,
+        note: "Optional stop ~35 miles before Trilogy. If your SOC is above 35% leaving Flagstaff, you may also skip this and charge at EA @ 5010 N 95th Ave, Glendale (right next to Ric's On 95th bar & grill, ~8 miles from Trilogy)."
+      },
+
+      dining: [
+        {
+          type: 'Italian · Modern Casual',
+          name: 'The Sicilian Butcher',
+          address: '9780 W Northern Ave #1100, Peoria, AZ 85345',
+          walk: '~3 miles from EA @ 5010 N 95th Ave, Glendale',
+          hours: 'Sun–Thu 11am–10pm, Fri–Sat 11am–10:30pm',
+          service: 'Dine-in, takeout, catering',
+          note: "Chef Joey Maggiore's modern-casual Sicilian concept — handmade pasta, charcuterie boards, and a choose-your-own-meatball experience. The most convenient upscale option near Trilogy at Vistancia. Your 'welcome home' dinner."
+        },
+        {
+          type: 'Sports Bar & Grill',
+          name: "Ric's On 95th",
+          address: '5134 N 95th Ave, Glendale, AZ 85305',
+          walk: '~0.1 miles from EA @ 5010 N 95th Ave, Glendale',
+          hours: 'Mon–Sat 11am–12am, Sun 10am–12am',
+          service: 'Dine-in, takeout, delivery',
+          note: "Practically next door to the Glendale EA charger — the plug-in-and-eat option. Local Glendale sports bar with 40+ TVs, handmade pizzas, wings, and burgers. Not a chain, very convenient."
+        },
+        {
+          type: 'Mexican',
+          name: 'Corazon de Agave',
+          address: '4010 E Bell Rd #102, Phoenix, AZ 85032',
+          walk: '~0.8 miles from EA @ 3246 E Bell Rd',
+          hours: 'Mon–Thu 11am–10pm, Fri–Sat 11am–11pm, Sun 12pm–7pm',
+          service: 'Dine-in, takeout',
+          note: "Locally owned 2024 newcomer with a serious following for its carne asada. A genuinely independent spot in a sea of chains along Bell Road — convenient if you stopped at the Bell Rd charger."
+        }
+      ],
+
+      history: {
+        quick: "Interstate 17 plunges nearly 6,000 feet from Flagstaff's ponderosa-pine plateau down through the ancient cliffs of the Mogollon Rim to the Sonoran Desert floor — one of the most dramatic single-highway elevation changes in the lower 48. The road largely follows a stagecoach trail blazed in the 1870s that once took 30 bone-jarring hours to cover the same 150 miles.",
+        full: "The corridor linking the Colorado Plateau to the Valley of the Sun has been a travel artery for millennia, used by Sinagua traders, Spanish explorers, and Anglo settlers alike. In March 1878 the first stagecoach line began operating on a rough dirt road between what is now Black Canyon City and Prescott, a journey plagued by Agua Fria River crossings and the occasional highwayman. Construction of what ADOT calls the Black Canyon Freeway began in 1956, but the last 5.4-mile stretch near Camp Verde didn't open until August 1978, completing the route. The highway descends through Carboniferous and Permian limestone and sandstone laid down when this region sat beneath shallow inland seas, slicing past the Mogollon Rim — a 200-mile escarpment that forms the southern edge of the Colorado Plateau — before dropping into the basin-and-range terrain of metropolitan Phoenix. The biological transition is equally dramatic: at roughly mile marker 249 near Black Canyon City, the first giant saguaros appear on the hillsides, announcing the edge of the Sonoran Desert and one of the most biodiverse arid ecosystems on Earth."
+      },
+
+      trivia: [
+        "The 6,000-foot elevation drop from Flagstaff to Phoenix along I-17 is roughly equivalent to stacking four Empire State Buildings on top of each other — and you drive it in under two hours at freeway speed.",
+        "The Mogollon Rim's limestone cliffs were formed from sediments deposited when central Arizona lay beneath a shallow inland sea during the Carboniferous and Permian periods, more than 250 million years ago — long before the dinosaurs.",
+        "Before I-17 opened, the stagecoach journey from Phoenix to Prescott via Black Canyon took a grueling 30 hours on a road that crossed the Agua Fria River multiple times; today the same stretch takes about 90 minutes."
+      ],
+
+      scenic: [
+        {
+          label: 'Mogollon Rim Break — The Big Drop Begins',
+          detail: "Leaving Flagstaff's ponderosa pine forest, the highway suddenly tilts southward and the Colorado Plateau simply ends — vertical walls of cream-colored Kaibab Limestone frame both sides of the road as the Verde Valley unfolds thousands of feet below. On a clear day you can see 60 miles to the south.",
+          icon: '🏔️'
+        },
+        {
+          label: 'Verde Valley Panorama near Camp Verde',
+          detail: "After the long descent, the Verde River valley spreads wide and lush around Exit 289 — a rare ribbon of cottonwood green threading through red-rock canyon country. The vivid contrast of red sandstone cliffs, green riparian corridor, and distant blue sky is the Verde Valley at its most cinematic.",
+          icon: '🌄'
+        },
+        {
+          label: 'First Saguaros at Black Canyon City',
+          detail: "Around mile marker 249, the iconic silhouettes of giant saguaro cacti begin appearing on the rocky hillsides — arms raised as if greeting travelers descending into the desert. This is the Sonoran Desert's calling card, and it means you're less than 40 miles from home.",
+          icon: '🌵'
+        }
+      ],
+
+      pois: [
+        {
+          name: 'Montezuma Castle National Monument',
+          coords: { lat: 34.6116, lng: -111.835 },
+          description: "A 20-room, five-story cliff dwelling built by the Southern Sinagua people between roughly 1125 and 1395 AD, perched 90 feet up a sheer limestone cliff above Beaver Creek. One of the first four National Monuments designated by President Theodore Roosevelt in 1906.",
+          hook: "One of the best-preserved prehistoric cliff dwellings in North America — and the Aztec emperor it's named for had absolutely nothing to do with it."
+        },
+        {
+          name: 'Montezuma Well',
+          coords: { lat: 34.6492, lng: -111.7522 },
+          description: "A natural limestone sinkhole 386 feet across that pumps 1.5 million gallons of spring water daily regardless of drought — and harbors five species of aquatic life found nowhere else on Earth. The Sinagua people channeled its outflow for irrigation as far back as the 8th century.",
+          hook: "A desert spring so chemically unique — highly carbonated, laced with arsenic — that five animals evolved here and only here, in this one pool."
+        },
+        {
+          name: 'Arcosanti',
+          coords: { lat: 34.3639, lng: -112.0986 },
+          description: "Paolo Soleri began building this experimental 'arcology' — a fusion of architecture and ecology — on a basaltic mesa near Cordes Junction in 1970, imagining a pedestrian city for 5,000 residents. More than 50 years later, it is roughly 5% complete and remains one of the most thought-provoking built arguments for rethinking how humans inhabit the planet.",
+          hook: "Paolo Soleri's half-finished utopia has been under construction for over 50 years — and the incompleteness is part of the point."
+        },
+        {
+          name: 'Mogollon Rim Overlook (~MP 322–290)',
+          coords: { lat: 34.7833, lng: -111.650 },
+          description: "Driving south from Flagstaff, the highway crests the Mogollon Rim and begins a sustained 6,000-foot plunge through layers of Kaibab Limestone, Coconino Sandstone, and Permian-era rock. The Verde Valley opens below in shades of red, ochre, and green.",
+          hook: "You're driving down through 300 million years of geological time — each cliff band is a different chapter."
+        },
+        {
+          name: 'Black Canyon City Saguaro Threshold (~MP 249)',
+          coords: { lat: 34.0583, lng: -112.145 },
+          description: "Just past the Bumble Bee/Crown King exit, giant saguaro cacti begin dotting the hillsides — the unmistakable biological announcement that you've crossed into the Lower Sonoran Desert. The landscape transforms from piñon-juniper scrub to the iconic Sonoran palette of saguaro, palo verde, and brittlebush.",
+          hook: "Watch the exact moment the saguaros appear — it's the desert's way of saying 'welcome to Phoenix's backyard.'"
         }
       ]
     }
@@ -708,153 +600,149 @@ const TRIP_DATA = {
 
   gruet: [
     {
-      city: 'Albuquerque',
-      address: '8400 Pan American Fwy NE, Albuquerque, NM 87113',
-      phone: '(505) 821-0055 ext. 2',
-      // closeHour indexed by day: 0=Sun,1=Mon,...,6=Sat
-      openHour: 11,
-      closeHour: [19, 19, 19, 19, 21, 21, 21],
-      tockUrl: 'https://www.exploretock.com/gruet-winery-albuquerque',
-      distanceNote: '~15 min drive from EA charger',
-      tripArrivalNote: 'You arrive ~3:45–4:15 PM',
-      wines: 'Blanc de Noirs, Brut, Blanc de Blancs, Demi-Sec',
-      note: 'The original winery tasting room. Tight window given Julia pickup at 5 PM — call ahead or reserve on Tock.',
-      stageAvailable: [3] // visible when on stage 3 (Socorro→ABQ) or at ABQ
-    },
-    {
       city: 'Santa Fe',
       address: '210 Don Gaspar Ave, Hotel St. Francis, Santa Fe, NM 87501',
       phone: 'See website',
       openHour: 11,
       closeHour: [19, 19, 19, 19, 21, 21, 21],
       tockUrl: 'https://www.exploretock.com/gruet-winery-santafe',
-      distanceNote: '~10 min drive from EA charger',
-      tripArrivalNote: 'You arrive ~6:30 PM',
+      distanceNote: '~10 min drive from EA charger at Herrera Dr',
+      tripArrivalNote: 'You stop here ~9:30–10:00 AM',
       wines: 'Blanc de Noirs, Brut, Rosé, Blanc de Blancs',
-      note: 'In the gorgeous Hotel St. Francis downtown. Thu–Sat open until 9 PM — ideal if your trip falls on a weekend.',
-      stageAvailable: [4, 5] // visible from ABQ→Santa Fe stage onward
+      note: "In the gorgeous Hotel St. Francis downtown. Opens at 11 AM — you'll be there right around opening if you left Taos at 8. Thu–Sat open until 9 PM on weekends.",
+      stageAvailable: [0, 1]
+    },
+    {
+      city: 'Albuquerque',
+      address: '8400 Pan American Fwy NE, Albuquerque, NM 87113',
+      phone: '(505) 821-0055 ext. 2',
+      openHour: 11,
+      closeHour: [19, 19, 19, 19, 21, 21, 21],
+      tockUrl: 'https://www.exploretock.com/gruet-winery-albuquerque',
+      distanceNote: '~15 min drive from EA Uptown charger',
+      tripArrivalNote: 'You arrive ABQ ~11:00 AM–12:00 PM',
+      wines: 'Blanc de Noirs, Brut, Blanc de Blancs, Demi-Sec',
+      note: 'The original winery and tasting room. Good timing — you should arrive ABQ right around opening. Reserve on Tock or call ahead on weekends.',
+      stageAvailable: [1, 2]
     }
   ],
 
-  // ── TAOS DESTINATION ─────────────────────────────────────────────────────
-  taos: {
-    coords: { lat: 36.4072, lng: -105.5731 },
-    pueblo: {
-      hours: '9:00 AM – 4:00 PM daily (check taospueblo.com — closes for ceremonies)',
-      admission: '~$25/adult · guided tours led by tribal members',
-      url: 'https://taospueblo.com',
-      tip: 'Arrive early — the morning light on the north house adobe is extraordinary, and crowds thin toward midday.'
+  // ── DESTINATION: Peoria / Trilogy at Vistancia ────────────────────────────
+  destination: {
+    coords: { lat: 33.7179, lng: -112.3284 },
+    trilogy: {
+      text: "Trilogy at Vistancia — 27980 N Trilogy Blvd, Peoria, AZ 85383. You're home. Taos to Trilogy: 620 miles through the Rio Grande Gorge, the ancient pueblos, Route 66, I-40, and the Mogollon Rim. Not bad for a single day.",
+      url: 'https://www.trilogylife.com/communities/vistancia'
     },
     dining: [
       {
-        type: 'Sit-down · Historic',
-        name: "Doc Martin's",
-        address: '125 Paseo del Pueblo Norte (Historic Taos Inn)',
-        walk: 'On the Plaza',
-        hours: 'Dinner from 5:30 PM',
-        service: 'Full service',
-        note: "Inside the legendary 1936 Historic Taos Inn. New Mexican fine dining — the green chile stew and posole are benchmarks. Order the Taos margarita. Reservations strongly recommended."
+        type: 'Italian · Modern Casual',
+        name: 'The Sicilian Butcher',
+        address: '9780 W Northern Ave #1100, Peoria, AZ 85345',
+        walk: '~10 min drive from Trilogy',
+        hours: 'Sun–Thu 11am–10pm, Fri–Sat 11am–10:30pm',
+        service: 'Dine-in, takeout',
+        note: "The welcome-home dinner. Chef Joey Maggiore's Sicilian concept — handmade pasta, charcuterie, and a choose-your-own-meatball experience. The most convenient upscale option near Trilogy at Vistancia."
       },
       {
-        type: 'Casual · New Mexican',
-        name: "Orlando's New Mexican Café",
-        address: '1114 Don Juan Valdez Ln',
-        walk: '5 min drive north of Plaza',
-        hours: 'Lunch & dinner, closed Mon',
-        service: '~20 min',
-        note: "Local favorite for decades. Best red chile in Taos — unpretentious, cash-friendly, always packed. The Christmas plate (red and green) is the move."
+        type: 'Sports Bar & Grill',
+        name: "Ric's On 95th",
+        address: '5134 N 95th Ave, Glendale, AZ 85305',
+        walk: '~15 min drive from Trilogy',
+        hours: 'Mon–Sat 11am–12am, Sun 10am–12am',
+        service: 'Dine-in, takeout',
+        note: "Local Glendale sports bar practically next door to the Glendale EA charger. 40+ TVs, handmade pizzas, wings, and burgers. If you charged at Glendale, dinner is already sorted."
       },
       {
-        type: 'Craft beer · Casual',
-        name: 'Taos Mesa Brewing',
-        address: '20 ABC Mesa Rd (West Mesa location)',
-        walk: '10 min drive',
-        hours: 'Daily 11 AM – 9 PM',
-        service: 'Bar & kitchen',
-        note: "Award-winning New Mexico craft brewery with a massive outdoor mesa patio and live music most nights. Perfect for a relaxed end to a long day — flights of local beer, good burgers, big sky views."
-      },
-      {
-        type: 'Upscale · Patio',
-        name: "Lambert's of Taos",
-        address: '123 Bent St',
-        walk: '2 min from Plaza',
-        hours: 'Dinner from 5:30 PM',
-        service: 'Full service',
-        note: "Taos's most celebrated restaurant for 30+ years. Contemporary American with strong NM influences. The duck confit and green chile mac & cheese are standouts. Excellent wine list."
+        type: 'Mexican',
+        name: 'Corazon de Agave',
+        address: '4010 E Bell Rd #102, Phoenix, AZ 85032',
+        walk: '~12 min drive from Trilogy',
+        hours: 'Mon–Thu 11am–10pm, Fri–Sat 11am–11pm, Sun 12pm–7pm',
+        service: 'Dine-in, takeout',
+        note: "Locally owned 2024 newcomer with a serious following for its carne asada. Near the Bell Rd EA charger — convenient if you stopped there on the way in."
       }
     ]
   },
 
   // ── MILESTONES ─────────────────────────────────────────────────────────────
-  // Fired once each via GPS proximity or stage change. id must be unique.
   milestones: [
     {
-      id: 'white-mountains',
-      type: 'stage',
-      stage: 1,
-      icon: '🌲',
-      title: 'White Mountains',
-      detail: 'Salt River Canyon coming up — Arizona\'s most dramatic 5 miles of road.'
+      id: 'low-road-gorge',
+      type: 'proximity',
+      coords: { lat: 36.269, lng: -105.782 },
+      radiusMiles: 4,
+      icon: '🏜',
+      title: 'Rio Grande Gorge',
+      detail: "You're in it — 600 feet of basalt carved by a river that's been at this for 2 million years."
     },
     {
-      id: 'new-mexico',
-      type: 'proximity',
-      coords: { lat: 34.00, lng: -109.05 },
-      radiusMiles: 4,
+      id: 'santa-fe',
+      type: 'stage',
+      stage: 1,
       icon: '🌵',
-      title: 'Welcome to New Mexico!',
-      detail: 'Land of Enchantment. The whole vibe just changed.'
+      title: 'Santa Fe Charging Stop',
+      detail: 'Oldest state capital in the U.S. Gruet tasting room opens at 11 AM downtown.'
+    },
+    {
+      id: 'albuquerque',
+      type: 'stage',
+      stage: 2,
+      icon: '🎈',
+      title: 'Albuquerque!',
+      detail: 'Hot air balloon capital of the world. The long I-40 push west begins here.'
     },
     {
       id: 'halfway',
       type: 'miles',
-      miles: 287,
+      miles: 310,
       icon: '🎉',
-      title: 'Halfway to Taos!',
-      detail: 'You\'ve crossed 287 miles. The hard climbs are behind you.'
+      title: 'Halfway Home!',
+      detail: '310 miles down. Gallup ahead — charge up for the big I-40 push to Flagstaff.'
     },
     {
-      id: 'continental-divide',
+      id: 'arizona-border',
       type: 'proximity',
-      coords: { lat: 34.2997, lng: -108.1330 },
+      coords: { lat: 35.0, lng: -109.05 },
       radiusMiles: 4,
-      icon: '⛰',
-      title: 'Continental Divide!',
-      detail: 'Rain east of here flows to the Gulf of Mexico.'
+      icon: '🌵',
+      title: 'Welcome to Arizona!',
+      detail: "Petrified Forest and Painted Desert ahead. You're in the home state."
     },
     {
-      id: 'rio-grande',
-      type: 'stage',
-      stage: 3,
-      icon: '🌊',
-      title: 'Rio Grande Valley',
-      detail: 'Following the river north — Albuquerque in ~75 miles.'
-    },
-    {
-      id: 'julia-incoming',
+      id: 'meteor-crater',
       type: 'proximity',
-      coords: { lat: 35.1340, lng: -106.5760 },
-      radiusMiles: 8,
-      icon: '✈️',
-      title: 'ABQ ahead!',
-      detail: 'Julia lands at 5:00 PM · ABQ Sunport is ~10 miles from the charger.'
+      coords: { lat: 35.0281, lng: -111.0232 },
+      radiusMiles: 5,
+      icon: '☄️',
+      title: 'Meteor Crater ahead!',
+      detail: 'Exit 233 — the best-preserved impact crater on Earth. 3,900 feet wide. Apollo training ground.'
     },
     {
-      id: 'final-leg',
+      id: 'flagstaff',
       type: 'stage',
-      stage: 5,
-      icon: '🏁',
-      title: 'Final leg!',
-      detail: 'Santa Fe → Taos on the Low Road. Rio Grande Gorge in ~40 miles.'
+      stage: 4,
+      icon: '🏔️',
+      title: 'Flagstaff — Final Charge!',
+      detail: "7,000 feet in the world's largest ponderosa pine forest. One big descent left."
     },
     {
-      id: 'taos-arrival',
+      id: 'saguaros',
       type: 'proximity',
-      coords: { lat: 36.4072, lng: -105.5731 },
+      coords: { lat: 34.0583, lng: -112.145 },
+      radiusMiles: 3,
+      icon: '🌵',
+      title: 'First Saguaros!',
+      detail: "The Sonoran Desert is welcoming you home. Trilogy is less than 40 miles away."
+    },
+    {
+      id: 'home-arrival',
+      type: 'proximity',
+      coords: { lat: 33.7179, lng: -112.3284 },
       radiusMiles: 4,
-      icon: '🎊',
-      title: 'Welcome to Taos!',
-      detail: 'You drove 575 miles through the American Southwest. Well done.'
+      icon: '🏠',
+      title: 'Welcome Home!',
+      detail: 'Taos to Trilogy. You made it.'
     }
   ]
 };

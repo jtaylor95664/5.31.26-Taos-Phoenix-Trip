@@ -99,7 +99,7 @@ function getMilesToNextStop(lat, lng, stageIdx) {
 
 /* ── GOOGLE MAPS ──────────────────────────────────────────────────────────── */
 function initMap() {
-  const center = { lat: 34.6, lng: -108.9 }; // rough center of route
+  const center = { lat: 35.0, lng: -109.0 }; // rough center of Taos→Phoenix route
 
   state.map = new google.maps.Map(el('map'), {
     center,
@@ -368,50 +368,15 @@ function computeElapsed() {
 }
 
 function updateJuliaBuffer() {
-  const juliaStageIdx = 3; // After ABQ stage
-  if (state.currentStage > juliaStageIdx) {
-    el('julia-cell').classList.add('hidden');
-    return;
-  }
+  // Return trip: show remaining charge stops count instead of Julia buffer
   el('julia-cell').classList.remove('hidden');
-
-  // Remaining drive time to ABQ from current position
-  let milestoABQ = 0;
-  if (state.currentStage === juliaStageIdx) {
-    // On the Socorro→ABQ leg itself — use remaining miles on this leg
-    if (state.userLat !== null) {
-      milestoABQ = getMilesToNextStop(state.userLat, state.userLng, state.currentStage);
-    }
-  } else {
-    for (let i = state.currentStage; i < juliaStageIdx; i++) {
-      const legMiles = state.routeLegs[i] || TRIP_DATA.stages[i].distance;
-      if (i === state.currentStage && state.userLat !== null) {
-        milestoABQ += getMilesToNextStop(state.userLat, state.userLng, i);
-      } else {
-        milestoABQ += legMiles;
-      }
-    }
-  }
-
-  // Add charging stops en route to ABQ
-  const chargeStopsToABQ = TRIP_DATA.stages.slice(state.currentStage, juliaStageIdx)
-    .filter(s => s.charging).length;
-  const driveMinutes = (milestoABQ / TRIP_DATA.avgSpeedMph) * 60;
-  const chargeMinutes = chargeStopsToABQ * TRIP_DATA.avgChargeMinutes;
-  const etaABQ = new Date(Date.now() + (driveMinutes + chargeMinutes) * 60000);
-
-  const juliaLanding = new Date(TRIP_DATA.tripDate + 'T00:00:00');
-  juliaLanding.setHours(TRIP_DATA.julia.landingHour, TRIP_DATA.julia.landingMinute, 0, 0);
-
-  const bufferMs = juliaLanding - etaABQ;
-  const bufferMin = Math.round(bufferMs / 60000);
-
-  if (bufferMin > 0) {
-    el('julia-buffer').textContent = `+${formatDuration(bufferMin)}`;
+  const remaining = getRemainingChargeStops(state.currentStage);
+  if (remaining === 0) {
+    el('julia-buffer').textContent = 'Done!';
     el('julia-buffer').style.color = '#27AE60';
   } else {
-    el('julia-buffer').textContent = `${formatDuration(Math.abs(bufferMin))} tight`;
-    el('julia-buffer').style.color = '#E67E22';
+    el('julia-buffer').textContent = `${remaining} left`;
+    el('julia-buffer').style.color = '';
   }
 }
 
@@ -423,9 +388,8 @@ function updateSocorroWarning(stageIdx) {
 
 /* ── JULIA WIDGET ──────────────────────────────────────────────────────────── */
 function updateJuliaWidget(stageIdx) {
-  const stage = TRIP_DATA.stages[stageIdx];
-  const show = stage && stage.juliaVisible;
-  el('julia-widget').classList.toggle('hidden', !show);
+  // No Julia pickup on return trip — widget is permanently hidden
+  el('julia-widget').classList.add('hidden');
 }
 
 /* ── STAGE NOTES RENDER ───────────────────────────────────────────────────── */
@@ -480,7 +444,7 @@ function renderDiningCard(stage) {
     ...(stage.dining_extra || []),
   ];
   if (allDining.length === 0) {
-    div.innerHTML = `<p class="no-dining-note">Almost there — dining when you arrive in Taos!</p>`;
+    div.innerHTML = `<p class="no-dining-note">Almost there — dinner when you get home!</p>`;
     return;
   }
   div.innerHTML = allDining.map((d, i) => `
@@ -809,8 +773,8 @@ function showToast(icon, title, detail, duration = 5500) {
 
 /**
  * renderArrivalCard(stageIdx)
- * Shows only on the final stage (5 = Santa Fe → Taos).
- * Displays live trip stats + Taos dining + Pueblo info.
+ * Shows only on the final stage (4 = Flagstaff → Peoria).
+ * Displays live trip stats + arrival dining + Trilogy info.
  */
 function renderArrivalCard(stageIdx) {
   const card = el('arrival-card');
@@ -847,10 +811,10 @@ function renderArrivalCard(stageIdx) {
     </div>
   `;
 
-  // ── Taos dining ──
+  // ── Arrival dining ──
   const diningDiv = el('arrival-dining');
-  if (TRIP_DATA.taos && TRIP_DATA.taos.dining) {
-    diningDiv.innerHTML = TRIP_DATA.taos.dining.map((d, i) => `
+  if (TRIP_DATA.destination && TRIP_DATA.destination.dining) {
+    diningDiv.innerHTML = TRIP_DATA.destination.dining.map((d, i) => `
       <button class="dining-item-btn" data-arrival-idx="${i}" aria-label="Details for ${d.name}">
         <span class="dining-type">${d.type}</span>
         <div class="dining-name">${d.name}</div>
@@ -866,19 +830,17 @@ function renderArrivalCard(stageIdx) {
     diningDiv.querySelectorAll('.dining-item-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const idx = parseInt(btn.dataset.arrivalIdx, 10);
-        openDiningModal(TRIP_DATA.taos.dining[idx]);
+        openDiningModal(TRIP_DATA.destination.dining[idx]);
       });
     });
   }
 
-  // ── Taos Pueblo info ──
-  const pueblo = TRIP_DATA.taos && TRIP_DATA.taos.pueblo;
-  if (pueblo) {
+  // ── Trilogy info ──
+  const dest = TRIP_DATA.destination;
+  if (dest && dest.trilogy) {
     el('arrival-pueblo').innerHTML =
-      `<strong>Hours:</strong> ${pueblo.hours}<br>` +
-      `<strong>Admission:</strong> ${pueblo.admission}<br>` +
-      `<em>${pueblo.tip}</em><br>` +
-      `<a href="${pueblo.url}" target="_blank" rel="noopener" style="color:var(--blue);text-decoration:underline;font-size:.78rem;">taospueblo.com →</a>`;
+      `${dest.trilogy.text}<br><br>` +
+      `<a href="${dest.trilogy.url}" target="_blank" rel="noopener" style="color:var(--blue);text-decoration:underline;font-size:.78rem;">Trilogy at Vistancia →</a>`;
   }
 }
 
@@ -1027,7 +989,6 @@ document.addEventListener('DOMContentLoaded', () => {
   renderStageNotes(0);
   updateMetrics();
   updateSocorroWarning(0);
-  updateJuliaWidget(0);
 
   // Metrics
   el('metrics-toggle').addEventListener('click', toggleMetrics);

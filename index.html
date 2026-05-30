@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#2C6FAC">
-  <title>Peoria → Taos 🚗</title>
+  <title>Taos → Phoenix 🚗</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -18,11 +18,11 @@
         <div class="metric-label">to next stop</div>
       </div>
 
-      <div class="stage-badge" id="stage-badge">Stage 1 of 6</div>
+      <div class="stage-badge" id="stage-badge">Stage 1 of 5</div>
 
       <div class="metric-pill">
         <div class="metric-value" id="eta-taos">—:—</div>
-        <div class="metric-label">est. Taos arrival</div>
+        <div class="metric-label">est. Phoenix arrival</div>
       </div>
 
       <button class="chevron-btn" id="metrics-toggle" aria-label="Expand metrics">▾</button>
@@ -34,16 +34,16 @@
           <div class="progress-fill" id="progress-fill"></div>
         </div>
         <div class="progress-labels">
-          <span>Peoria</span>
-          <span id="progress-pct">0%</span>
           <span>Taos</span>
+          <span id="progress-pct">0%</span>
+          <span>Phoenix</span>
         </div>
       </div>
 
       <div class="metrics-grid">
         <div class="metric-cell">
           <span class="metric-cell-label">Departed</span>
-          <span class="metric-cell-value">7:00 AM</span>
+          <span class="metric-cell-value">8:00 AM</span>
         </div>
         <div class="metric-cell">
           <span class="metric-cell-label">Elapsed</span>
@@ -55,10 +55,10 @@
         </div>
         <div class="metric-cell">
           <span class="metric-cell-label">Miles remain</span>
-          <span class="metric-cell-value" id="miles-remaining">575</span>
+          <span class="metric-cell-value" id="miles-remaining">620</span>
         </div>
         <div class="metric-cell" id="julia-cell">
-          <span class="metric-cell-label">Julia buffer</span>
+          <span class="metric-cell-label">Charge stops</span>
           <span class="metric-cell-value" id="julia-buffer">—</span>
         </div>
         <div class="metric-cell">
@@ -68,9 +68,8 @@
       </div>
     </div>
 
-    <div class="socorro-banner hidden" id="socorro-banner">
-      ⚠️ Socorro charger unconfirmed — verify EA app before leaving Show Low
-    </div>
+    <!-- Reused for any route warnings -->
+    <div class="socorro-banner hidden" id="socorro-banner"></div>
 
   </header>
 
@@ -80,7 +79,7 @@
     <div class="map-preview-bar">
       <div class="route-mini">
         <span class="route-dot"></span>
-        <span class="route-text">Peoria · Globe · Show Low · Socorro · ABQ · Santa Fe · Taos</span>
+        <span class="route-text">Taos · Santa Fe · Albuquerque · Gallup · Flagstaff · Phoenix</span>
       </div>
       <button class="map-toggle-btn" id="map-toggle-btn">Show Map ▾</button>
     </div>
@@ -112,15 +111,8 @@
       <button class="back-btn" id="back-to-current-btn">↩ Back to current stage</button>
     </div>
 
-    <!-- Julia Flight Widget -->
-    <div class="card julia-card hidden" id="julia-widget">
-      <div class="julia-icon">✈️</div>
-      <div>
-        <div class="julia-flight-num">United <strong>UA2341</strong></div>
-        <div class="julia-detail">Landing 5:00 PM · ABQ Sunport</div>
-        <a class="julia-link" href="https://flightaware.com/live/flight/UAL2341" target="_blank" rel="noopener">Live flight status →</a>
-      </div>
-    </div>
+    <!-- Julia widget removed — no pickup on return trip -->
+    <div class="card julia-card hidden" id="julia-widget" aria-hidden="true"></div>
 
     <!-- Charging Card -->
     <div class="card" id="charging-card">
@@ -160,13 +152,13 @@
       <div class="card-content" id="scenic-content"></div>
     </div>
 
-    <!-- Arrival Card (stage 5 only) -->
+    <!-- Arrival Card (final stage only) -->
     <div class="card hidden" id="arrival-card">
-      <div class="card-header arrival-header">🎊 You Made It to Taos!</div>
+      <div class="card-header arrival-header">🏠 Welcome Home!</div>
       <div id="arrival-stats" class="arrival-stats"></div>
-      <div class="arrival-section-head">🍽 Tonight in Taos</div>
+      <div class="arrival-section-head">🍽 Dinner in the Valley</div>
       <div class="card-content" id="arrival-dining"></div>
-      <div class="arrival-section-head">🏛 Taos Pueblo</div>
+      <div class="arrival-section-head">📍 You're Back at Trilogy</div>
       <div class="card-content">
         <p class="arrival-pueblo-text" id="arrival-pueblo"></p>
       </div>
