@@ -18,6 +18,7 @@ const state = {
   mapFullscreen: false,
   historyExpanded: false,
   geologyExpanded: false,
+  natureExpanded: false,
   metricsExpanded: false,
   gpsStarted: false,
   departureTime: null,
@@ -400,6 +401,7 @@ function renderStageNotes(stageIdx) {
   renderDiningCard(stage);
   renderHistoryCard(stage);
   renderGeologyCard(stage);
+  renderNatureCard(stage);
   renderPOICard(stage);
   renderTriviaCard(stage);
   renderScenicCard(stage);
@@ -412,6 +414,10 @@ function renderStageNotes(stageIdx) {
   state.geologyExpanded = false;
   el('geology-full-text').classList.add('hidden');
   el('geology-expand-btn').textContent = 'Full geology ▾';
+
+  state.natureExpanded = false;
+  el('nature-full-content').classList.add('hidden');
+  el('nature-expand-btn').textContent = 'More details ▾';
 }
 
 function renderChargingCard(stage) {
@@ -482,6 +488,33 @@ function renderGeologyCard(stage) {
   card.classList.remove('hidden');
   el('geology-quick-text').textContent = stage.geology.quick;
   el('geology-full-text').textContent = stage.geology.full;
+}
+
+function renderNatureCard(stage) {
+  const card = el('nature-card');
+  if (!stage.nature) {
+    card.classList.add('hidden');
+    return;
+  }
+  card.classList.remove('hidden');
+  el('nature-quick-text').textContent = stage.nature.quick;
+  el('nature-full-text').textContent = stage.nature.full;
+
+  const typeIcons = { plant: '🌱', bird: '🐦', mammal: '🐾', reptile: '🦎', other: '🐟' };
+  const speciesList = el('nature-species-list');
+  if (stage.nature.species && stage.nature.species.length) {
+    speciesList.innerHTML = stage.nature.species.map(s => `
+      <div class="species-item">
+        <div class="species-header">
+          <span class="species-icon">${typeIcons[s.type] || '•'}</span>
+          <span class="species-name">${s.name}</span>
+        </div>
+        <div class="species-note">${s.note}</div>
+      </div>
+    `).join('');
+  } else {
+    speciesList.innerHTML = '';
+  }
 }
 
 function renderPOICard(stage) {
@@ -926,6 +959,13 @@ function toggleGeology() {
   el('geology-expand-btn').textContent = state.geologyExpanded ? 'Less ▴' : 'Full geology ▾';
 }
 
+/* ── NATURE EXPAND ───────────────────────────────────────────────────────── */
+function toggleNature() {
+  state.natureExpanded = !state.natureExpanded;
+  el('nature-full-content').classList.toggle('hidden', !state.natureExpanded);
+  el('nature-expand-btn').textContent = state.natureExpanded ? 'Less ▴' : 'More details ▾';
+}
+
 /* ── CLOCK TICK ──────────────────────────────────────────────────────────── */
 function tick() {
   if (state.metricsExpanded) {
@@ -969,6 +1009,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Geology
   el('geology-expand-btn').addEventListener('click', toggleGeology);
+
+  // Nature
+  el('nature-expand-btn').addEventListener('click', toggleNature);
 
   // Modal close buttons
   el('poi-close-btn').addEventListener('click', closePOIModal);
