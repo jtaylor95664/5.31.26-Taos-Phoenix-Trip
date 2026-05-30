@@ -133,7 +133,11 @@ function drawRoute() {
     travelMode:  google.maps.TravelMode.DRIVING,
     optimizeWaypoints: false,
   }, (result, status) => {
-    if (status !== 'OK') { console.warn('Directions API:', status); return; }
+    if (status !== 'OK') {
+      console.warn('Directions API:', status, '— drawing fallback waypoint polyline');
+      drawFallbackRoute();
+      return;
+    }
 
     // Draw route — white halo behind, bright orange on top for maximum contrast
     const halo = new google.maps.DirectionsRenderer({
@@ -165,6 +169,16 @@ function drawRoute() {
 
     addMapMarkers();
   });
+}
+
+/* Fallback: draw a straight-segment polyline from the hardcoded waypoints
+   when the Directions API is unavailable (disabled on key, REQUEST_DENIED, etc).
+   Stage distance values (stage.distance) already serve as fallback for mileage. */
+function drawFallbackRoute() {
+  const path = TRIP_DATA.routeWaypoints.map(w => new google.maps.LatLng(w.lat, w.lng));
+  new google.maps.Polyline({ path, map: state.map, strokeColor: '#FFFFFF', strokeWeight: 10, strokeOpacity: 0.9, zIndex: 1 });
+  new google.maps.Polyline({ path, map: state.map, strokeColor: '#E8571A', strokeWeight: 6,  strokeOpacity: 1.0, zIndex: 2 });
+  addMapMarkers();
 }
 
 function addMapMarkers() {
@@ -328,8 +342,8 @@ function updateMetrics() {
   }
   el('miles-to-next').textContent = milesToNext;
 
-  // Stage badge
-  el('stage-badge').textContent = `Stage ${state.currentStage + 1} of ${TRIP_DATA.stages.length}`;
+  // Stage badge — shows the stage the user is currently viewing, not the GPS stage
+  el('stage-badge').textContent = `Stage ${state.viewingStage + 1} of ${TRIP_DATA.stages.length}`;
 
   // Primary: ETA
   el('eta-phoenix').textContent = computeETA(remaining, state.currentStage);
@@ -902,6 +916,7 @@ function setViewingStage(idx) {
   idx = Math.max(0, Math.min(idx, TRIP_DATA.stages.length - 1));
   state.viewingStage = idx;
   state.isManualView = idx !== state.currentStage;
+  updateMetrics(); // keep stage badge and header in sync with viewed stage
   renderStageNotes(idx);
   updateBackBar();
 }
