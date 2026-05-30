@@ -83,7 +83,10 @@ const TRIP_DATA = {
       trivia: [
         "NASA geologically trained Apollo astronauts at the Rio Grande Gorge in 1971 — the basalt canyon was considered the closest Earth analogue to the Apollo 15 lunar landing site. David Scott, James Irwin, John Young, Charlie Duke, and Jack Schmitt all practiced geology here before walking on the Moon.",
         "The Denver and Rio Grande's narrow-gauge 'Chili Line' ran through this gorge from 1881 to 1941, carrying northern New Mexico's famous red chile to markets in Colorado. At Embudo station, northbound and southbound trains met mid-day so passengers could eat lunch — the schedule was built around the meal, not the other way around.",
-        "The Rio Grande Gorge is not carved into the Rocky Mountains — it's cut through a flat basalt plateau. The river saws downward through lava flows faster than the surrounding land rises, meaning the gorge gets slightly deeper every year."
+        "The Rio Grande Gorge is not carved into the Rocky Mountains — it's cut through a flat basalt plateau. The river saws downward through lava flows faster than the surrounding land rises, meaning the gorge gets slightly deeper every year.",
+        "The Rio Grande doesn't carve its gorge at a steady rate — it cuts in pulses tied to glacial cycles. During ice ages, glacial meltwater loaded with coarse Rocky Mountain grit acted like liquid sandpaper, carving deeper; during warm interglacials the reduced sediment load allowed vertical cutting to pause. The gorge's deepest sections record the most intense glacial cycles of the last 800,000 years.",
+        "The Servilleta basalt forming the Taos Plateau is tholeiitic — a low-silica, low-viscosity volcanic rock chemically identical to lava erupting at mid-ocean ridges today. Its fluidity when molten let it spread in flat sheets across the plateau rather than piling into steep cones. The result was a lava plain so flat that early Spanish settlers didn't realize they were crossing an ancient volcanic field.",
+        "The Embudo Fault running through the valley near Dixon accumulates seismic strain at roughly 0.15 millimeters per year — slower than fingernails grow. But multiplied across 5 million years of rift activity, that rate represents the cumulative displacement that dropped the Española Basin floor thousands of feet below the surrounding plateau."
       ],
 
       scenic: [
@@ -128,8 +131,31 @@ const TRIP_DATA = {
           coords: { lat: 36.052, lng: -106.071 },
           description: "Located 4 miles northeast of Española off NM-68, Ohkay Owingeh is where Oñate established the first Spanish capital of New Mexico in 1598 — before Santa Fe even existed. The pueblo's Tewa name means 'Place of the Strong People'; it was known as San Juan Pueblo for four centuries before the community reclaimed its original name in 2005.",
           hook: "Santa Fe gets all the colonial tourism, but this is actually where New Mexico's European history began — 12 years before the Palace of the Governors was built."
+        },
+        {
+          name: 'Pilar Cliffs Pullout',
+          coords: { lat: 36.1381, lng: -105.8247 },
+          description: "The stretch of NM-68 through Pilar sits at the base of some of the gorge's most dramatic basalt walls, where multiple stacked Servilleta lava flows are visible as distinct horizontal bands. Each band is a separate eruption separated by thousands of years; the lighter recesses between them are ancient soil horizons — briefly colonized by plants between flows before the next eruption buried everything.",
+          hook: "You're reading a 3-million-year volcanic diary in the cliff wall — each dark stripe is a different lava flow, each lighter layer between them was once a ground surface where something actually grew."
+        },
+        {
+          name: 'Velarde Landslide Reach',
+          coords: { lat: 36.1705, lng: -105.9012 },
+          description: "Between Velarde and Embudo the gorge walls display multiple large landslide scars where blocks of basalt broke free from the gorge rim and tumbled to the river below. The fan-shaped debris piles at the cliff bases are geologically fresh — many slides occurred within the last 10,000 years as post-glacial warming destabilized cliff bases saturated by higher river levels.",
+          hook: "Those smooth curved scars above the highway aren't erosion — entire cliff sections broke loose and slid into the river. Several of these collapses happened within the last few thousand years."
+        },
+        {
+          name: 'Black Mesa Overlook',
+          coords: { lat: 35.9895, lng: -106.0741 },
+          description: "Black Mesa is a lava-capped highland southwest of Española, visible from NM-68/I-84 near the valley. It's a geological remnant — the surrounding land has been lowered by erosion while the hard basalt cap preserved this section at its original elevation. The mesa's dark profile against lighter sedimentary terrain marks the spatial extent of an ancient Cerros del Rio lava flow.",
+          hook: "That flat-topped dark mesa is what the whole valley floor used to look like before 3 million years of erosion lowered everything around it — it's a geological island stranded at its original elevation."
         }
-      ]
+      ],
+
+      geology: {
+        quick: "You're driving down through 5 million years of volcanic lava and a live rift tearing the continent apart.",
+        full: "The landscape visible from NM-68 is the surface expression of one of the largest active continental rifts in the world. The Rio Grande Rift — a zone where the North American plate is being pulled apart along a north-south axis — extends 1,000 miles from central Colorado to El Paso, and the gorge you're descending into is its most photogenic scar. Rifting began roughly 29 million years ago as Basin and Range extension propagated northward. The Taos Plateau volcanic field, which poured the Servilleta basalt across the surrounding landscape between 5 and 2 million years ago, is a direct consequence of this rifting: as the crust thinned and stretched, mantle-derived magma punched through along fault zones, flooding the plateau with lava flows stacked hundreds of feet thick. The basalt is tholeiitic — low in silica, highly fluid when erupted — which is why the flows spread as flat, extensive sheets rather than piling up as steep cones.\n\nThe gorge itself began forming in earnest about 1–2 million years ago when the ancestral Rio Grande integrated into a single connected river system. Before that, drainage was broken into disconnected basins; once connected, the river had the hydraulic energy to slice through the basalt at a measurable rate. Incision is not steady — it occurs in pulses tied to glacial cycles in the upstream Rockies. During ice ages, glacial outwash loaded the river with coarse sediment that acted as an abrasive slurry; between ice ages, reduced sediment loads allowed vertical cutting to pause. The current gorge depth of up to 800 feet reflects roughly 1 million years of this pulsed cutting.\n\nThe Pilar Cliffs expose nearly the full stratigraphic column of Servilleta basalt flows — each discrete flow visible as a slightly different band of rock separated by ancient soil horizons, each horizon representing a pause in volcanic activity long enough for weathering and plant growth to occur. The Embudo Fault, which runs parallel to the Rio Grande through the valley, is part of the rift's active fault system, accumulating strain at roughly 0.15 millimeters per year. The terraces visible above the current river level near Velarde and Embudo are abandoned floodplains, stranded at successively higher elevations as the river cut downward — each terrace a former valley floor, the river's incision history written in alluvium and basalt."
+      }
     },
 
     /* ── STAGE 1: Santa Fe → Albuquerque (I-25 south) ────────────────────────── */
@@ -193,7 +219,10 @@ const TRIP_DATA = {
       trivia: [
         "La Bajada means 'The Descent' in Spanish — and the old road lived up to the name. The Camino Real switchbacks here had a 28% grade; fully loaded wagons had to be partially unloaded, lowered by rope, and reloaded at the bottom. The modern I-25 bypass grade is under 5%.",
         "The Cerrillos turquoise mines just east of I-25 have been worked for roughly 6,000 years — making them among the oldest known mines in North America. Aztec artisans in Tenochtitlán used turquoise from these exact hills in their ceremonial mosaics.",
-        "The Sandia Mountains are uplifting along the Sandia fault at roughly one millimeter per year — measurably taller today than when the first Spanish colonists saw them in 1540. The fossils at the summit once sat on the floor of a 300-million-year-old tropical sea."
+        "The Sandia Mountains are uplifting along the Sandia fault at roughly one millimeter per year — measurably taller today than when the first Spanish colonists saw them in 1540. The fossils at the summit once sat on the floor of a 300-million-year-old tropical sea.",
+        "The Albuquerque Basin contains up to 14,000 feet of Cenozoic sediment. If you drilled straight down from Albuquerque's downtown you wouldn't hit Precambrian basement rock for nearly three miles. The city is built on its own eroded debris, compacted over 25 million years.",
+        "The Sandia summit spans 1.1 billion years of Earth history in a single cliff face: the pink granite base is 1.45 billion years old, and the Pennsylvanian limestone resting directly on it is just 310 million years old — with over a billion years of geological record simply missing between them. This gap is one of the most dramatic unconformities in North America.",
+        "The La Bajada basalt escarpment was quarried for building stone from colonial times through the 20th century — the dark volcanic rock in the walls of several Santa Fe historic buildings came from the cliff face you're driving past. The quarry scars are still visible on the escarpment's northern end if you know where to look."
       ],
 
       scenic: [
@@ -238,8 +267,31 @@ const TRIP_DATA = {
           coords: { lat: 35.0958, lng: -106.6692 },
           description: "Founded 1706. Spanish colonial plaza, San Felipe de Neri Church, adobe architecture. ~10 min drive from the EA charger. Some of the best green chile in New Mexico within a few blocks.",
           hook: "The plaza has been continuously occupied since 1706 — the adobe church in the corner has been in continuous use longer than the United States has existed."
+        },
+        {
+          name: 'La Bajada Escarpment — South Viewpoint',
+          coords: { lat: 35.5452, lng: -106.1312 },
+          description: "A southbound pullout at the base of the La Bajada escarpment provides a different perspective than the rim viewpoint — looking back up at the full 600-foot black basalt wall, with the breadth of the Santo Domingo Basin visible ahead all the way to the Sandia Mountains. The full scale of this geological barrier is most apparent from this lower vantage.",
+          hook: "Look back north from here and you can see the full wall that stopped El Camino Real traffic for 300 years — from this angle it's clear why carts had to be partially dismantled and lowered by rope."
+        },
+        {
+          name: 'Tetilla Peak',
+          coords: { lat: 35.6271, lng: -106.1589 },
+          description: "Tetilla Peak (6,700 ft) is an isolated volcanic neck visible west of I-25 near La Bajada — the eroded remnant of a magmatic intrusion that punched through basin sediments. The surrounding softer rock has been stripped away over millions of years, leaving the harder volcanic core standing alone as a distinctive cone-shaped summit.",
+          hook: "That conical peak rising from the flat basin to the west is a volcanic plug — the solidified interior of a vent whose surrounding material eroded away, leaving the hardest part standing alone like a geological tombstone."
+        },
+        {
+          name: 'Albuquerque Volcanoes (West Mesa Cinder Cones)',
+          coords: { lat: 35.1581, lng: -106.7341 },
+          description: "Five cinder cones on Albuquerque's West Mesa, part of Petroglyph National Monument, erupted between 156,000 and 40,000 years ago — geologically contemporaneous with early Homo sapiens in Africa. They're classified dormant (not extinct) by the USGS. More than 20,000 Ancestral Puebloan petroglyphs are incised into the volcanic boulders at their base.",
+          hook: "Albuquerque has its own volcanic field on the city's western edge — and 20,000 ancient rock art petroglyphs at the base of the cones suggest people watched and contemplated these volcanoes very carefully."
         }
-      ]
+      ],
+
+      geology: {
+        quick: "A fault-bounded ancient lake basin, a volcanic clifftop, and mountains that rose a mile in ten million years flank every mile of I-25.",
+        full: "The 65-mile I-25 corridor from Santa Fe to Albuquerque passes through the central section of the Albuquerque Basin — the largest and best-studied of the many fault-bounded basins making up the Rio Grande Rift. The basin is invisible as a surface feature; most of it lies buried under 14,000 feet of Cenozoic sediment accumulated as the rift subsided over 25 million years. This sediment is the detritus of the surrounding mountains — alluvial fans of sand, gravel, and silt shed off the Sandia, Manzano, and Jemez ranges as the basins dropped and the ranges rose. The pile is so thick that the actual basement rock lies nearly three miles below Albuquerque's streets. The city is built on its own sedimentary debris.\n\nLa Bajada escarpment, about 17 miles south of Santa Fe, marks the boundary between the Española Basin and the Albuquerque Basin — a distinct rift step controlled by a northeast-trending transfer fault system. The basalt cap of the Caja del Río plateau, erupted 3–2.5 million years ago from vents to the west, is responsible for the escarpment's sheer dark face: harder than the underlying sediment, it breaks off in columnar slabs as softer rocks below erode. La Bajada was historically quarried for building stone — dark volcanic rock in the walls of several Santa Fe historic buildings came from this escarpment.\n\nThe Sandia Mountains, dominating the eastern skyline as you approach Albuquerque, are the most dramatic expression of rift-related uplift in New Mexico. The Sandia fault on their western flank has lifted the range for roughly 10 million years while the Albuquerque Basin dropped to the west — a see-saw motion driven by crustal extension. Total displacement is roughly 25,000 feet. The pink color of the granite — sandia means watermelon — comes from potassium-feldspar crystals in the 1.45-billion-year-old core. The Pennsylvanian limestone cap at the summit, full of marine fossils from a 300-million-year-old tropical sea, rests directly on Precambrian granite with 1.1 billion years of geological record missing between them. This unconformity is one of the most dramatic time gaps in exposed rock in North America. West Mesa's five cinder cones, visible on the left as the freeway approaches Albuquerque, erupted as recently as 40,000 years ago — the rift's most recent volcanic expression in this area, contemporaneous with early humans elsewhere on the planet."
+      }
     },
 
     /* ── STAGE 2: Albuquerque → Gallup (I-40 west) ───────────────────────────── */
@@ -303,7 +355,10 @@ const TRIP_DATA = {
       trivia: [
         "In 1950, a Navajo prospector named Paddy Martinez noticed a yellow stain on a rock near Haystack Mountain, just north of Grants — it turned out to be uranium, the largest deposit in the country at the time. New Mexico became America's top uranium producer, and Grants briefly marketed itself as the 'Uranium Capital of the World.'",
         "El Malpais contains the longest known ice cave in the contiguous United States — Candelaria Ice Cave stays below freezing year-round because cold air sinks into the lava tube in winter and is trapped there by the rock's insulating mass. The ice is estimated to be at least 3,400 years old.",
-        "The original 1937 realignment of Route 66 through this stretch largely coincides with the current I-40 corridor — meaning much of what is now I-40 between Albuquerque and Gallup IS the old Route 66 pavement, just widened. The ghost of the 'Mother Road' is literally under your tires."
+        "The original 1937 realignment of Route 66 through this stretch largely coincides with the current I-40 corridor — meaning much of what is now I-40 between Albuquerque and Gallup IS the old Route 66 pavement, just widened. The ghost of the 'Mother Road' is literally under your tires.",
+        "The McCarty's lava flow near Grants is the youngest lava flow in New Mexico, erupted approximately 3,000 years ago — within human memory. Ancestral Puebloan peoples witnessed the eruption; oral traditions among several Pueblo tribes describe it. The flow's surface is so fresh it still retains the ropy texture of pahoehoe lava, without enough time to develop significant soil cover.",
+        "Mount Taylor (Navajo: Tsoodził) erupted between 3.3 and 1.6 million years ago — recent enough that the mountain would have been recognizable to the first humans entering the Southwest. Its 11,301-foot summit rises from a plateau already 6,500 feet high, making it one of the dominant landmarks visible for over 100 miles in any direction.",
+        "The Continental Divide at Exit 53 near Thoreau separates the world's two largest ocean drainage basins. A raindrop falling one inch east travels roughly 2,000 miles to the Gulf of Mexico via the Puerco, Rio Grande, and Mississippi. One inch west, that same drop heads to the Little Colorado, the Colorado River, and the Gulf of California — a completely different 1,500-mile journey. The entire continent's hydrology pivots on a gentle ridge in the Zuni Mountains."
       ],
 
       scenic: [
@@ -354,8 +409,43 @@ const TRIP_DATA = {
           coords: { lat: 35.5281, lng: -108.7476 },
           description: "One of the oldest and largest trading posts in the Southwest, open since 1913 at 222 W Historic Hwy 66. Still operating as a genuine trader in Navajo rugs, Zuni jewelry, and Pueblo pottery — the inventory of pawn jewelry and handmade goods is staggering.",
           hook: "Unlike tourist gift shops, Richardson's still operates as an active trading post — local Navajo and Zuni artisans bring work here directly, and the back rooms contain museum-quality pieces on working consignment."
+        },
+        {
+          name: 'Mount Taylor (Tsoodził)',
+          coords: { lat: 35.2724, lng: -107.6158 },
+          description: "At 11,301 feet, Mount Taylor is one of the four sacred mountains defining the boundaries of the Navajo homeland (Dinétah) and active as a stratovolcano between 3.3 and 1.6 million years ago. Its symmetrical cone is visible from I-40 for nearly 60 miles. The 1950 uranium discovery north of here briefly made the Grants area the 'Uranium Capital of the World.'",
+          hook: "Sacred to the Navajo as the southern directional mountain of their homeland — and 50 years ago, the surrounding area was the center of America's uranium mining industry after the largest domestic uranium deposit was found just north of here."
+        },
+        {
+          name: 'Continental Divide — Exit 53, Thoreau NM',
+          coords: { lat: 35.4031, lng: -108.3390 },
+          description: "At Exit 53 near Thoreau, I-40 crosses the Continental Divide at 7,275 feet in the Zuni Mountains — a gentle saddle that is hydrologically absolute. Everything east of this point drains to the Gulf of Mexico; everything west drains to the Gulf of California. The Zuni Mountains here expose Precambrian basement rocks arching to the surface through younger sedimentary layers.",
+          hook: "One raindrop landing here has two entirely different 2,000-mile ocean journeys available depending on which side of the road it hits. The whole continent's hydrology pivots on this quiet Zuni Mountains ridge."
+        },
+        {
+          name: 'Acoma Mesa Geology Viewpoint',
+          coords: { lat: 34.9500, lng: -107.5700 },
+          description: "Acoma Mesa is a classic Colorado Plateau butte: a hard Cretaceous Mesa Verde sandstone cap protecting softer Triassic and Jurassic rocks below from erosion. The 367-foot cliff faces expose 200 million years of Colorado Plateau stratigraphy in one vertical wall — Mesa Verde Sandstone, Morrison Formation shales, Entrada Sandstone, and Chinle Formation reading top to bottom.",
+          hook: "The Acoma people chose this mesa's top around 1150 AD because its geology made it a natural fortress. The same erosion-resistant caprock that's kept the cliffs vertical for millions of years has been protecting its residents for nearly 900 years."
+        },
+        {
+          name: 'Grants Lava Flow Viewpoint (McCarty\'s Flow)',
+          coords: { lat: 35.1760, lng: -107.9800 },
+          description: "North of I-40 east of Grants, the McCarty's lava flow — the youngest lava flow in New Mexico at approximately 3,000 years old — stretches across the desert with glassy pahoehoe textures still intact. A BLM pullout near Grants provides a close view of jet-black basalt that erupted while ancient Puebloans watched.",
+          hook: "This lava erupted roughly 3,000 years ago — contemporaneous with Tutankhamun's Egypt. It's so fresh it hasn't developed soil cover, and the ropy lava-surface texture looks like it cooled last week."
+        },
+        {
+          name: 'Zuni Mountains — Ancient Basement Roadcuts',
+          coords: { lat: 35.2000, lng: -108.5000 },
+          description: "I-40 cuts through the Zuni Mountains near Thoreau, exposing roadcuts of 1.6–1.7-billion-year-old Precambrian granite and metamorphic basement — some of the oldest visible rock on the entire trip. The Zuni Mountains are an anticlinal arch in the Colorado Plateau where the ancient basement has arched upward through its sedimentary cover.",
+          hook: "The roadcuts through the Zuni Mountains expose rock that was already ancient before the Cambrian — before complex multicellular life existed. You're cutting through the foundation that everything else in the Southwest was built on top of."
         }
-      ]
+      ],
+
+      geology: {
+        quick: "I-40 west from ABQ to Gallup is 140 miles of tectonic boundary-crossing — from a rift valley through ancient volcanic badlands into the tabletop mesa world of the Colorado Plateau.",
+        full: "The drive west from Albuquerque on I-40 is one of the great geological transects in North America, crossing the boundary between two fundamentally different tectonic provinces within the first 50 miles. Near Albuquerque you're in the Rio Grande Rift — continental crust being actively stretched, faulted, and thinned. By the Rio Puerco bridge (Exit 140) you're crossing onto the Colorado Plateau — a roughly Texas-sized block of crust that has remained tectonically stable for 600 million years, resisting the faulting and stretching that has fragmented everything around it. The boundary is a 20–30-mile-wide transitional zone; from the car you'll notice the mesas getting taller, flatter, and more regular, the valleys less chaotic, and the rock layers increasingly horizontal.\n\nThe first major geological landmark west of Albuquerque is Mount Taylor — a stratovolcano active 3.3 to 1.6 million years ago, rising to 11,301 feet on a plateau already 6,000 feet high. Its lava flows reached I-40; the dark volcanic rock in roadcuts west of the Rio Puerco is partly Mount Taylor's product. South of I-40, the Acoma Plateau is capped by Cretaceous Mesa Verde sandstones creating the distinctive flat-topped mesa geometry. Acoma Pueblo's 367-foot mesa is this geology exactly — harder sandstone protecting softer Triassic and Jurassic layers below, creating a natural fortress occupied for nearly 900 years.\n\nThe El Malpais volcanic field around Grants covers 1,300 square miles with eruption ages spanning from 3 million to just 3,000 years ago. The McCarty's Flow north of I-40 is the youngest lava in New Mexico — so fresh it still has glassy pahoehoe surface texture with no soil development. Ancient Puebloans witnessed this eruption and oral traditions describe it.\n\nThe Continental Divide crosses I-40 at Exit 53 near Thoreau at 7,275 feet — geographically unspectacular but hydrologically absolute. A raindrop falling east of the divide will eventually reach the Gulf of Mexico; one inch west, the Gulf of California. The Zuni Mountains here are an anticlinal arch in the plateau where 1.7-billion-year-old Precambrian basement arches to the surface through its sedimentary cover — some of the oldest rock visible on the entire trip. The vivid red and orange iron-oxide hues of the Chinle and Mesaverde formations in the final 40 miles into Gallup signal the decisive transition: you are now fully on the Colorado Plateau, about to drive across its interior."
+      }
     },
 
     /* ── STAGE 3: Gallup → Flagstaff (I-40 west) ─────────────────────────────── */
@@ -411,6 +501,11 @@ const TRIP_DATA = {
         }
       ],
 
+      geology: {
+        quick: "One corridor, 300 million years of stacked rock: Triassic badlands, petrified gemstone logs, a meteorite scar, and a volcanic field still waking up.",
+        full: "The Gallup-to-Flagstaff corridor sits almost entirely on the Colorado Plateau — a roughly Texas-sized block of continental crust that has resisted the stretching and faulting that warped most of the surrounding West. About 600 million years ago, the basement rocks here were welded into a stable craton; ever since, sediment has accumulated on top in near-horizontal layers, like a stack of pancakes. Tectonic uplift — driven by the same forces that opened the Rio Grande Rift to the east — raised the whole platform roughly a mile above sea level over the last 10–20 million years without tilting or folding the layers significantly. The result is the landscape you see through the windshield: flat-topped mesas, ruler-straight rock bands in the canyon walls, and a sense that you're driving across a tilted dinner plate rather than through a mountain range. Every cliff face along I-40 is essentially a cross-section of that plate, reading from oldest (bottom) to youngest (top).\n\nThe most visually dominant rocks between Gallup and Holbrook are the reds, purples, oranges, and grays of the Chinle Formation — Triassic sediment, roughly 200–225 million years old, laid down when Arizona sat at roughly 10 degrees north latitude, straddling the equator. Think monsoon-drenched tropical floodplain: wide, meandering rivers dropping sediment across a broad coastal plain as Pangaea was beginning to rift apart. The color palette is a chemistry lesson. Red and orange tones come from hematite (Fe₂O₃) — iron in its fully oxidized, rust-red form — indicating sediment deposited in dry, well-oxygenated conditions. Purple and lavender shades signal a mix of hematite and goethite, suggesting waterlogged reducing conditions where iron partially re-reduced. The gray and green layers record ancient pond and swamp environments where organic carbon stripped oxygen from the iron, leaving it as greenish iron silicates. Manganese dioxide produces the near-black streaks. The Painted Desert is not painted with pigments applied later — those colors are the original geochemistry of Triassic mud, preserved 225 million years in place.\n\nThe Petrified Forest's logs are that same Chinle Formation's most spectacular product. In the Late Triassic, towering conifers — primarily Araucarioxylon arizonicum, a relative of today's Norfolk Island pine, some reaching 200 feet tall — fell into the river channels and were buried in volcaniclastic sediment. Silica-rich groundwater, sourced largely from volcanic ash raining down from eruptions to the west, slowly replaced each cellulose cell wall with quartz, jasper, amethyst, or carnelian — a process called silicification or permineralization. It wasn't instantaneous: the replacement happened cell-by-cell over millions of years. The logs didn't 'turn to stone' all at once; they were incrementally replaced from the outside in, sometimes preserving the growth rings, the cellular structure, even the tree's original chemistry in mineral form. The logs you see scattered on the surface aren't emerging from the ground — they're being exhumed by erosion of the soft Chinle mudstone around them, and they're getting shorter every year as the exposed ends fracture and crumble.\n\nAt Exit 233, Meteor Crater announces itself only indirectly — a small rise in the otherwise flat plain is the only topographic warning. The impactor that created it was a nickel-iron asteroid roughly 150 feet across traveling at approximately 26,000 mph (40 times the speed of sound) when it struck the Kaibab Limestone surface about 50,000 years ago. Impact duration: milliseconds. The energy released was equivalent to roughly 10 megatons of TNT — about 600 times the Hiroshima bomb. The initial shock wave vaporized and melted more than 90% of the impactor itself; the remaining fragments scattered as iron meteorites (Canyon Diablo irons) across a 100-square-mile radius. The crater rim was thrown outward and upward, creating an overturned stratigraphy — the rim layers are literally inverted, with the oldest rocks now on top, flipped like a pancake by the ejecta blast. Meteor Crater's extraordinary preservation is explained by two factors: its youth (50,000 years is a geological eyeblink) and the hyper-arid Colorado Plateau climate, which has suppressed the erosion that has degraded most other craters to near-invisibility.\n\nFlastaff's landscape is dominated by an entirely different geological engine: the San Francisco Volcanic Field, one of the most active volcanic fields in the lower 48 states. More than 600 individual volcanic vents are scattered across roughly 1,800 square miles, with eruptions spanning the last 6 million years. The field's products include cinder cones, lava flows, and the eroded remnant of a large stratovolcano — the San Francisco Peaks — whose collapse left the jagged cluster of summits visible north of the city, with Humphreys Peak at 12,633 feet as Arizona's highest point. Most recently, Sunset Crater erupted in approximately 1085 AD (dated by tree-ring evidence from buried forests), blanketing the region in volcanic ash that paradoxically improved soil water retention and briefly triggered a population boom among the local Sinagua people. The volcanic field is not extinct — geologists classify it as dormant, and the USGS monitors it for seismicity. The ponderosa pine forest carpeting the Flagstaff plateau grows in volcanic soil atop Quaternary lava flows; the dark rock outcrops visible in roadcuts around the city are those flows, erupted within the last few hundred thousand years.\n\nThe rock capping much of the Colorado Plateau surface near Flagstaff — and everywhere along the Mogollon Rim and the Grand Canyon's South Rim — is the Kaibab Limestone. It formed roughly 270 million years ago in a warm, shallow tropical sea full of brachiopods, crinoids, corals, and sponges. When you drive I-40 near Flagstaff and see cream-colored cliff outcrops with slightly rubbly surfaces, you're looking at Kaibab. It's the same formation you'd see if you drove to the South Rim tomorrow — the canyon exposes everything below it, and the Kaibab is always on top. The landscape transition you experience on this drive — red Chinle mudstones near Holbrook, dark volcanic rock near Flagstaff — represents the top surface of the Colorado Plateau reading its own geological history: Triassic badlands where the Chinle hasn't been stripped away, underlying Permian Kaibab Limestone emerging near the plateau's western and southern edges as the younger rocks have been removed by erosion."
+      },
+
       history: {
         quick: "This 175-mile corridor traces the original spine of Route 66 through the Navajo and Hopi heartland — a stretch geologists call a 'living textbook,' where 225-million-year-old petrified logs, meteorite craters, painted badlands, and sky-high ponderosa pine forests stack up in a single afternoon's drive.",
         full: "The Gallup-to-Flagstaff corridor follows what is arguably the most geologically and culturally dense segment of the old Mother Road. Route 66 was designated here in 1926, threading a trading-post economy that had sustained the Navajo and Puebloan peoples for centuries before the railroad arrived in the 1880s. Window Rock became the administrative seat of the Navajo Nation in 1936 under Commissioner John Collier, giving the largest Native American nation in the U.S. its modern governmental home. Petrified Forest and the Painted Desert had been protected since 1906, when Theodore Roosevelt made them a National Monument; Congress doubled the park's size in 2004. The highway towns of Holbrook and Winslow thrived as Route 66 pit-stops — Holbrook's iconic Wigwam Motel opened in 1950 and is now a National Register landmark — while Two Guns, a murder-riddled tourist trap near Canyon Diablo, peaked in the 1940s and burned out by 1971. Jackson Browne's broken-down car in Winslow inspired 'Take It Easy,' the Eagles' debut single (1972), and put the town on a map it has never left. Flagstaff, perched at 7,000 feet in the world's largest ponderosa pine forest, was Route 66's highest-elevation city and became a science outpost — Clyde Tombaugh discovered Pluto at Lowell Observatory in 1930. I-40 fully replaced Route 66 through Arizona in 1984, but the old highway's ghost is visible at nearly every exit."
@@ -419,7 +514,10 @@ const TRIP_DATA = {
       trivia: [
         "Petrified Forest is the only national park that preserves a driveable section of Historic Route 66 — and it's also the only park where theft directly threatens the resource: roughly 12 tons of petrified wood are stolen each year, prompting the park to run a 'Conscience Wood' program where repentant thieves mail stolen pieces back from around the world, often with notes saying the 'bad luck wood' cursed them.",
         "Flagstaff became the world's first International Dark Sky City in 2001, thanks largely to Lowell Observatory's century-old lobbying. In 1930, astronomer Clyde Tombaugh discovered Pluto from Flagstaff using a 13-inch telescope — and when the New Horizons probe flew past Pluto in 2015, a portion of Tombaugh's ashes were aboard.",
-        "Meteor Crater is so geometrically perfect that for 50 years after its discovery scientists assumed it was a collapsed volcanic dome — mining entrepreneur Daniel Barringer spent 26 years and his personal fortune trying to drill down to the iron meteorite, not realizing that 90 percent of the impactor vaporized on impact. NASA later used the crater to teach Apollo crews what impact geology looks like from ground level."
+        "Meteor Crater is so geometrically perfect that for 50 years after its discovery scientists assumed it was a collapsed volcanic dome — mining entrepreneur Daniel Barringer spent 26 years and his personal fortune trying to drill down to the iron meteorite, not realizing that 90 percent of the impactor vaporized on impact. NASA later used the crater to teach Apollo crews what impact geology looks like from ground level.",
+        "The iron meteorites scattered around Meteor Crater are classified as Canyon Diablo irons — named for the gorge where railroad workers first found them in the 1880s. Studying their crystal structure (Widmanstätten patterns) requires millions of years of slow cooling — proving they crystallized inside a planetesimal that formed in the early solar system.",
+        "The petrified logs in Petrified Forest aren't randomly scattered — they're aligned. Most point northwest to southeast, indicating they were swept by Triassic river currents flowing in that direction 225 million years ago. The current is frozen in stone: you can read the ancient river's flow direction from the orientation of the logs.",
+        "Humphreys Peak at 12,633 feet — Arizona's highest point, visible from I-40 near Flagstaff — is the eroded remnant of a stratovolcano that may have once topped 16,000 feet before its summit collapsed inward. The current peaks are the hardened inner core of the original volcano's conduit system; everything else has been stripped away by 2 million years of erosion and glaciation."
       ],
 
       scenic: [
@@ -476,6 +574,30 @@ const TRIP_DATA = {
           coords: { lat: 35.3905, lng: -111.4069 },
           description: "A Route 66 roadside ruin perched on the rim of Canyon Diablo. What remains are the burned stone walls of a 1920s zoo, trading post, and fake 'Apache Death Cave' tourist attraction cobbled together by a con man who called himself Chief Two Gun White Calf.",
           hook: "The original owner staged at least one murder on the property, ran a zoo of rattlesnakes and mountain lions, and was eventually run off by a land dispute — the most lawless stretch of 66."
+        },
+        {
+          name: 'Hubbell Trading Post National Historic Site',
+          coords: { lat: 35.7078, lng: -109.5613 },
+          description: "The oldest continuously operating trading post on the Navajo Nation, founded by John Lorenzo Hubbell in 1878 and still stocked with Navajo rugs, silver jewelry, and traditional goods. A National Historic Site — the original adobe buildings, barn, and bull pen are intact. Off AZ-264, 55 miles west of Gallup.",
+          hook: "Hubbell learned Navajo, hosted delegations of federal commissioners, and brokered a century of cultural exchange from this compound — and it's still open for business, still run as a genuine trading post."
+        },
+        {
+          name: 'Canyon Diablo Gorge',
+          coords: { lat: 35.3683, lng: -111.4400 },
+          description: "A 225-foot-deep gash in the Kaibab Limestone plateau, carved by the now-dry Canyon Diablo wash near Two Guns. The Atlantic & Pacific Railroad bridge over this gorge (1881) famously halted construction for months — too wide for a temporary trestle. Its depth and geometry visually preview the Grand Canyon 60 miles north.",
+          hook: "The iron meteorites scattered around Meteor Crater were first found by railroad workers near this canyon in the 1880s — the gorge and the crater are linked by the same impact event 50,000 years ago."
+        },
+        {
+          name: 'Homolovi State Park',
+          coords: { lat: 35.0233, lng: -110.6150 },
+          description: "Four Ancestral Hopi pueblo sites, occupied 1200–1400 AD, on a low bluff above the Little Colorado River just north of Winslow off AZ-87. The Hopi consider these waypoints on their ancestral migration route and maintain active ties to the site. The ruins sit on Moenkopi Formation sandstone with panoramic Painted Desert views.",
+          hook: "The Hopi don't call these ruins — they're waypoints on an ongoing migration story that connects these abandoned pueblos to occupied Hopi villages on the mesas 60 miles north."
+        },
+        {
+          name: 'Wupatki National Monument',
+          coords: { lat: 35.5617, lng: -111.3692 },
+          description: "A multi-room pueblo built by the Sinagua around 1182 AD — within a century of Sunset Crater's eruption — on a sandstone ridge overlooking a volcanic plain. The blowhole at the ruin base is a natural pressure vent connected to underground passages; air rushes in or out with barometric pressure changes. 35 miles north of Flagstaff off US-89.",
+          hook: "Sunset Crater's ash fall improved the soil so dramatically that population density here spiked immediately after the eruption — what looked like a catastrophe triggered a building boom."
         }
       ]
     },
@@ -541,7 +663,10 @@ const TRIP_DATA = {
       trivia: [
         "The 6,000-foot elevation drop from Flagstaff to Phoenix along I-17 is roughly equivalent to stacking four Empire State Buildings on top of each other — and you drive it in under two hours at freeway speed.",
         "The Mogollon Rim's limestone cliffs were formed from sediments deposited when central Arizona lay beneath a shallow inland sea during the Carboniferous and Permian periods, more than 250 million years ago — long before the dinosaurs.",
-        "Before I-17 opened, the stagecoach journey from Phoenix to Prescott via Black Canyon took a grueling 30 hours on a road that crossed the Agua Fria River multiple times; today the same stretch takes about 90 minutes."
+        "Before I-17 opened, the stagecoach journey from Phoenix to Prescott via Black Canyon took a grueling 30 hours on a road that crossed the Agua Fria River multiple times; today the same stretch takes about 90 minutes.",
+        "The cream-colored cliff rock visible as I-17 descends the Mogollon Rim is the Kaibab Limestone — the same formation capping the Grand Canyon's south rim 80 miles to the north. It was deposited as a flat seafloor layer 270 million years ago; it now forms the surface of the entire southern Colorado Plateau. If you drove from here to the canyon and looked over the edge, you'd be standing on the exact same rock layer you're driving through right now.",
+        "Montezuma Well discharges 1.5 million gallons of spring water per day — water that fell as rain on the Colorado Plateau 30 to 50 years ago and traveled slowly through the karst limestone aquifer before emerging here. The spring has never gone dry through multiple historic droughts. Its water is too carbonated and arsenic-rich for most life, but five aquatic species evolved specifically for its chemistry and exist nowhere else on Earth.",
+        "Metropolitan Phoenix sits on 1,000 to 2,000 feet of Quaternary alluvial sediment — sand, gravel, and boulders washed down from surrounding ranges over the last 1–2 million years. The actual bedrock is Precambrian granite, the same 1.7-billion-year-old rock forming South Mountain and the White Tank Mountains. The Salt River Project's reservoirs work because this structural basin is the natural collection point for runoff from 14,000 square miles of upstream terrain."
       ],
 
       scenic: [
@@ -592,8 +717,37 @@ const TRIP_DATA = {
           coords: { lat: 34.0583, lng: -112.145 },
           description: "Just past the Bumble Bee/Crown King exit, giant saguaro cacti begin dotting the hillsides — the unmistakable biological announcement that you've crossed into the Lower Sonoran Desert. The landscape transforms from piñon-juniper scrub to the iconic Sonoran palette of saguaro, palo verde, and brittlebush.",
           hook: "Watch the exact moment the saguaros appear — it's the desert's way of saying 'welcome to Phoenix's backyard.'"
+        },
+        {
+          name: 'Verde Valley Graben Overlook',
+          coords: { lat: 34.743, lng: -111.752 },
+          description: "As I-17 descends the Mogollon Rim south of Flagstaff, pullouts near the rim crest overlook the Verde Valley — a structural graben (down-dropped fault block) formed by Basin and Range extension starting 15 million years ago. The Verde River threading through the valley floor is visible as a cottonwood-lined green ribbon against red-rock canyon country.",
+          hook: "That flat valley floor 2,000 feet below dropped along faults while the Colorado Plateau stayed elevated — the Verde Valley is the Basin and Range's northernmost finger poking under the plateau's edge."
+        },
+        {
+          name: 'Tuzigoot National Monument',
+          coords: { lat: 34.7727, lng: -112.0286 },
+          description: "A Sinagua pueblo of 110 rooms perched on a narrow limestone ridge above the Verde River, occupied roughly 1125–1400 AD. Unlike Montezuma Castle, visitors can walk through Tuzigoot's room blocks directly. The site commands sweeping views across the Verde Valley Graben and surrounding red-rock formations.",
+          hook: "The Sinagua built on every defensible hilltop in the Verde Valley — Tuzigoot is the largest, siting its pueblo on a narrow limestone spine that required attackers to approach single-file up the only access route."
+        },
+        {
+          name: 'Dead Horse Ranch State Park',
+          coords: { lat: 34.7655, lng: -112.0138 },
+          description: "A 423-acre state park on the Verde River floodplain near Cottonwood, preserving one of the last extensive cottonwood-willow riparian corridors in Arizona. The Verde is one of only two perennially flowing rivers in Arizona and the park's bird count exceeds 200 species — a biological oasis in the surrounding Sonoran Desert.",
+          hook: "The Verde flows year-round only because it taps the deep aquifer feeding Montezuma Well — the park's lush riverbank is liquid geology, the karst aquifer made visible."
+        },
+        {
+          name: 'Agua Fria National Monument',
+          coords: { lat: 34.2167, lng: -112.0833 },
+          description: "A 71,100-acre monument in the Agua Fria River canyon north of Phoenix, protecting over 450 prehistoric pueblo sites from the Perry Mesa tradition (1250–1450 AD) and some of the most geologically complex canyon country in the Phoenix metro area. The canyon cuts through Tertiary volcanic rocks and basin sediments visible in dramatic cliff walls.",
+          hook: "Less than 45 minutes from Phoenix, this canyon contains more than 450 ancient pueblo sites on isolated mesa tops — a lost civilization hiding in plain sight at the edge of the metro area."
         }
-      ]
+      ],
+
+      geology: {
+        quick: "I-17 south is a 150-mile drive through 300 million years of time — from Permian seafloor at the Mogollon Rim to Precambrian granite in Phoenix.",
+        full: "The Mogollon Rim — the dramatic escarpment visible as I-17 leaves Flagstaff's plateau — marks the structural and topographic edge of the Colorado Plateau. This 200-mile-long cliff, averaging 2,000 feet tall, separates the plateau's stable horizontal sedimentary layers from the more chaotic basin-and-range terrain to the south. The escarpment is not a fault scarp — it was not created by a single rupture — but rather a retreat cliff: the plateau's edge has been gradually eroding southward as rivers carry material away, at an estimated rate of 10–20 miles over the last 15 million years.\n\nThe rock in the dramatic cliff walls as I-17 begins its descent is the Kaibab Limestone — the same cream-colored marine limestone capping the Grand Canyon's south rim 80 miles north. It formed roughly 270 million years ago in a warm shallow tropical sea full of brachiopods, crinoids, and corals. Below the Kaibab comes the Toroweap Formation (similar marine limestone), then the Coconino Sandstone (Permian desert dunes, cemented into cream-colored cliffs), then the Hermit Formation (red shales from a Permian river system). Each band is a chapter in a 50-million-year story of advancing and retreating seas, deserts, and rivers across ancient Arizona.\n\nThe Verde Valley, opening below the rim around Exit 289, is a structural graben — a down-dropped fault block formed by Basin and Range extension pulling the crust apart south of the plateau boundary beginning 15 million years ago. The basin filled with sediment and a freshwater lake (Lake Verde) between 5 and 2 million years ago. Montezuma Well is a collapsed limestone sinkhole fed by a spring discharging 1.5 million gallons per day — water that fell on the Colorado Plateau 30–50 years ago and traveled through the karst aquifer before emerging here. Its chemistry is so unique — highly carbonated, laced with arsenic — that five aquatic species evolved here and nowhere else on Earth.\n\nBetween Camp Verde and Black Canyon City, I-17 cuts through progressively older rock units as the highway descends through basin-and-range terrain. The volcanic mesas visible to the west are lava-capped remnants preserving Tertiary sediments from erosion. At mile marker 249 near Black Canyon City, the first giant saguaro cacti appear — the biological announcement of the Sonoran Desert's lower elevation zone, as definitive as a geological contact. Phoenix sits on 1,000–2,000 feet of Quaternary alluvial sediment shed from the surrounding ranges over the last 1–2 million years. The Salt River reservoirs that made the modern city possible exist because this structural basin is the natural collection point for runoff from 14,000 square miles of upstream desert and mountain terrain. The Precambrian granite of South Mountain and the White Tank Mountains — visible on the city's edge — is the actual basement, the oldest rock in the Phoenix area at 1.7 billion years old, island ranges rising through the alluvial plain like the backs of half-buried mountains."
+      }
     }
 
   ],

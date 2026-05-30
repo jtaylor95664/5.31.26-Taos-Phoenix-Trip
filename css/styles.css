@@ -441,6 +441,20 @@ a { color: inherit; }
   border-top: 1px dashed var(--border);
 }
 
+/* Geology */
+.geology-quick {
+  padding: 12px 13px 4px;
+  font-size: .88rem; line-height: 1.65; color: var(--text);
+  font-style: italic;
+}
+
+.geology-full {
+  padding: 10px 13px 13px;
+  font-size: .84rem; line-height: 1.72; color: var(--text-sec);
+  border-top: 1px dashed var(--border);
+  white-space: pre-wrap;
+}
+
 .text-link-btn {
   background: none; border: none;
   color: var(--blue); font-size: .76rem; font-weight: 700;

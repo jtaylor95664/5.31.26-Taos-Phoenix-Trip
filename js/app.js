@@ -17,6 +17,7 @@ const state = {
   mapExpanded: false,
   mapFullscreen: false,
   historyExpanded: false,
+  geologyExpanded: false,
   metricsExpanded: false,
   gpsStarted: false,
   departureTime: null,
@@ -398,6 +399,7 @@ function renderStageNotes(stageIdx) {
   renderChargingCard(stage);
   renderDiningCard(stage);
   renderHistoryCard(stage);
+  renderGeologyCard(stage);
   renderPOICard(stage);
   renderTriviaCard(stage);
   renderScenicCard(stage);
@@ -406,6 +408,10 @@ function renderStageNotes(stageIdx) {
   state.historyExpanded = false;
   el('history-full-text').classList.add('hidden');
   el('history-expand-btn').textContent = 'Full story ▾';
+
+  state.geologyExpanded = false;
+  el('geology-full-text').classList.add('hidden');
+  el('geology-expand-btn').textContent = 'Full geology ▾';
 }
 
 function renderChargingCard(stage) {
@@ -465,6 +471,17 @@ function renderDiningCard(stage) {
 function renderHistoryCard(stage) {
   el('history-quick-text').textContent = stage.history.quick;
   el('history-full-text').textContent = stage.history.full;
+}
+
+function renderGeologyCard(stage) {
+  const card = el('geology-card');
+  if (!stage.geology) {
+    card.classList.add('hidden');
+    return;
+  }
+  card.classList.remove('hidden');
+  el('geology-quick-text').textContent = stage.geology.quick;
+  el('geology-full-text').textContent = stage.geology.full;
 }
 
 function renderPOICard(stage) {
@@ -902,6 +919,13 @@ function toggleHistory() {
   el('history-expand-btn').textContent = state.historyExpanded ? 'Less ▴' : 'Full story ▾';
 }
 
+/* ── GEOLOGY EXPAND ──────────────────────────────────────────────────────── */
+function toggleGeology() {
+  state.geologyExpanded = !state.geologyExpanded;
+  el('geology-full-text').classList.toggle('hidden', !state.geologyExpanded);
+  el('geology-expand-btn').textContent = state.geologyExpanded ? 'Less ▴' : 'Full geology ▾';
+}
+
 /* ── CLOCK TICK ──────────────────────────────────────────────────────────── */
 function tick() {
   if (state.metricsExpanded) {
@@ -942,6 +966,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // History
   el('history-expand-btn').addEventListener('click', toggleHistory);
+
+  // Geology
+  el('geology-expand-btn').addEventListener('click', toggleGeology);
 
   // Modal close buttons
   el('poi-close-btn').addEventListener('click', closePOIModal);
