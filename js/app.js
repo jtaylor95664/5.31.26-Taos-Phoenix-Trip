@@ -117,6 +117,7 @@ function initMap() {
   });
 
   drawRoute();
+  startGPS(); // Start GPS immediately — don't wait for the Directions API
 }
 
 function drawRoute() {
@@ -161,7 +162,6 @@ function drawRoute() {
     });
 
     addMapMarkers();
-    startGPS();
   });
 }
 
