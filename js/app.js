@@ -18,7 +18,6 @@ const state = {
   mapFullscreen: false,
   historyExpanded: false,
   metricsExpanded: false,
-  gruetOpen: false,
   gpsStarted: false,
   departureTime: null,
   firedMilestones: new Set(), // milestone ids already shown
@@ -298,7 +297,6 @@ function onGPSUpdate(pos) {
 
   updateMetrics();
   updateSocorroWarning(state.currentStage);
-  updateJuliaWidget(state.currentStage);
   updateBackBar();
   checkMilestones(lat, lng);
 }
@@ -384,12 +382,6 @@ function updateJuliaBuffer() {
 function updateSocorroWarning(stageIdx) {
   const show = TRIP_DATA.stages[stageIdx] && TRIP_DATA.stages[stageIdx].socorroWarning;
   el('socorro-banner').classList.toggle('hidden', !show);
-}
-
-/* ── JULIA WIDGET ──────────────────────────────────────────────────────────── */
-function updateJuliaWidget(stageIdx) {
-  // No Julia pickup on return trip — widget is permanently hidden
-  el('julia-widget').classList.add('hidden');
 }
 
 /* ── STAGE NOTES RENDER ───────────────────────────────────────────────────── */
@@ -589,7 +581,7 @@ function closeBottomSheet(sheetId, stateKey) {
   el(sheetId).classList.add('hidden');
   state[stateKey] = false;
   // Only hide overlay if every modal is now closed
-  if (!state.gruetOpen && !state.poiModalOpen && !state.diningModalOpen) {
+  if (!state.poiModalOpen && !state.diningModalOpen) {
     el('modal-overlay').classList.add('hidden');
   }
 }
@@ -857,70 +849,6 @@ function updateBackBar() {
   el('back-to-current-bar').classList.toggle('hidden', !state.isManualView);
 }
 
-/* ── GRUET MODAL ──────────────────────────────────────────────────────────── */
-function renderGruetModal() {
-  const now = new Date();
-  const dow = now.getDay(); // 0=Sun ... 6=Sat
-  const nowHour = now.getHours() + now.getMinutes() / 60;
-
-  let html = `<p class="gruet-intro">New Mexico's premier sparkling wine producer. Two tasting rooms along your route — here's what's realistic today.</p>`;
-
-  TRIP_DATA.gruet.forEach(loc => {
-    const closeHour = loc.closeHour[dow];
-    const isOpen = nowHour >= loc.openHour && nowHour < closeHour;
-    const isBehind = state.currentStage >= Math.max(...loc.stageAvailable);
-    const isUpcoming = !isBehind && !isOpen && nowHour < loc.openHour;
-    const closesIn = closeHour - nowHour; // hours until close
-    const isTight = isOpen && closesIn < 1;
-
-    let statusClass = 'coming';
-    let badgeClass = 'badge-coming';
-    let badgeText = 'Coming up';
-
-    if (isBehind) { statusClass = 'behind'; badgeClass = 'badge-behind'; badgeText = 'Passed'; }
-    else if (isTight) { statusClass = 'tight'; badgeClass = 'badge-tight'; badgeText = `Closes in ${Math.round(closesIn * 60)} min`; }
-    else if (isOpen) { statusClass = 'available'; badgeClass = 'badge-open'; badgeText = `Open until ${closeHour === 21 ? '9:00 PM' : '7:00 PM'}`; }
-    else if (!isUpcoming && !isBehind) { statusClass = 'closed'; badgeClass = 'badge-closed'; badgeText = 'Closed now'; }
-
-    const closeLabel = closeHour === 21 ? '9:00 PM' : '7:00 PM';
-    const openLabel = '11:00 AM';
-    const todayHours = `${openLabel} – ${closeLabel}`;
-
-    html += `
-      <div class="gruet-location ${statusClass}">
-        <div class="gruet-city">📍 ${loc.city}</div>
-        <span class="status-badge ${badgeClass}">${badgeText}</span>
-        <div class="gruet-address">${loc.address}</div>
-        <div class="gruet-hours-line">Today: ${todayHours}</div>
-        <div class="gruet-distance">${loc.distanceNote}</div>
-        <div class="gruet-arrival">${loc.tripArrivalNote}</div>
-        <div class="gruet-note">${loc.note}</div>
-        <div class="gruet-wines"><strong>What to try:</strong> ${loc.wines}</div>
-        <a href="${loc.tockUrl}" target="_blank" class="gruet-reserve-btn">
-          ${isBehind ? 'Already passed' : 'Reserve on Tock →'}
-        </a>
-      </div>
-    `;
-  });
-
-  el('gruet-modal-content').innerHTML = html;
-}
-
-function openGruetModal() {
-  renderGruetModal();
-  el('modal-overlay').classList.remove('hidden');
-  el('gruet-modal').classList.remove('hidden');
-  state.gruetOpen = true;
-}
-
-function closeGruetModal() {
-  el('gruet-modal').classList.add('hidden');
-  state.gruetOpen = false;
-  if (!state.poiModalOpen && !state.diningModalOpen) {
-    el('modal-overlay').classList.add('hidden');
-  }
-}
-
 /* ── MAP CONTROLS ──────────────────────────────────────────────────────────── */
 function expandMap() {
   el('map-container').classList.add('expanded');
@@ -979,8 +907,6 @@ function tick() {
   if (state.metricsExpanded) {
     el('elapsed-time').textContent = computeElapsed();
   }
-  // Re-render Gruet modal if open (hours may change)
-  if (state.gruetOpen) renderGruetModal();
 }
 
 /* ── EVENT LISTENERS ─────────────────────────────────────────────────────── */
@@ -1017,18 +943,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // History
   el('history-expand-btn').addEventListener('click', toggleHistory);
 
-  // Gruet
-  el('gruet-fab').addEventListener('click', openGruetModal);
-  el('gruet-close-btn').addEventListener('click', closeGruetModal);
-
-  // New modals — close buttons
+  // Modal close buttons
   el('poi-close-btn').addEventListener('click', closePOIModal);
   el('dining-close-btn').addEventListener('click', closeDiningModal);
 
   // Overlay — closes whichever modal is open
   el('modal-overlay').addEventListener('click', () => {
-    if (state.gruetOpen)      closeGruetModal();
-    if (state.poiModalOpen)   closePOIModal();
+    if (state.poiModalOpen)    closePOIModal();
     if (state.diningModalOpen) closeDiningModal();
   });
 
@@ -1036,7 +957,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       if (state.mapFullscreen)   exitFullscreen();
-      if (state.gruetOpen)       closeGruetModal();
       if (state.poiModalOpen)    closePOIModal();
       if (state.diningModalOpen) closeDiningModal();
     }

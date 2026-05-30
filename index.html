@@ -111,9 +111,6 @@
       <button class="back-btn" id="back-to-current-btn">↩ Back to current stage</button>
     </div>
 
-    <!-- Julia widget removed — no pickup on return trip -->
-    <div class="card julia-card hidden" id="julia-widget" aria-hidden="true"></div>
-
     <!-- Charging Card -->
     <div class="card" id="charging-card">
       <div class="card-header">⚡ Charging Stop</div>
@@ -166,20 +163,8 @@
 
   </section>
 
-  <!-- ══ GRUET FAB ════════════════════════════════════════════════════════════ -->
-  <button class="gruet-fab" id="gruet-fab" aria-label="Gruet Winery options">
-    🍾 <span class="gruet-fab-label">Gruet</span>
-  </button>
-
-  <!-- ══ GRUET MODAL ══════════════════════════════════════════════════════════ -->
+  <!-- ══ MODAL OVERLAY (shared by POI + Dining modals) ══════════════════════ -->
   <div class="modal-overlay hidden" id="modal-overlay"></div>
-  <div id="gruet-modal" class="hidden">
-    <div class="modal-header">
-      <h3>🍾 Gruet Winery</h3>
-      <button class="modal-close-btn" id="gruet-close-btn" aria-label="Close">✕</button>
-    </div>
-    <div class="modal-content-area" id="gruet-modal-content"></div>
-  </div>
 
   <!-- ══ POI DETAIL MODAL ═════════════════════════════════════════════════════ -->
   <div id="poi-modal" class="bottom-sheet hidden">

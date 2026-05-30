@@ -598,35 +598,6 @@ const TRIP_DATA = {
 
   ],
 
-  gruet: [
-    {
-      city: 'Santa Fe',
-      address: '210 Don Gaspar Ave, Hotel St. Francis, Santa Fe, NM 87501',
-      phone: 'See website',
-      openHour: 11,
-      closeHour: [19, 19, 19, 19, 21, 21, 21],
-      tockUrl: 'https://www.exploretock.com/gruet-winery-santafe',
-      distanceNote: '~10 min drive from EA charger at Herrera Dr',
-      tripArrivalNote: 'You stop here ~9:30–10:00 AM',
-      wines: 'Blanc de Noirs, Brut, Rosé, Blanc de Blancs',
-      note: "In the gorgeous Hotel St. Francis downtown. Opens at 11 AM — you'll be there right around opening if you left Taos at 8. Thu–Sat open until 9 PM on weekends.",
-      stageAvailable: [0, 1]
-    },
-    {
-      city: 'Albuquerque',
-      address: '8400 Pan American Fwy NE, Albuquerque, NM 87113',
-      phone: '(505) 821-0055 ext. 2',
-      openHour: 11,
-      closeHour: [19, 19, 19, 19, 21, 21, 21],
-      tockUrl: 'https://www.exploretock.com/gruet-winery-albuquerque',
-      distanceNote: '~15 min drive from EA Uptown charger',
-      tripArrivalNote: 'You arrive ABQ ~11:00 AM–12:00 PM',
-      wines: 'Blanc de Noirs, Brut, Blanc de Blancs, Demi-Sec',
-      note: 'The original winery and tasting room. Good timing — you should arrive ABQ right around opening. Reserve on Tock or call ahead on weekends.',
-      stageAvailable: [1, 2]
-    }
-  ],
-
   // ── DESTINATION: Peoria / Trilogy at Vistancia ────────────────────────────
   destination: {
     coords: { lat: 33.7179, lng: -112.3284 },
