@@ -92,11 +92,11 @@ const TRIP_DATA = {
       },
 
       trivia: [
+        "The Servilleta basalt forming the Taos Plateau is tholeiitic — a low-silica, low-viscosity volcanic rock chemically identical to lava erupting at mid-ocean ridges today. Its fluidity when molten let it spread in flat sheets across the plateau rather than piling into steep cones. The result was a lava plain so flat that early Spanish settlers didn't realize they were crossing an ancient volcanic field.",
         "NASA geologically trained Apollo astronauts at the Rio Grande Gorge in 1971 — the basalt canyon was considered the closest Earth analogue to the Apollo 15 lunar landing site. David Scott, James Irwin, John Young, Charlie Duke, and Jack Schmitt all practiced geology here before walking on the Moon.",
-        "The Denver and Rio Grande's narrow-gauge 'Chili Line' ran through this gorge from 1881 to 1941, carrying northern New Mexico's famous red chile to markets in Colorado. At Embudo station, northbound and southbound trains met mid-day so passengers could eat lunch — the schedule was built around the meal, not the other way around.",
         "The Rio Grande Gorge is not carved into the Rocky Mountains — it's cut through a flat basalt plateau. The river saws downward through lava flows faster than the surrounding land rises, meaning the gorge gets slightly deeper every year.",
         "The Rio Grande doesn't carve its gorge at a steady rate — it cuts in pulses tied to glacial cycles. During ice ages, glacial meltwater loaded with coarse Rocky Mountain grit acted like liquid sandpaper, carving deeper; during warm interglacials the reduced sediment load allowed vertical cutting to pause. The gorge's deepest sections record the most intense glacial cycles of the last 800,000 years.",
-        "The Servilleta basalt forming the Taos Plateau is tholeiitic — a low-silica, low-viscosity volcanic rock chemically identical to lava erupting at mid-ocean ridges today. Its fluidity when molten let it spread in flat sheets across the plateau rather than piling into steep cones. The result was a lava plain so flat that early Spanish settlers didn't realize they were crossing an ancient volcanic field.",
+        "The Denver and Rio Grande's narrow-gauge 'Chili Line' ran through this gorge from 1881 to 1941, carrying northern New Mexico's famous red chile to markets in Colorado. At Embudo station, northbound and southbound trains met mid-day so passengers could eat lunch — the schedule was built around the meal, not the other way around.",
         "The Embudo Fault running through the valley near Dixon accumulates seismic strain at roughly 0.15 millimeters per year — slower than fingernails grow. But multiplied across 5 million years of rift activity, that rate represents the cumulative displacement that dropped the Española Basin floor thousands of feet below the surrounding plateau."
       ],
 
@@ -138,10 +138,10 @@ const TRIP_DATA = {
           hook: "One of the world's highest-altitude commercial wineries — and it's right on the highway. Zero detour required for a quick tasting stop."
         },
         {
-          name: 'Ohkay Owingeh Pueblo',
-          coords: { lat: 36.052, lng: -106.071 },
-          description: "Located 4 miles northeast of Española off NM-68, Ohkay Owingeh is where Oñate established the first Spanish capital of New Mexico in 1598 — before Santa Fe even existed. The pueblo's Tewa name means 'Place of the Strong People'; it was known as San Juan Pueblo for four centuries before the community reclaimed its original name in 2005.",
-          hook: "Santa Fe gets all the colonial tourism, but this is actually where New Mexico's European history began — 12 years before the Palace of the Governors was built."
+          name: 'Velarde Landslide Reach',
+          coords: { lat: 36.1705, lng: -105.9012 },
+          description: "Between Velarde and Embudo the gorge walls display multiple large landslide scars where blocks of basalt broke free from the gorge rim and tumbled to the river below. The fan-shaped debris piles at the cliff bases are geologically fresh — many slides occurred within the last 10,000 years as post-glacial warming destabilized cliff bases saturated by higher river levels.",
+          hook: "Those smooth curved scars above the highway aren't erosion — entire cliff sections broke loose and slid into the river. Several of these collapses happened within the last few thousand years."
         },
         {
           name: 'Pilar Cliffs Pullout',
@@ -150,10 +150,10 @@ const TRIP_DATA = {
           hook: "You're reading a 3-million-year volcanic diary in the cliff wall — each dark stripe is a different lava flow, each lighter layer between them was once a ground surface where something actually grew."
         },
         {
-          name: 'Velarde Landslide Reach',
-          coords: { lat: 36.1705, lng: -105.9012 },
-          description: "Between Velarde and Embudo the gorge walls display multiple large landslide scars where blocks of basalt broke free from the gorge rim and tumbled to the river below. The fan-shaped debris piles at the cliff bases are geologically fresh — many slides occurred within the last 10,000 years as post-glacial warming destabilized cliff bases saturated by higher river levels.",
-          hook: "Those smooth curved scars above the highway aren't erosion — entire cliff sections broke loose and slid into the river. Several of these collapses happened within the last few thousand years."
+          name: 'Ohkay Owingeh Pueblo',
+          coords: { lat: 36.052, lng: -106.071 },
+          description: "Located 4 miles northeast of Española off NM-68, Ohkay Owingeh is where Oñate established the first Spanish capital of New Mexico in 1598 — before Santa Fe even existed. The pueblo's Tewa name means 'Place of the Strong People'; it was known as San Juan Pueblo for four centuries before the community reclaimed its original name in 2005.",
+          hook: "Santa Fe gets all the colonial tourism, but this is actually where New Mexico's European history began — 12 years before the Palace of the Governors was built."
         },
         {
           name: 'Black Mesa Overlook',
@@ -256,11 +256,11 @@ const TRIP_DATA = {
 
       trivia: [
         "La Bajada means 'The Descent' in Spanish — and the old road lived up to the name. The Camino Real switchbacks here had a 28% grade; fully loaded wagons had to be partially unloaded, lowered by rope, and reloaded at the bottom. The modern I-25 bypass grade is under 5%.",
+        "The La Bajada basalt escarpment was quarried for building stone from colonial times through the 20th century — the dark volcanic rock in the walls of several Santa Fe historic buildings came from the cliff face you're driving past. The quarry scars are still visible on the escarpment's northern end if you know where to look.",
         "The Cerrillos turquoise mines just east of I-25 have been worked for roughly 6,000 years — making them among the oldest known mines in North America. Aztec artisans in Tenochtitlán used turquoise from these exact hills in their ceremonial mosaics.",
         "The Sandia Mountains are uplifting along the Sandia fault at roughly one millimeter per year — measurably taller today than when the first Spanish colonists saw them in 1540. The fossils at the summit once sat on the floor of a 300-million-year-old tropical sea.",
-        "The Albuquerque Basin contains up to 14,000 feet of Cenozoic sediment. If you drilled straight down from Albuquerque's downtown you wouldn't hit Precambrian basement rock for nearly three miles. The city is built on its own eroded debris, compacted over 25 million years.",
         "The Sandia summit spans 1.1 billion years of Earth history in a single cliff face: the pink granite base is 1.45 billion years old, and the Pennsylvanian limestone resting directly on it is just 310 million years old — with over a billion years of geological record simply missing between them. This gap is one of the most dramatic unconformities in North America.",
-        "The La Bajada basalt escarpment was quarried for building stone from colonial times through the 20th century — the dark volcanic rock in the walls of several Santa Fe historic buildings came from the cliff face you're driving past. The quarry scars are still visible on the escarpment's northern end if you know where to look."
+        "The Albuquerque Basin contains up to 14,000 feet of Cenozoic sediment. If you drilled straight down from Albuquerque's downtown you wouldn't hit Precambrian basement rock for nearly three miles. The city is built on its own eroded debris, compacted over 25 million years."
       ],
 
       scenic: [
@@ -283,28 +283,10 @@ const TRIP_DATA = {
 
       pois: [
         {
-          name: 'La Bajada Escarpment Viewpoint',
-          coords: { lat: 35.27, lng: -106.195 },
-          description: "Roughly 17 miles south of Santa Fe, I-25 crests the Caja del Río plateau and begins its descent over the La Bajada escarpment — a jagged black wall of columnar basalt visible for 20 miles to the south. The old Camino Real switchbacks are still faintly visible on the cliff face just east of the freeway.",
-          hook: "For 300 years every wheeled vehicle, mule train, and marching column between Mexico City and Santa Fe had to wrestle their way up 600 feet of 28%-grade switchbacks here — the modern freeway grade makes it almost laughably easy."
-        },
-        {
-          name: 'Kewa (Santo Domingo) Pueblo',
-          coords: { lat: 35.512, lng: -106.373 },
-          description: "Visible from I-25 at the Santo Domingo exit, Kewa Pueblo has been a center of turquoise jewelry and heishi bead-making for millennia. The nearby Cerrillos Hills contain the oldest continuously mined turquoise deposits in North America — 6,000 years of extraction that supplied trade networks stretching to the Gulf of California.",
-          hook: "The turquoise in pre-Columbian artifacts found as far away as Chaco Canyon and Aztec temples almost certainly came from mines within 30 miles of where you're driving right now."
-        },
-        {
-          name: 'Sandia Mountains East Face',
-          coords: { lat: 35.21, lng: -106.447 },
-          description: "The 10,678-foot Sandia Crest looms over Albuquerque's eastern edge — a nearly vertical 5,000-foot west face of billion-year-old pink granite topped by Pennsylvanian limestone full of marine fossils. The mountains turn a vivid watermelon-pink in the hour after sunset.",
-          hook: "The limestone cap on top of the Sandias formed on the floor of a shallow sea 300 million years ago — you can find intact crinoids and brachiopods embedded in the rock at Sandia Crest, thousands of feet above sea level."
-        },
-        {
-          name: 'Old Town Albuquerque',
-          coords: { lat: 35.0958, lng: -106.6692 },
-          description: "Founded 1706. Spanish colonial plaza, San Felipe de Neri Church, adobe architecture. ~10 min drive from the EA charger. Some of the best green chile in New Mexico within a few blocks.",
-          hook: "The plaza has been continuously occupied since 1706 — the adobe church in the corner has been in continuous use longer than the United States has existed."
+          name: 'Tetilla Peak',
+          coords: { lat: 35.6271, lng: -106.1589 },
+          description: "Tetilla Peak (6,700 ft) is an isolated volcanic neck visible west of I-25 near La Bajada — the eroded remnant of a magmatic intrusion that punched through basin sediments. The surrounding softer rock has been stripped away over millions of years, leaving the harder volcanic core standing alone as a distinctive cone-shaped summit.",
+          hook: "That conical peak rising from the flat basin to the west is a volcanic plug — the solidified interior of a vent whose surrounding material eroded away, leaving the hardest part standing alone like a geological tombstone."
         },
         {
           name: 'La Bajada Escarpment — South Viewpoint',
@@ -313,16 +295,34 @@ const TRIP_DATA = {
           hook: "Look back north from here and you can see the full wall that stopped El Camino Real traffic for 300 years — from this angle it's clear why carts had to be partially dismantled and lowered by rope."
         },
         {
-          name: 'Tetilla Peak',
-          coords: { lat: 35.6271, lng: -106.1589 },
-          description: "Tetilla Peak (6,700 ft) is an isolated volcanic neck visible west of I-25 near La Bajada — the eroded remnant of a magmatic intrusion that punched through basin sediments. The surrounding softer rock has been stripped away over millions of years, leaving the harder volcanic core standing alone as a distinctive cone-shaped summit.",
-          hook: "That conical peak rising from the flat basin to the west is a volcanic plug — the solidified interior of a vent whose surrounding material eroded away, leaving the hardest part standing alone like a geological tombstone."
+          name: 'Kewa (Santo Domingo) Pueblo',
+          coords: { lat: 35.512, lng: -106.373 },
+          description: "Visible from I-25 at the Santo Domingo exit, Kewa Pueblo has been a center of turquoise jewelry and heishi bead-making for millennia. The nearby Cerrillos Hills contain the oldest continuously mined turquoise deposits in North America — 6,000 years of extraction that supplied trade networks stretching to the Gulf of California.",
+          hook: "The turquoise in pre-Columbian artifacts found as far away as Chaco Canyon and Aztec temples almost certainly came from mines within 30 miles of where you're driving right now."
+        },
+        {
+          name: 'La Bajada Escarpment Viewpoint',
+          coords: { lat: 35.27, lng: -106.195 },
+          description: "Roughly 17 miles south of Santa Fe, I-25 crests the Caja del Río plateau and begins its descent over the La Bajada escarpment — a jagged black wall of columnar basalt visible for 20 miles to the south. The old Camino Real switchbacks are still faintly visible on the cliff face just east of the freeway.",
+          hook: "For 300 years every wheeled vehicle, mule train, and marching column between Mexico City and Santa Fe had to wrestle their way up 600 feet of 28%-grade switchbacks here — the modern freeway grade makes it almost laughably easy."
+        },
+        {
+          name: 'Sandia Mountains East Face',
+          coords: { lat: 35.21, lng: -106.447 },
+          description: "The 10,678-foot Sandia Crest looms over Albuquerque's eastern edge — a nearly vertical 5,000-foot west face of billion-year-old pink granite topped by Pennsylvanian limestone full of marine fossils. The mountains turn a vivid watermelon-pink in the hour after sunset.",
+          hook: "The limestone cap on top of the Sandias formed on the floor of a shallow sea 300 million years ago — you can find intact crinoids and brachiopods embedded in the rock at Sandia Crest, thousands of feet above sea level."
         },
         {
           name: 'Albuquerque Volcanoes (West Mesa Cinder Cones)',
           coords: { lat: 35.1581, lng: -106.7341 },
           description: "Five cinder cones on Albuquerque's West Mesa, part of Petroglyph National Monument, erupted between 156,000 and 40,000 years ago — geologically contemporaneous with early Homo sapiens in Africa. They're classified dormant (not extinct) by the USGS. More than 20,000 Ancestral Puebloan petroglyphs are incised into the volcanic boulders at their base.",
           hook: "Albuquerque has its own volcanic field on the city's western edge — and 20,000 ancient rock art petroglyphs at the base of the cones suggest people watched and contemplated these volcanoes very carefully."
+        },
+        {
+          name: 'Old Town Albuquerque',
+          coords: { lat: 35.0958, lng: -106.6692 },
+          description: "Founded 1706. Spanish colonial plaza, San Felipe de Neri Church, adobe architecture. ~10 min drive from the EA charger. Some of the best green chile in New Mexico within a few blocks.",
+          hook: "The plaza has been continuously occupied since 1706 — the adobe church in the corner has been in continuous use longer than the United States has existed."
         }
       ],
 
