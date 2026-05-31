@@ -36,6 +36,17 @@ const TRIP_DATA = {
       socorroWarning: false,
       juliaVisible: false,
 
+      soundtrack: {
+        vibe: "Quiet & cinematic — canyon depth, cottonwood green, canyon wrens",
+        songs: [
+          { title: "White Winter Hymnal", artist: "Fleet Foxes" },
+          { title: "Don't Think Twice, It's Alright", artist: "Bob Dylan" },
+          { title: "The Trapeze Swinger", artist: "Iron & Wine" },
+          { title: "Lua", artist: "Bright Eyes" }
+        ],
+        query: "fleet foxes iron wine folk canyon road trip"
+      },
+
       charging: {
         name: 'Electrify America – Santa Fe Railyard',
         address: '5701 Herrera Dr, Santa Fe, NM 87507',
@@ -188,6 +199,17 @@ const TRIP_DATA = {
       socorroWarning: false,
       juliaVisible: false,
 
+      soundtrack: {
+        vibe: "High desert warmth — wide open bajadas, bosque green",
+        songs: [
+          { title: "If I Had a Boat", artist: "Lyle Lovett" },
+          { title: "Pancho and Lefty", artist: "Townes Van Zandt" },
+          { title: "Lowrider", artist: "War" },
+          { title: "The Black and White Years", artist: "Calexico" }
+        ],
+        query: "calexico southwest desert alt-country road trip"
+      },
+
       charging: {
         name: 'Electrify America – Albuquerque Uptown',
         address: 'Uptown Loop Rd NE, Albuquerque, NM 87110',
@@ -339,6 +361,17 @@ const TRIP_DATA = {
       socAtEnd: 44,
       socorroWarning: false,
       juliaVisible: false,
+
+      soundtrack: {
+        vibe: "Classic Route 66 energy — building west across the plateau",
+        songs: [
+          { title: "Route 66", artist: "Nat King Cole" },
+          { title: "King of the Road", artist: "Roger Miller" },
+          { title: "Willin'", artist: "Little Feat" },
+          { title: "Going Up the Country", artist: "Canned Heat" }
+        ],
+        query: "route 66 classic road trip nat king cole little feat"
+      },
 
       charging: {
         name: 'Electrify America – Gallup',
@@ -510,6 +543,18 @@ const TRIP_DATA = {
       socorroWarning: false,
       juliaVisible: false,
 
+      soundtrack: {
+        vibe: "Eagles country — you're literally driving through their songs",
+        songs: [
+          { title: "Take It Easy", artist: "Eagles" },
+          { title: "Running on Empty", artist: "Jackson Browne" },
+          { title: "Peaceful Easy Feeling", artist: "Eagles" },
+          { title: "These Days", artist: "Jackson Browne" },
+          { title: "Desperado", artist: "Eagles" }
+        ],
+        query: "eagles jackson browne classic rock arizona road trip"
+      },
+
       charging: {
         name: 'Electrify America – Flagstaff',
         address: '2601 E Huntington Dr, Flagstaff, AZ 86004',
@@ -680,6 +725,18 @@ const TRIP_DATA = {
       socAtEnd: 50,
       socorroWarning: false,
       juliaVisible: false,
+
+      soundtrack: {
+        vibe: "The triumphant descent — 6,000 feet down to the finish line",
+        songs: [
+          { title: "Learning to Fly", artist: "Tom Petty" },
+          { title: "Here Comes the Sun", artist: "The Beatles" },
+          { title: "Life is a Highway", artist: "Tom Cochrane" },
+          { title: "Take It to the Limit", artist: "Eagles" },
+          { title: "Free Fallin'", artist: "Tom Petty" }
+        ],
+        query: "tom petty beatles triumphant classic rock road trip"
+      },
 
       charging: {
         name: 'Electrify America – Phoenix Bell Rd (optional top-off)',
@@ -944,13 +1001,94 @@ const TRIP_DATA = {
       detail: "The Sonoran Desert is welcoming you home. Trilogy is less than 40 miles away."
     },
     {
+      id: 'continental-divide',
+      type: 'proximity',
+      coords: { lat: 35.4031, lng: -108.3390 },
+      radiusMiles: 2,
+      icon: '🌊',
+      title: 'Continental Divide!',
+      detail: 'Everything west of here drains to the Pacific. A raindrop landing here has two very different 2,000-mile journeys available.'
+    },
+    {
+      id: 'painted-desert-entry',
+      type: 'proximity',
+      coords: { lat: 35.0835, lng: -109.7886 },
+      radiusMiles: 4,
+      icon: '🎨',
+      title: 'Welcome to the Painted Desert',
+      detail: '225-million-year-old Triassic mudstone in every shade of purple, rust, and orange — the colors are original iron chemistry, not paint.'
+    },
+    {
+      id: 'winslow',
+      type: 'proximity',
+      coords: { lat: 35.0242, lng: -110.6973 },
+      radiusMiles: 3,
+      icon: '🎸',
+      title: "Standin' on a Corner in Winslow, Arizona",
+      detail: '"...such a fine sight to see." The Eagles wrote Take It Easy about a car breakdown right here in 1972. You made it.',
+      special: 'winslow'
+    },
+    {
       id: 'home-arrival',
       type: 'proximity',
       coords: { lat: 33.7179, lng: -112.3284 },
       radiusMiles: 4,
       icon: '🏠',
       title: 'Welcome Home!',
-      detail: 'Taos to Trilogy. You made it.'
+      detail: 'Taos to Trilogy. You made it.',
+      special: 'arrival'
     }
+  ],
+
+  // ── ROAD TRIP BINGO ────────────────────────────────────────────────────────
+  bingo: [
+    { label: 'Pronghorn',       icon: '🦌' },
+    { label: 'Roadrunner',      icon: '🐦' },
+    { label: 'Tumbleweed',      icon: '🌾' },
+    { label: 'Freight Train',   icon: '🚂' },
+    { label: 'Dust Devil',      icon: '🌪' },
+    { label: 'Saguaro',         icon: '🌵' },
+    { label: 'Hot Air Balloon', icon: '🎈' },
+    { label: 'Rt 66 Sign',      icon: '🛣' },
+    { label: 'Red Rock Mesa',   icon: '🏜' },
+    { label: 'Giant RV',        icon: '🚐' },
+    { label: 'Roadside Stand',  icon: '🏺' },
+    { label: 'Windmill',        icon: '💨' },
+    { label: 'Bighorn Sheep',   icon: '🐏' },
+    { label: '3+ Ravens',       icon: '🪶' },
+    { label: 'Irrigation Pivot',icon: '💧' },
+    { label: 'Adobe House',     icon: '🏠' },
+    { label: 'Lava Field',      icon: '🌋' },
+    { label: 'Snowy Peak',      icon: '🏔' },
+    { label: 'Cattle Crossing', icon: '🐄' },
+    { label: 'Hawk on Pole',    icon: '🦅' },
+    { label: 'Petrified Log',   icon: '🪵' },
+    { label: 'Painted Desert',  icon: '🎨' },
+    { label: 'Ponderosa Pine',  icon: '🌲' },
+    { label: 'Cottonwood Fluff',icon: '🌫' }
+  ],
+
+  // ── PASSENGER CHALLENGES ───────────────────────────────────────────────────
+  challenges: [
+    "First to spot a bird of prey on a fence post picks the next song.",
+    "Name a movie set in New Mexico or Arizona before the next exit.",
+    "Spot a license plate from east of the Mississippi.",
+    "Who can name the most state capitals in 60 seconds? Go.",
+    "Count every windmill visible at the same time. Right now.",
+    "Make up a complete backstory for the next semi-truck you pass.",
+    "How many distinct colors can you count in the rocks right now?",
+    "Spot something that existed 1,000 years ago. First one wins.",
+    "Find the most remote-looking house visible from the highway.",
+    "Count white vehicles for the next 3 minutes. No cheating.",
+    "Name 5 animals native to this landscape. You have 30 seconds.",
+    "First to spot the next national park or monument sign wins.",
+    "What would you build here if you had to live off the land?",
+    "What's the weirdest billboard you've seen today? Defend your answer.",
+    "Whoever stays quiet the longest wins. Starting... now.",
+    "First to spot a saguaro cactus wins a snack of their choice.",
+    "How far do you think it is to the horizon right now? Guess in miles.",
+    "Find a cloud shaped like something recognizable. 90 seconds.",
+    "Name every town you remember passing through today. Most wins.",
+    "Guess what year that roadside building was last used. Closest wins."
   ]
 };

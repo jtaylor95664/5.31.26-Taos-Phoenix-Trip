@@ -66,6 +66,10 @@
           <span class="metric-cell-label">SOC at next</span>
           <span class="metric-cell-value" id="soc-next">—</span>
         </div>
+        <div class="metric-cell hidden" id="elevation-cell">
+          <span class="metric-cell-label">Elevation</span>
+          <span class="metric-cell-value" id="elevation-value">—</span>
+        </div>
       </div>
     </div>
 
@@ -110,6 +114,12 @@
 
     <div class="back-bar hidden" id="back-to-current-bar">
       <button class="back-btn" id="back-to-current-btn">↩ Back to current stage</button>
+    </div>
+
+    <!-- Soundtrack Card -->
+    <div class="card hidden" id="soundtrack-card">
+      <div class="card-header">🎵 Soundtrack for This Segment</div>
+      <div class="card-content" id="soundtrack-content"></div>
     </div>
 
     <!-- Charging Card -->
@@ -159,7 +169,7 @@
 
     <!-- Trivia Card -->
     <div class="card hidden" id="trivia-card">
-      <div class="card-header">🧠 Did You Know?</div>
+      <div class="card-header">🧠 Did You Know? <span class="trivia-score-badge" id="trivia-score-badge"></span></div>
       <div class="card-content" id="trivia-content"></div>
     </div>
 
@@ -167,6 +177,24 @@
     <div class="card hidden" id="scenic-card">
       <div class="card-header">👁 Watch For This</div>
       <div class="card-content" id="scenic-content"></div>
+    </div>
+
+    <!-- Challenges Card -->
+    <div class="card" id="challenges-card">
+      <div class="card-header">🎯 Passenger Challenge <span class="challenge-num" id="challenge-num"></span></div>
+      <div class="card-content">
+        <div class="challenge-text" id="challenge-text"></div>
+        <div class="challenge-actions">
+          <button class="challenge-done-btn" id="challenge-done-btn">Done ✓</button>
+          <button class="challenge-next-btn" id="challenge-next-btn">Next challenge →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weather Card -->
+    <div class="card hidden" id="weather-card">
+      <div class="card-header">🌡 Right Now &amp; At Home</div>
+      <div class="card-content" id="weather-content"></div>
     </div>
 
     <!-- Arrival Card (final stage only) -->
@@ -235,6 +263,43 @@
       </a>
     </div>
   </div>
+
+  <!-- ══ BINGO OVERLAY ══════════════════════════════════════════════════════ -->
+  <div class="bingo-overlay hidden" id="bingo-overlay">
+    <div class="bingo-header">
+      <span>🎴 Road Trip Bingo</span>
+      <button class="bingo-close-btn" id="bingo-close-btn" aria-label="Close bingo">✕</button>
+    </div>
+    <div class="bingo-grid" id="bingo-grid"></div>
+    <div class="bingo-status" id="bingo-status"></div>
+    <button class="bingo-reset-btn" id="bingo-reset-btn">New Card 🔀</button>
+  </div>
+
+  <!-- ══ SPOT COUNTER PANEL ══════════════════════════════════════════════════ -->
+  <div class="spot-panel hidden" id="spot-panel">
+    <div class="spot-panel-header">
+      <span>🐾 Spot It!</span>
+      <button class="spot-close-btn" id="spot-close-btn" aria-label="Close">✕</button>
+    </div>
+    <div class="spot-grid" id="spot-grid"></div>
+  </div>
+
+  <!-- ══ ARRIVAL SCORECARD ═══════════════════════════════════════════════════ -->
+  <div class="score-overlay hidden" id="score-overlay">
+    <div class="score-content" id="score-content"></div>
+  </div>
+
+  <!-- ══ GAMES TOOLBAR ═══════════════════════════════════════════════════════ -->
+  <div class="games-toolbar" id="games-toolbar">
+    <button class="game-btn" id="bingo-fab-btn" title="Bingo" aria-label="Open bingo">🎴</button>
+    <button class="game-btn" id="spot-fab-btn"  title="Spot It" aria-label="Open spot counter">🐾</button>
+    <button class="game-btn" id="photo-fab-btn" title="Photo" aria-label="Take photo">
+      📸<span class="photo-badge hidden" id="photo-badge">0</span>
+    </button>
+  </div>
+
+  <!-- Hidden photo capture input -->
+  <input type="file" id="photo-input" accept="image/*" capture="environment" style="display:none" aria-hidden="true">
 
   <!-- ══ TOAST CONTAINER ═════════════════════════════════════════════════════ -->
   <div id="toast-container" class="toast-container" aria-live="polite"></div>

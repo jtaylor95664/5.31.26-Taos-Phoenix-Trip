@@ -22,7 +22,19 @@ const state = {
   metricsExpanded: false,
   gpsStarted: false,
   departureTime: null,
-  firedMilestones: new Set(), // milestone ids already shown
+  firedMilestones: new Set(),
+  // Fun features
+  bingoGrid: null,
+  bingoCount: 0,
+  spotCounts: {},
+  challengeIdx: 0,
+  challengesDone: new Set(),
+  triviaRevealed: new Set(),  // keys like "s0-2"
+  triviaReactions: {},         // key → 'knew'|'new'
+  elevation: null,
+  weather: null,
+  phoenixWeather: null,
+  photos: [],
 };
 
 /* ── HELPERS ──────────────────────────────────────────────────────────────── */
@@ -307,6 +319,8 @@ function onGPSUpdate(pos) {
   state.milesDriven = getMilesDriven(lat, lng, newStage);
 
   updateUserMarker(lat, lng);
+  updateElevation(pos);
+  fetchWeather(lat, lng);
 
   if (!state.isManualView || stageChanged) {
     if (!state.isManualView) state.viewingStage = state.currentStage;
@@ -413,6 +427,7 @@ function renderStageNotes(stageIdx) {
   el('prev-stage-btn').disabled = stageIdx === 0;
   el('next-stage-btn').disabled = stageIdx === TRIP_DATA.stages.length - 1;
 
+  renderSoundtrackCard(stage);
   renderChargingCard(stage);
   renderDiningCard(stage);
   renderHistoryCard(stage);
@@ -421,6 +436,8 @@ function renderStageNotes(stageIdx) {
   renderPOICard(stage);
   renderTriviaCard(stage);
   renderScenicCard(stage);
+  renderChallengeCard();
+  renderWeatherCard();
   renderArrivalCard(stageIdx);
 
   state.historyExpanded = false;
@@ -565,6 +582,15 @@ function renderPOICard(stage) {
 }
 
 /* ── TRIVIA CARD ──────────────────────────────────────────────────────────── */
+function updateTriviaScoreBadge() {
+  const newCount = Object.values(state.triviaReactions).filter(r => r === 'new').length;
+  const knewCount = Object.values(state.triviaReactions).filter(r => r === 'knew').length;
+  const badge = el('trivia-score-badge');
+  if (badge && (newCount + knewCount) > 0) {
+    badge.textContent = `🧠 ${knewCount} · 😮 ${newCount}`;
+  }
+}
+
 function renderTriviaCard(stage) {
   const card = el('trivia-card');
   const div  = el('trivia-content');
@@ -573,35 +599,58 @@ function renderTriviaCard(stage) {
     card.classList.add('hidden');
     return;
   }
-
   card.classList.remove('hidden');
+
   div.innerHTML = stage.trivia.map((item, i) => {
-    // item can be a plain string or { fact, detail }
-    const fact   = typeof item === 'string' ? item : item.fact;
-    const detail = typeof item === 'object' && item.detail ? item.detail : null;
+    const fact    = typeof item === 'string' ? item : item.fact;
+    const key     = `s${stage.id}-${i}`;
+    const revealed  = state.triviaRevealed.has(key);
+    const reaction  = state.triviaReactions[key];
     return `
-      <div class="trivia-item" id="trivia-item-${i}">
-        <button class="trivia-item-btn"
-                aria-expanded="false"
-                aria-controls="trivia-exp-${i}"
-                data-trivia-idx="${i}">
-          <span class="trivia-number">${i + 1}</span>
-          <span class="trivia-text">${fact}</span>
-          ${detail ? `<span class="trivia-chevron">▾</span>` : ''}
-        </button>
-        ${detail ? `<div class="trivia-expanded" id="trivia-exp-${i}" role="region">${detail}</div>` : ''}
+      <div class="trivia-item${revealed ? ' revealed' : ''}" id="trivia-item-${i}" data-key="${key}">
+        <span class="trivia-number">${i + 1}</span>
+        <div class="trivia-body">
+          <div class="trivia-text">${fact}</div>
+          ${!revealed ? `<div class="trivia-reveal-overlay">👁 Tap to reveal</div>` : `
+            <div class="trivia-reactions">
+              <button class="trivia-rx-btn${reaction === 'knew' ? ' active' : ''}" data-key="${key}" data-rx="knew">🧠 Knew it</button>
+              <button class="trivia-rx-btn${reaction === 'new'  ? ' active' : ''}" data-key="${key}" data-rx="new">😮 New to me!</button>
+            </div>
+          `}
+        </div>
       </div>
     `;
   }).join('');
 
-  div.querySelectorAll('.trivia-item-btn').forEach(btn => {
-    if (!btn.querySelector('.trivia-chevron')) return; // no detail — nothing to expand
-    btn.addEventListener('click', () => {
-      const item = btn.closest('.trivia-item');
-      const isOpen = item.classList.toggle('open');
-      btn.setAttribute('aria-expanded', isOpen);
+  div.querySelectorAll('.trivia-item:not(.revealed)').forEach(item => {
+    item.addEventListener('click', () => {
+      const key = item.dataset.key;
+      state.triviaRevealed.add(key);
+      item.classList.add('revealed');
+      item.querySelector('.trivia-reveal-overlay').outerHTML = `
+        <div class="trivia-reactions">
+          <button class="trivia-rx-btn" data-key="${key}" data-rx="knew">🧠 Knew it</button>
+          <button class="trivia-rx-btn" data-key="${key}" data-rx="new">😮 New to me!</button>
+        </div>
+      `;
+      // re-wire for this item only
+      item.querySelectorAll('.trivia-rx-btn').forEach(b => b.addEventListener('click', handleTriviaReaction));
     });
   });
+
+  div.querySelectorAll('.trivia-rx-btn').forEach(b => b.addEventListener('click', handleTriviaReaction));
+}
+
+function handleTriviaReaction(e) {
+  e.stopPropagation();
+  const btn = e.currentTarget;
+  const key = btn.dataset.key;
+  const rx  = btn.dataset.rx;
+  state.triviaReactions[key] = rx;
+  btn.closest('.trivia-reactions').querySelectorAll('.trivia-rx-btn')
+     .forEach(b => b.classList.toggle('active', b.dataset.rx === rx));
+  updateTriviaScoreBadge();
+  if (rx === 'new') showToast('😮', 'New to you!', 'One more fun fact filed away.', 2500);
 }
 
 /* ── SCENIC MOMENTS CARD ─────────────────────────────────────────────────── */
@@ -636,6 +685,239 @@ function renderScenicCard(stage) {
       `;
     }).join('')
   }</ul>`;
+}
+
+/* ── SOUNDTRACK CARD ─────────────────────────────────────────────────────── */
+function renderSoundtrackCard(stage) {
+  const card = el('soundtrack-card');
+  if (!stage.soundtrack) { card.classList.add('hidden'); return; }
+  card.classList.remove('hidden');
+  const s = stage.soundtrack;
+  const q = encodeURIComponent(s.query);
+  el('soundtrack-content').innerHTML = `
+    <div class="soundtrack-vibe">${s.vibe}</div>
+    <div class="soundtrack-songs">${s.songs.map(song =>
+      `<div class="soundtrack-song">
+         <span class="song-title">${song.title}</span>
+         <span class="song-artist">${song.artist}</span>
+       </div>`).join('')}</div>
+    <div class="soundtrack-links">
+      <a class="soundtrack-btn" href="https://open.spotify.com/search/${q}" target="_blank" rel="noopener">▶ Spotify</a>
+      <a class="soundtrack-btn" href="https://music.apple.com/us/search?term=${q}" target="_blank" rel="noopener">♪ Apple Music</a>
+    </div>`;
+}
+
+/* ── CHALLENGES CARD ─────────────────────────────────────────────────────── */
+function renderChallengeCard() {
+  if (!TRIP_DATA.challenges || !TRIP_DATA.challenges.length) return;
+  const idx = state.challengeIdx % TRIP_DATA.challenges.length;
+  el('challenge-text').textContent = TRIP_DATA.challenges[idx];
+  el('challenge-num').textContent  = `${idx + 1}/${TRIP_DATA.challenges.length}`;
+  const done = state.challengesDone.has(state.challengeIdx);
+  const btn = el('challenge-done-btn');
+  btn.textContent = done ? '✓ Done!' : 'Done ✓';
+  btn.classList.toggle('done', done);
+}
+
+/* ── WEATHER ─────────────────────────────────────────────────────────────── */
+let _weatherTimer = null;
+function fetchWeather(lat, lng) {
+  clearTimeout(_weatherTimer);
+  _weatherTimer = setTimeout(async () => {
+    try {
+      const ptRes = await fetch(`https://api.weather.gov/points/${lat.toFixed(4)},${lng.toFixed(4)}`);
+      if (!ptRes.ok) return;
+      const pt = await ptRes.json();
+      const fcRes = await fetch(pt.properties.forecastHourly);
+      if (!fcRes.ok) return;
+      const fc = await fcRes.json();
+      const cur = fc.properties.periods[0];
+      state.weather = { temp: cur.temperature, unit: cur.temperatureUnit, desc: cur.shortForecast, wind: cur.windSpeed };
+      renderWeatherCard();
+    } catch(e) { /* silently skip if offline or outside US */ }
+  }, 3000);
+}
+
+function fetchPhoenixWeather() {
+  fetch('https://api.weather.gov/points/33.4484,-112.0740')
+    .then(r => r.json()).then(d => fetch(d.properties.forecast))
+    .then(r => r.json()).then(d => {
+      const today = d.properties.periods.find(p => p.isDaytime) || d.properties.periods[0];
+      state.phoenixWeather = { high: today.temperature, unit: today.temperatureUnit, desc: today.shortForecast };
+      renderWeatherCard();
+    }).catch(() => {});
+}
+
+function renderWeatherCard() {
+  const card = el('weather-card');
+  if (!state.weather && !state.phoenixWeather) { card.classList.add('hidden'); return; }
+  card.classList.remove('hidden');
+  let html = '';
+  if (state.weather) html += `
+    <div class="weather-item">
+      <span class="weather-where">Right now</span>
+      <span class="weather-temp">${state.weather.temp}°${state.weather.unit}</span>
+      <span class="weather-desc">${state.weather.desc}${state.weather.wind ? ' · 💨 ' + state.weather.wind : ''}</span>
+    </div>`;
+  if (state.phoenixWeather) html += `
+    <div class="weather-item weather-item-phx">
+      <span class="weather-where">Phoenix today</span>
+      <span class="weather-temp">${state.phoenixWeather.high}°${state.phoenixWeather.unit}</span>
+      <span class="weather-desc">${state.phoenixWeather.desc}</span>
+    </div>`;
+  el('weather-content').innerHTML = html;
+}
+
+/* ── ELEVATION ───────────────────────────────────────────────────────────── */
+function updateElevation(pos) {
+  const alt = pos.coords.altitude;
+  if (alt == null) return;
+  const ft = Math.round(alt * 3.28084);
+  state.elevation = ft;
+  const cell = el('elevation-cell'), val = el('elevation-value');
+  if (cell && val) { cell.classList.remove('hidden'); val.textContent = ft.toLocaleString() + ' ft'; }
+}
+
+/* ── BINGO ───────────────────────────────────────────────────────────────── */
+function initBingo() {
+  const items = [...TRIP_DATA.bingo];
+  for (let i = items.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [items[i], items[j]] = [items[j], items[i]];
+  }
+  const grid = items.slice(0, 24);
+  grid.splice(12, 0, { label: 'FREE', icon: '⭐', free: true });
+  state.bingoGrid  = grid.map((item, idx) => ({ ...item, idx, marked: !!item.free }));
+  state.bingoCount = 0;
+}
+
+function renderBingoGrid() {
+  if (!state.bingoGrid) initBingo();
+  el('bingo-grid').innerHTML = state.bingoGrid.map((cell, i) => `
+    <button class="bingo-cell${cell.marked ? ' marked' : ''}${cell.free ? ' free' : ''}"
+            data-bi="${i}" aria-pressed="${cell.marked}" ${cell.free ? 'disabled' : ''}>
+      <span class="bingo-cell-icon">${cell.icon}</span>
+      <span class="bingo-cell-label">${cell.label}</span>
+    </button>`).join('');
+  el('bingo-grid').querySelectorAll('.bingo-cell:not(.free)').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const i = parseInt(btn.dataset.bi, 10);
+      state.bingoGrid[i].marked = !state.bingoGrid[i].marked;
+      btn.classList.toggle('marked', state.bingoGrid[i].marked);
+      btn.setAttribute('aria-pressed', state.bingoGrid[i].marked);
+      checkBingo();
+    });
+  });
+  updateBingoStatus();
+}
+
+const BINGO_LINES = [
+  [0,1,2,3,4],[5,6,7,8,9],[10,11,12,13,14],[15,16,17,18,19],[20,21,22,23,24],
+  [0,5,10,15,20],[1,6,11,16,21],[2,7,12,17,22],[3,8,13,18,23],[4,9,14,19,24],
+  [0,6,12,18,24],[4,8,12,16,20]
+];
+function checkBingo() {
+  const g = state.bingoGrid;
+  const wins = BINGO_LINES.filter(l => l.every(i => g[i].marked)).length;
+  if (wins > state.bingoCount) {
+    state.bingoCount = wins;
+    showToast('🎉', 'BINGO!', `${wins} line${wins > 1 ? 's' : ''} completed — road trip bingo!`, 6000);
+  }
+  updateBingoStatus();
+}
+function updateBingoStatus() {
+  const marked = state.bingoGrid ? state.bingoGrid.filter(c => c.marked && !c.free).length : 0;
+  el('bingo-status').textContent = `${marked} / 24 spotted`;
+}
+
+/* ── SPOT COUNTER ────────────────────────────────────────────────────────── */
+const SPOT_ITEMS = [
+  { id: 'pronghorn',  icon: '🦌', label: 'Pronghorn'  },
+  { id: 'eagle',      icon: '🦅', label: 'Eagle'       },
+  { id: 'deer',       icon: '🦌', label: 'Deer'        },
+  { id: 'hawk',       icon: '🪶', label: 'Hawk'        },
+  { id: 'roadrunner', icon: '🐦', label: 'Roadrunner'  },
+  { id: 'coyote',     icon: '🐺', label: 'Coyote'      },
+  { id: 'bighorn',    icon: '🐏', label: 'Bighorn'     },
+  { id: 'raven',      icon: '⬛', label: 'Ravens'      },
+  { id: 'saguaro',    icon: '🌵', label: 'Saguaro'     },
+];
+function renderSpotPanel() {
+  el('spot-grid').innerHTML = SPOT_ITEMS.map(item => `
+    <div class="spot-item">
+      <button class="spot-tap-btn" data-spot="${item.id}" aria-label="Tap to count ${item.label}">
+        <span class="spot-icon">${item.icon}</span>
+        <span class="spot-lbl">${item.label}</span>
+      </button>
+      <span class="spot-count" id="spot-count-${item.id}">${state.spotCounts[item.id] || 0}</span>
+    </div>`).join('');
+  el('spot-grid').querySelectorAll('.spot-tap-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.spot;
+      state.spotCounts[id] = (state.spotCounts[id] || 0) + 1;
+      el(`spot-count-${id}`).textContent = state.spotCounts[id];
+      btn.classList.add('spot-pulse');
+      setTimeout(() => btn.classList.remove('spot-pulse'), 300);
+      const item = SPOT_ITEMS.find(s => s.id === id);
+      if (state.spotCounts[id] === 1 && item) showToast(item.icon, `First ${item.label}!`, 'Spotted!', 2500);
+    });
+  });
+}
+
+/* ── PHOTO CAPTURE ───────────────────────────────────────────────────────── */
+function handlePhotoCapture(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const stage = TRIP_DATA.stages[state.viewingStage];
+  const ts    = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  const reader = new FileReader();
+  reader.onload = ev => {
+    state.photos.push({ dataUrl: ev.target.result, label: `${stage.shortName} · ${ts}` });
+    const badge = el('photo-badge');
+    if (badge) { badge.textContent = state.photos.length; badge.classList.remove('hidden'); }
+    showToast('📸', 'Photo saved!', `${stage.shortName} · ${ts}`, 3000);
+  };
+  reader.readAsDataURL(file);
+  e.target.value = '';
+}
+
+/* ── ARRIVAL SCORECARD ───────────────────────────────────────────────────── */
+function showArrivalScore() {
+  const overlay = el('score-overlay');
+  if (!overlay) return;
+
+  const totalSpots = Object.values(state.spotCounts).reduce((a, b) => a + b, 0);
+  const spotLine   = Object.entries(state.spotCounts).filter(([,v]) => v > 0)
+    .map(([k, v]) => { const s = SPOT_ITEMS.find(x => x.id === k); return `${s ? s.icon : ''} ${v} ${s ? s.label : k}`; })
+    .join(' · ') || 'None logged';
+
+  const driveTime = state.departureTime
+    ? (() => { const m = Math.round((Date.now() - state.departureTime) / 60000); return `${Math.floor(m/60)}h ${m%60}m`; })()
+    : '—';
+
+  const bingoSq = state.bingoGrid ? state.bingoGrid.filter(c => c.marked && !c.free).length : 0;
+  const triviaNew  = Object.values(state.triviaReactions).filter(r => r === 'new').length;
+  const triviaKnew = Object.values(state.triviaReactions).filter(r => r === 'knew').length;
+
+  el('score-content').innerHTML = `
+    <div class="score-header">🏠 You Made It!</div>
+    <div class="score-subtitle">Taos → Trilogy · May 31, 2026</div>
+    <div class="score-stats">
+      <div class="score-stat"><div class="score-val">${Math.round(state.milesDriven)}</div><div class="score-lbl">Miles</div></div>
+      <div class="score-stat"><div class="score-val">${driveTime}</div><div class="score-lbl">Drive time</div></div>
+      <div class="score-stat"><div class="score-val">2</div><div class="score-lbl">States</div></div>
+      <div class="score-stat"><div class="score-val">~5,900 ft</div><div class="score-lbl">Elev. drop</div></div>
+      <div class="score-stat"><div class="score-val">${state.photos.length}</div><div class="score-lbl">Photos</div></div>
+      <div class="score-stat"><div class="score-val">${totalSpots}</div><div class="score-lbl">Animals spotted</div></div>
+    </div>
+    ${totalSpots > 0 ? `<div class="score-wildlife">${spotLine}</div>` : ''}
+    ${(triviaNew + triviaKnew) > 0 ? `<div class="score-trivia">🧠 Knew it: ${triviaKnew} · 😮 New: ${triviaNew}</div>` : ''}
+    ${bingoSq > 0 ? `<div class="score-bingo">🎴 Bingo: ${bingoSq} / 24 squares</div>` : ''}
+    <div class="score-note">Taos to Trilogy — not bad for a Sunday. Welcome home. 🌵</div>
+    <button class="score-close-btn" id="score-close-btn">Close ✕</button>`;
+
+  overlay.classList.remove('hidden');
+  el('score-close-btn').addEventListener('click', () => overlay.classList.add('hidden'));
 }
 
 /* ── BOTTOM-SHEET MODAL HELPERS ───────────────────────────────────────────── */
@@ -805,7 +1087,8 @@ function checkMilestones(lat, lng) {
 
     if (shouldFire) {
       state.firedMilestones.add(m.id);
-      showToast(m.icon, m.title, m.detail);
+      showToast(m.icon, m.title, m.detail, m.special === 'winslow' ? 8000 : 5500);
+      if (m.special === 'arrival') setTimeout(showArrivalScore, 2000);
     }
   });
 }
@@ -1038,6 +1321,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Nature
   el('nature-expand-btn').addEventListener('click', toggleNature);
+
+  // Bingo
+  el('bingo-fab-btn').addEventListener('click', () => {
+    if (!state.bingoGrid) initBingo();
+    renderBingoGrid();
+    el('bingo-overlay').classList.remove('hidden');
+  });
+  el('bingo-close-btn').addEventListener('click', () => el('bingo-overlay').classList.add('hidden'));
+  el('bingo-reset-btn').addEventListener('click', () => { initBingo(); renderBingoGrid(); });
+
+  // Spot counter
+  renderSpotPanel();
+  el('spot-fab-btn').addEventListener('click', () => el('spot-panel').classList.toggle('hidden'));
+  el('spot-close-btn').addEventListener('click', () => el('spot-panel').classList.add('hidden'));
+
+  // Photo
+  el('photo-fab-btn').addEventListener('click', () => el('photo-input').click());
+  el('photo-input').addEventListener('change', handlePhotoCapture);
+
+  // Challenges
+  renderChallengeCard();
+  el('challenge-next-btn').addEventListener('click', () => {
+    state.challengeIdx++;
+    renderChallengeCard();
+  });
+  el('challenge-done-btn').addEventListener('click', () => {
+    state.challengesDone.add(state.challengeIdx);
+    renderChallengeCard();
+    showToast('🎯', 'Challenge complete!', TRIP_DATA.challenges[state.challengeIdx % TRIP_DATA.challenges.length].substring(0, 50) + '…', 3000);
+  });
+
+  // Phoenix weather on load
+  fetchPhoenixWeather();
 
   // Modal close buttons
   el('poi-close-btn').addEventListener('click', closePOIModal);
