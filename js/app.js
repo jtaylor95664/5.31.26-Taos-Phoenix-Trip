@@ -627,14 +627,14 @@ function renderTriviaCard(stage) {
       const key = item.dataset.key;
       state.triviaRevealed.add(key);
       item.classList.add('revealed');
-      item.querySelector('.trivia-reveal-overlay').outerHTML = `
-        <div class="trivia-reactions">
-          <button class="trivia-rx-btn" data-key="${key}" data-rx="knew">🧠 Knew it</button>
-          <button class="trivia-rx-btn" data-key="${key}" data-rx="new">😮 New to me!</button>
-        </div>
-      `;
-      // re-wire for this item only
-      item.querySelectorAll('.trivia-rx-btn').forEach(b => b.addEventListener('click', handleTriviaReaction));
+      // Build replacement node and swap it in — replaceWith() is reliable; outerHTML= is not
+      const reactions = document.createElement('div');
+      reactions.className = 'trivia-reactions';
+      reactions.innerHTML = `
+        <button class="trivia-rx-btn" data-key="${key}" data-rx="knew">🧠 Knew it</button>
+        <button class="trivia-rx-btn" data-key="${key}" data-rx="new">😮 New to me!</button>`;
+      item.querySelector('.trivia-reveal-overlay').replaceWith(reactions);
+      reactions.querySelectorAll('.trivia-rx-btn').forEach(b => b.addEventListener('click', handleTriviaReaction));
     });
   });
 
