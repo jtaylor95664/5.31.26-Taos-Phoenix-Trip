@@ -418,11 +418,11 @@ const TRIP_DATA = {
       },
 
       trivia: [
-        "In 1950, a Navajo prospector named Paddy Martinez noticed a yellow stain on a rock near Haystack Mountain, just north of Grants — it turned out to be uranium, the largest deposit in the country at the time. New Mexico became America's top uranium producer, and Grants briefly marketed itself as the 'Uranium Capital of the World.'",
-        "El Malpais contains the longest known ice cave in the contiguous United States — Candelaria Ice Cave stays below freezing year-round because cold air sinks into the lava tube in winter and is trapped there by the rock's insulating mass. The ice is estimated to be at least 3,400 years old.",
         "The original 1937 realignment of Route 66 through this stretch largely coincides with the current I-40 corridor — meaning much of what is now I-40 between Albuquerque and Gallup IS the old Route 66 pavement, just widened. The ghost of the 'Mother Road' is literally under your tires.",
-        "The McCarty's lava flow near Grants is the youngest lava flow in New Mexico, erupted approximately 3,000 years ago — within human memory. Ancestral Puebloan peoples witnessed the eruption; oral traditions among several Pueblo tribes describe it. The flow's surface is so fresh it still retains the ropy texture of pahoehoe lava, without enough time to develop significant soil cover.",
         "Mount Taylor (Navajo: Tsoodził) erupted between 3.3 and 1.6 million years ago — recent enough that the mountain would have been recognizable to the first humans entering the Southwest. Its 11,301-foot summit rises from a plateau already 6,500 feet high, making it one of the dominant landmarks visible for over 100 miles in any direction.",
+        "The McCarty's lava flow near Grants is the youngest lava flow in New Mexico, erupted approximately 3,000 years ago — within human memory. Ancestral Puebloan peoples witnessed the eruption; oral traditions among several Pueblo tribes describe it. The flow's surface is so fresh it still retains the ropy texture of pahoehoe lava, without enough time to develop significant soil cover.",
+        "El Malpais contains the longest known ice cave in the contiguous United States — Candelaria Ice Cave stays below freezing year-round because cold air sinks into the lava tube in winter and is trapped there by the rock's insulating mass. The ice is estimated to be at least 3,400 years old.",
+        "In 1950, a Navajo prospector named Paddy Martinez noticed a yellow stain on a rock near Haystack Mountain, just north of Grants — it turned out to be uranium, the largest deposit in the country at the time. New Mexico became America's top uranium producer, and Grants briefly marketed itself as the 'Uranium Capital of the World.'",
         "The Continental Divide at Exit 53 near Thoreau separates the world's two largest ocean drainage basins. A raindrop falling one inch east travels roughly 2,000 miles to the Gulf of Mexico via the Puerco, Rio Grande, and Mississippi. One inch west, that same drop heads to the Little Colorado, the Colorado River, and the Gulf of California — a completely different 1,500-mile journey. The entire continent's hydrology pivots on a gentle ridge in the Zuni Mountains."
       ],
 
@@ -458,22 +458,16 @@ const TRIP_DATA = {
           hook: "The interior murals are among the finest surviving examples of colonial mission art in the American Southwest — and the building has been in continuous liturgical use for over 325 years."
         },
         {
+          name: 'Acoma Mesa Geology Viewpoint',
+          coords: { lat: 34.9500, lng: -107.5700 },
+          description: "Acoma Mesa is a classic Colorado Plateau butte: a hard Cretaceous Mesa Verde sandstone cap protecting softer Triassic and Jurassic rocks below from erosion. The 367-foot cliff faces expose 200 million years of Colorado Plateau stratigraphy in one vertical wall — Mesa Verde Sandstone, Morrison Formation shales, Entrada Sandstone, and Chinle Formation reading top to bottom.",
+          hook: "The Acoma people chose this mesa's top around 1150 AD because its geology made it a natural fortress. The same erosion-resistant caprock that's kept the cliffs vertical for millions of years has been protecting its residents for nearly 900 years."
+        },
+        {
           name: 'Acoma Pueblo — Sky City',
           coords: { lat: 34.8963, lng: -107.5829 },
           description: "Perched 367 feet above the Acoma Plains on a mesa occupied since at least 1150 AD, Acoma is widely considered the oldest continuously inhabited community in the United States. The Sky City tour (from the Acoma Cultural Center at Exit 96 off I-40) is a 30-min detour into one of the most extraordinary places in North America.",
           hook: "People have lived on top of this mesa — hauling water, food, and building materials up by hand — for at least 900 years. The current residents chose to stay."
-        },
-        {
-          name: 'El Malpais National Monument',
-          coords: { lat: 34.8842, lng: -107.9951 },
-          description: "Vast lava flows, ice caves, and natural arches created by volcanic eruptions spanning 3 million to 3,000 years ago. Contains one of the longest known lava tube systems in North America. The visitor center is at Exit 89 off I-40.",
-          hook: "The ice inside Candelaria Ice Cave is at least 3,400 years old, maintained year-round by cold air trapped in the lava tube — you can walk down to it in t-shirt weather outside."
-        },
-        {
-          name: "Richardson's Trading Post — Gallup",
-          coords: { lat: 35.5281, lng: -108.7476 },
-          description: "One of the oldest and largest trading posts in the Southwest, open since 1913 at 222 W Historic Hwy 66. Still operating as a genuine trader in Navajo rugs, Zuni jewelry, and Pueblo pottery — the inventory of pawn jewelry and handmade goods is staggering.",
-          hook: "Unlike tourist gift shops, Richardson's still operates as an active trading post — local Navajo and Zuni artisans bring work here directly, and the back rooms contain museum-quality pieces on working consignment."
         },
         {
           name: 'Mount Taylor (Tsoodził)',
@@ -482,28 +476,34 @@ const TRIP_DATA = {
           hook: "Sacred to the Navajo as the southern directional mountain of their homeland — and 50 years ago, the surrounding area was the center of America's uranium mining industry after the largest domestic uranium deposit was found just north of here."
         },
         {
-          name: 'Continental Divide — Exit 53, Thoreau NM',
-          coords: { lat: 35.4031, lng: -108.3390 },
-          description: "At Exit 53 near Thoreau, I-40 crosses the Continental Divide at 7,275 feet in the Zuni Mountains — a gentle saddle that is hydrologically absolute. Everything east of this point drains to the Gulf of Mexico; everything west drains to the Gulf of California. The Zuni Mountains here expose Precambrian basement rocks arching to the surface through younger sedimentary layers.",
-          hook: "One raindrop landing here has two entirely different 2,000-mile ocean journeys available depending on which side of the road it hits. The whole continent's hydrology pivots on this quiet Zuni Mountains ridge."
-        },
-        {
-          name: 'Acoma Mesa Geology Viewpoint',
-          coords: { lat: 34.9500, lng: -107.5700 },
-          description: "Acoma Mesa is a classic Colorado Plateau butte: a hard Cretaceous Mesa Verde sandstone cap protecting softer Triassic and Jurassic rocks below from erosion. The 367-foot cliff faces expose 200 million years of Colorado Plateau stratigraphy in one vertical wall — Mesa Verde Sandstone, Morrison Formation shales, Entrada Sandstone, and Chinle Formation reading top to bottom.",
-          hook: "The Acoma people chose this mesa's top around 1150 AD because its geology made it a natural fortress. The same erosion-resistant caprock that's kept the cliffs vertical for millions of years has been protecting its residents for nearly 900 years."
-        },
-        {
           name: 'Grants Lava Flow Viewpoint (McCarty\'s Flow)',
           coords: { lat: 35.1760, lng: -107.9800 },
           description: "North of I-40 east of Grants, the McCarty's lava flow — the youngest lava flow in New Mexico at approximately 3,000 years old — stretches across the desert with glassy pahoehoe textures still intact. A BLM pullout near Grants provides a close view of jet-black basalt that erupted while ancient Puebloans watched.",
           hook: "This lava erupted roughly 3,000 years ago — contemporaneous with Tutankhamun's Egypt. It's so fresh it hasn't developed soil cover, and the ropy lava-surface texture looks like it cooled last week."
         },
         {
+          name: 'El Malpais National Monument',
+          coords: { lat: 34.8842, lng: -107.9951 },
+          description: "Vast lava flows, ice caves, and natural arches created by volcanic eruptions spanning 3 million to 3,000 years ago. Contains one of the longest known lava tube systems in North America. The visitor center is at Exit 89 off I-40.",
+          hook: "The ice inside Candelaria Ice Cave is at least 3,400 years old, maintained year-round by cold air trapped in the lava tube — you can walk down to it in t-shirt weather outside."
+        },
+        {
+          name: 'Continental Divide — Exit 53, Thoreau NM',
+          coords: { lat: 35.4031, lng: -108.3390 },
+          description: "At Exit 53 near Thoreau, I-40 crosses the Continental Divide at 7,275 feet in the Zuni Mountains — a gentle saddle that is hydrologically absolute. Everything east of this point drains to the Gulf of Mexico; everything west drains to the Gulf of California. The Zuni Mountains here expose Precambrian basement rocks arching to the surface through younger sedimentary layers.",
+          hook: "One raindrop landing here has two entirely different 2,000-mile ocean journeys available depending on which side of the road it hits. The whole continent's hydrology pivots on this quiet Zuni Mountains ridge."
+        },
+        {
           name: 'Zuni Mountains — Ancient Basement Roadcuts',
           coords: { lat: 35.2000, lng: -108.5000 },
           description: "I-40 cuts through the Zuni Mountains near Thoreau, exposing roadcuts of 1.6–1.7-billion-year-old Precambrian granite and metamorphic basement — some of the oldest visible rock on the entire trip. The Zuni Mountains are an anticlinal arch in the Colorado Plateau where the ancient basement has arched upward through its sedimentary cover.",
           hook: "The roadcuts through the Zuni Mountains expose rock that was already ancient before the Cambrian — before complex multicellular life existed. You're cutting through the foundation that everything else in the Southwest was built on top of."
+        },
+        {
+          name: "Richardson's Trading Post — Gallup",
+          coords: { lat: 35.5281, lng: -108.7476 },
+          description: "One of the oldest and largest trading posts in the Southwest, open since 1913 at 222 W Historic Hwy 66. Still operating as a genuine trader in Navajo rugs, Zuni jewelry, and Pueblo pottery — the inventory of pawn jewelry and handmade goods is staggering.",
+          hook: "Unlike tourist gift shops, Richardson's still operates as an active trading post — local Navajo and Zuni artisans bring work here directly, and the back rooms contain museum-quality pieces on working consignment."
         }
       ],
 
@@ -623,10 +623,10 @@ const TRIP_DATA = {
 
       trivia: [
         "Petrified Forest is the only national park that preserves a driveable section of Historic Route 66 — and it's also the only park where theft directly threatens the resource: roughly 12 tons of petrified wood are stolen each year, prompting the park to run a 'Conscience Wood' program where repentant thieves mail stolen pieces back from around the world, often with notes saying the 'bad luck wood' cursed them.",
-        "Flagstaff became the world's first International Dark Sky City in 2001, thanks largely to Lowell Observatory's century-old lobbying. In 1930, astronomer Clyde Tombaugh discovered Pluto from Flagstaff using a 13-inch telescope — and when the New Horizons probe flew past Pluto in 2015, a portion of Tombaugh's ashes were aboard.",
+        "The petrified logs in Petrified Forest aren't randomly scattered — they're aligned. Most point northwest to southeast, indicating they were swept by Triassic river currents flowing in that direction 225 million years ago. The current is frozen in stone: you can read the ancient river's flow direction from the orientation of the logs.",
         "Meteor Crater is so geometrically perfect that for 50 years after its discovery scientists assumed it was a collapsed volcanic dome — mining entrepreneur Daniel Barringer spent 26 years and his personal fortune trying to drill down to the iron meteorite, not realizing that 90 percent of the impactor vaporized on impact. NASA later used the crater to teach Apollo crews what impact geology looks like from ground level.",
         "The iron meteorites scattered around Meteor Crater are classified as Canyon Diablo irons — named for the gorge where railroad workers first found them in the 1880s. Studying their crystal structure (Widmanstätten patterns) requires millions of years of slow cooling — proving they crystallized inside a planetesimal that formed in the early solar system.",
-        "The petrified logs in Petrified Forest aren't randomly scattered — they're aligned. Most point northwest to southeast, indicating they were swept by Triassic river currents flowing in that direction 225 million years ago. The current is frozen in stone: you can read the ancient river's flow direction from the orientation of the logs.",
+        "Flagstaff became the world's first International Dark Sky City in 2001, thanks largely to Lowell Observatory's century-old lobbying. In 1930, astronomer Clyde Tombaugh discovered Pluto from Flagstaff using a 13-inch telescope — and when the New Horizons probe flew past Pluto in 2015, a portion of Tombaugh's ashes were aboard.",
         "Humphreys Peak at 12,633 feet — Arizona's highest point, visible from I-40 near Flagstaff — is the eroded remnant of a stratovolcano that may have once topped 16,000 feet before its summit collapsed inward. The current peaks are the hardened inner core of the original volcano's conduit system; everything else has been stripped away by 2 million years of erosion and glaciation."
       ],
 
@@ -656,6 +656,12 @@ const TRIP_DATA = {
           hook: "A 23-mile detour north of Gallup lands you at the capital of the largest Native American nation in the U.S. — governed from beneath a stone window that Navajo medicine men have visited for rain ceremonies for generations."
         },
         {
+          name: 'Hubbell Trading Post National Historic Site',
+          coords: { lat: 35.7078, lng: -109.5613 },
+          description: "The oldest continuously operating trading post on the Navajo Nation, founded by John Lorenzo Hubbell in 1878 and still stocked with Navajo rugs, silver jewelry, and traditional goods. A National Historic Site — the original adobe buildings, barn, and bull pen are intact. Off AZ-264, 55 miles west of Gallup.",
+          hook: "Hubbell learned Navajo, hosted delegations of federal commissioners, and brokered a century of cultural exchange from this compound — and it's still open for business, still run as a genuine trading post."
+        },
+        {
           name: 'Painted Desert — North Entrance Overlook',
           coords: { lat: 35.0835, lng: -109.7886 },
           description: "A sweeping badlands panorama of red, purple, and orange Chinle Formation mudstones, visible from the Painted Desert Visitor Center right off I-40 Exit 311. The colors shift dramatically with the angle of the sun.",
@@ -666,6 +672,12 @@ const TRIP_DATA = {
           coords: { lat: 34.9099, lng: -109.8069 },
           description: "The only national park in the U.S. that contains a preserved section of Historic Route 66, and home to the world's largest concentration of petrified wood. Ancient Triassic-era logs — silica-replaced cell by cell over 225 million years — lie scattered across the desert in rainbow-crystal cross-sections.",
           hook: "These aren't wood anymore — they're quartz. Each 'log' is essentially a giant gemstone, cut open by erosion to reveal rings of amethyst, jasper, and agate."
+        },
+        {
+          name: 'Homolovi State Park',
+          coords: { lat: 35.0233, lng: -110.6150 },
+          description: "Four Ancestral Hopi pueblo sites, occupied 1200–1400 AD, on a low bluff above the Little Colorado River just north of Winslow off AZ-87. The Hopi consider these waypoints on their ancestral migration route and maintain active ties to the site. The ruins sit on Moenkopi Formation sandstone with panoramic Painted Desert views.",
+          hook: "The Hopi don't call these ruins — they're waypoints on an ongoing migration story that connects these abandoned pueblos to occupied Hopi villages on the mesas 60 miles north."
         },
         {
           name: "Winslow — Standin' on the Corner Park",
@@ -680,34 +692,22 @@ const TRIP_DATA = {
           hook: "NASA trained Apollo astronauts here in the 1960s because this is the closest thing on Earth to a lunar surface — and the crater is so perfectly preserved you can see the uplifted rim layers like a geologic sandwich."
         },
         {
+          name: 'Wupatki National Monument',
+          coords: { lat: 35.5617, lng: -111.3692 },
+          description: "A multi-room pueblo built by the Sinagua around 1182 AD — within a century of Sunset Crater's eruption — on a sandstone ridge overlooking a volcanic plain. The blowhole at the ruin base is a natural pressure vent connected to underground passages; air rushes in or out with barometric pressure changes. 35 miles north of Flagstaff off US-89.",
+          hook: "Sunset Crater's ash fall improved the soil so dramatically that population density here spiked immediately after the eruption — what looked like a catastrophe triggered a building boom."
+        },
+        {
           name: 'Two Guns Ghost Town',
           coords: { lat: 35.3905, lng: -111.4069 },
           description: "A Route 66 roadside ruin perched on the rim of Canyon Diablo. What remains are the burned stone walls of a 1920s zoo, trading post, and fake 'Apache Death Cave' tourist attraction cobbled together by a con man who called himself Chief Two Gun White Calf.",
           hook: "The original owner staged at least one murder on the property, ran a zoo of rattlesnakes and mountain lions, and was eventually run off by a land dispute — the most lawless stretch of 66."
         },
         {
-          name: 'Hubbell Trading Post National Historic Site',
-          coords: { lat: 35.7078, lng: -109.5613 },
-          description: "The oldest continuously operating trading post on the Navajo Nation, founded by John Lorenzo Hubbell in 1878 and still stocked with Navajo rugs, silver jewelry, and traditional goods. A National Historic Site — the original adobe buildings, barn, and bull pen are intact. Off AZ-264, 55 miles west of Gallup.",
-          hook: "Hubbell learned Navajo, hosted delegations of federal commissioners, and brokered a century of cultural exchange from this compound — and it's still open for business, still run as a genuine trading post."
-        },
-        {
           name: 'Canyon Diablo Gorge',
           coords: { lat: 35.3683, lng: -111.4400 },
           description: "A 225-foot-deep gash in the Kaibab Limestone plateau, carved by the now-dry Canyon Diablo wash near Two Guns. The Atlantic & Pacific Railroad bridge over this gorge (1881) famously halted construction for months — too wide for a temporary trestle. Its depth and geometry visually preview the Grand Canyon 60 miles north.",
           hook: "The iron meteorites scattered around Meteor Crater were first found by railroad workers near this canyon in the 1880s — the gorge and the crater are linked by the same impact event 50,000 years ago."
-        },
-        {
-          name: 'Homolovi State Park',
-          coords: { lat: 35.0233, lng: -110.6150 },
-          description: "Four Ancestral Hopi pueblo sites, occupied 1200–1400 AD, on a low bluff above the Little Colorado River just north of Winslow off AZ-87. The Hopi consider these waypoints on their ancestral migration route and maintain active ties to the site. The ruins sit on Moenkopi Formation sandstone with panoramic Painted Desert views.",
-          hook: "The Hopi don't call these ruins — they're waypoints on an ongoing migration story that connects these abandoned pueblos to occupied Hopi villages on the mesas 60 miles north."
-        },
-        {
-          name: 'Wupatki National Monument',
-          coords: { lat: 35.5617, lng: -111.3692 },
-          description: "A multi-room pueblo built by the Sinagua around 1182 AD — within a century of Sunset Crater's eruption — on a sandstone ridge overlooking a volcanic plain. The blowhole at the ruin base is a natural pressure vent connected to underground passages; air rushes in or out with barometric pressure changes. 35 miles north of Flagstaff off US-89.",
-          hook: "Sunset Crater's ash fall improved the soil so dramatically that population density here spiked immediately after the eruption — what looked like a catastrophe triggered a building boom."
         }
       ]
     },
@@ -783,10 +783,10 @@ const TRIP_DATA = {
       },
 
       trivia: [
-        "The 6,000-foot elevation drop from Flagstaff to Phoenix along I-17 is roughly equivalent to stacking four Empire State Buildings on top of each other — and you drive it in under two hours at freeway speed.",
         "The Mogollon Rim's limestone cliffs were formed from sediments deposited when central Arizona lay beneath a shallow inland sea during the Carboniferous and Permian periods, more than 250 million years ago — long before the dinosaurs.",
-        "Before I-17 opened, the stagecoach journey from Phoenix to Prescott via Black Canyon took a grueling 30 hours on a road that crossed the Agua Fria River multiple times; today the same stretch takes about 90 minutes.",
         "The cream-colored cliff rock visible as I-17 descends the Mogollon Rim is the Kaibab Limestone — the same formation capping the Grand Canyon's south rim 80 miles to the north. It was deposited as a flat seafloor layer 270 million years ago; it now forms the surface of the entire southern Colorado Plateau. If you drove from here to the canyon and looked over the edge, you'd be standing on the exact same rock layer you're driving through right now.",
+        "The 6,000-foot elevation drop from Flagstaff to Phoenix along I-17 is roughly equivalent to stacking four Empire State Buildings on top of each other — and you drive it in under two hours at freeway speed.",
+        "Before I-17 opened, the stagecoach journey from Phoenix to Prescott via Black Canyon took a grueling 30 hours on a road that crossed the Agua Fria River multiple times; today the same stretch takes about 90 minutes.",
         "Montezuma Well discharges 1.5 million gallons of spring water per day — water that fell as rain on the Colorado Plateau 30 to 50 years ago and traveled slowly through the karst limestone aquifer before emerging here. The spring has never gone dry through multiple historic droughts. Its water is too carbonated and arsenic-rich for most life, but five aquatic species evolved specifically for its chemistry and exist nowhere else on Earth.",
         "Metropolitan Phoenix sits on 1,000 to 2,000 feet of Quaternary alluvial sediment — sand, gravel, and boulders washed down from surrounding ranges over the last 1–2 million years. The actual bedrock is Precambrian granite, the same 1.7-billion-year-old rock forming South Mountain and the White Tank Mountains. The Salt River Project's reservoirs work because this structural basin is the natural collection point for runoff from 14,000 square miles of upstream terrain."
       ],
@@ -811,40 +811,10 @@ const TRIP_DATA = {
 
       pois: [
         {
-          name: 'Montezuma Castle National Monument',
-          coords: { lat: 34.6116, lng: -111.835 },
-          description: "A 20-room, five-story cliff dwelling built by the Southern Sinagua people between roughly 1125 and 1395 AD, perched 90 feet up a sheer limestone cliff above Beaver Creek. One of the first four National Monuments designated by President Theodore Roosevelt in 1906.",
-          hook: "One of the best-preserved prehistoric cliff dwellings in North America — and the Aztec emperor it's named for had absolutely nothing to do with it."
-        },
-        {
-          name: 'Montezuma Well',
-          coords: { lat: 34.6492, lng: -111.7522 },
-          description: "A natural limestone sinkhole 386 feet across that pumps 1.5 million gallons of spring water daily regardless of drought — and harbors five species of aquatic life found nowhere else on Earth. The Sinagua people channeled its outflow for irrigation as far back as the 8th century.",
-          hook: "A desert spring so chemically unique — highly carbonated, laced with arsenic — that five animals evolved here and only here, in this one pool."
-        },
-        {
-          name: 'Arcosanti',
-          coords: { lat: 34.3639, lng: -112.0986 },
-          description: "Paolo Soleri began building this experimental 'arcology' — a fusion of architecture and ecology — on a basaltic mesa near Cordes Junction in 1970, imagining a pedestrian city for 5,000 residents. More than 50 years later, it is roughly 5% complete and remains one of the most thought-provoking built arguments for rethinking how humans inhabit the planet.",
-          hook: "Paolo Soleri's half-finished utopia has been under construction for over 50 years — and the incompleteness is part of the point."
-        },
-        {
           name: 'Mogollon Rim Overlook (~MP 322–290)',
           coords: { lat: 34.7833, lng: -111.650 },
           description: "Driving south from Flagstaff, the highway crests the Mogollon Rim and begins a sustained 6,000-foot plunge through layers of Kaibab Limestone, Coconino Sandstone, and Permian-era rock. The Verde Valley opens below in shades of red, ochre, and green.",
           hook: "You're driving down through 300 million years of geological time — each cliff band is a different chapter."
-        },
-        {
-          name: 'Black Canyon City Saguaro Threshold (~MP 249)',
-          coords: { lat: 34.0583, lng: -112.145 },
-          description: "Just past the Bumble Bee/Crown King exit, giant saguaro cacti begin dotting the hillsides — the unmistakable biological announcement that you've crossed into the Lower Sonoran Desert. The landscape transforms from piñon-juniper scrub to the iconic Sonoran palette of saguaro, palo verde, and brittlebush.",
-          hook: "Watch the exact moment the saguaros appear — it's the desert's way of saying 'welcome to Phoenix's backyard.'"
-        },
-        {
-          name: 'Verde Valley Graben Overlook',
-          coords: { lat: 34.743, lng: -111.752 },
-          description: "As I-17 descends the Mogollon Rim south of Flagstaff, pullouts near the rim crest overlook the Verde Valley — a structural graben (down-dropped fault block) formed by Basin and Range extension starting 15 million years ago. The Verde River threading through the valley floor is visible as a cottonwood-lined green ribbon against red-rock canyon country.",
-          hook: "That flat valley floor 2,000 feet below dropped along faults while the Colorado Plateau stayed elevated — the Verde Valley is the Basin and Range's northernmost finger poking under the plateau's edge."
         },
         {
           name: 'Tuzigoot National Monument',
@@ -859,10 +829,40 @@ const TRIP_DATA = {
           hook: "The Verde flows year-round only because it taps the deep aquifer feeding Montezuma Well — the park's lush riverbank is liquid geology, the karst aquifer made visible."
         },
         {
+          name: 'Verde Valley Graben Overlook',
+          coords: { lat: 34.743, lng: -111.752 },
+          description: "As I-17 descends the Mogollon Rim south of Flagstaff, pullouts near the rim crest overlook the Verde Valley — a structural graben (down-dropped fault block) formed by Basin and Range extension starting 15 million years ago. The Verde River threading through the valley floor is visible as a cottonwood-lined green ribbon against red-rock canyon country.",
+          hook: "That flat valley floor 2,000 feet below dropped along faults while the Colorado Plateau stayed elevated — the Verde Valley is the Basin and Range's northernmost finger poking under the plateau's edge."
+        },
+        {
+          name: 'Montezuma Well',
+          coords: { lat: 34.6492, lng: -111.7522 },
+          description: "A natural limestone sinkhole 386 feet across that pumps 1.5 million gallons of spring water daily regardless of drought — and harbors five species of aquatic life found nowhere else on Earth. The Sinagua people channeled its outflow for irrigation as far back as the 8th century.",
+          hook: "A desert spring so chemically unique — highly carbonated, laced with arsenic — that five animals evolved here and only here, in this one pool."
+        },
+        {
+          name: 'Montezuma Castle National Monument',
+          coords: { lat: 34.6116, lng: -111.835 },
+          description: "A 20-room, five-story cliff dwelling built by the Southern Sinagua people between roughly 1125 and 1395 AD, perched 90 feet up a sheer limestone cliff above Beaver Creek. One of the first four National Monuments designated by President Theodore Roosevelt in 1906.",
+          hook: "One of the best-preserved prehistoric cliff dwellings in North America — and the Aztec emperor it's named for had absolutely nothing to do with it."
+        },
+        {
+          name: 'Arcosanti',
+          coords: { lat: 34.3639, lng: -112.0986 },
+          description: "Paolo Soleri began building this experimental 'arcology' — a fusion of architecture and ecology — on a basaltic mesa near Cordes Junction in 1970, imagining a pedestrian city for 5,000 residents. More than 50 years later, it is roughly 5% complete and remains one of the most thought-provoking built arguments for rethinking how humans inhabit the planet.",
+          hook: "Paolo Soleri's half-finished utopia has been under construction for over 50 years — and the incompleteness is part of the point."
+        },
+        {
           name: 'Agua Fria National Monument',
           coords: { lat: 34.2167, lng: -112.0833 },
           description: "A 71,100-acre monument in the Agua Fria River canyon north of Phoenix, protecting over 450 prehistoric pueblo sites from the Perry Mesa tradition (1250–1450 AD) and some of the most geologically complex canyon country in the Phoenix metro area. The canyon cuts through Tertiary volcanic rocks and basin sediments visible in dramatic cliff walls.",
           hook: "Less than 45 minutes from Phoenix, this canyon contains more than 450 ancient pueblo sites on isolated mesa tops — a lost civilization hiding in plain sight at the edge of the metro area."
+        },
+        {
+          name: 'Black Canyon City Saguaro Threshold (~MP 249)',
+          coords: { lat: 34.0583, lng: -112.145 },
+          description: "Just past the Bumble Bee/Crown King exit, giant saguaro cacti begin dotting the hillsides — the unmistakable biological announcement that you've crossed into the Lower Sonoran Desert. The landscape transforms from piñon-juniper scrub to the iconic Sonoran palette of saguaro, palo verde, and brittlebush.",
+          hook: "Watch the exact moment the saguaros appear — it's the desert's way of saying 'welcome to Phoenix's backyard.'"
         }
       ],
 
